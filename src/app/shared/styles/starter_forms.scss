@@ -1,0 +1,18 @@
+form {
+  width: 50vw;
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1vh;
+}
+
+mat-form-field {
+  width: 40vw;
+}
+
+button {
+  width: 20vw;
+  font-size: 1.2vw;
+}
