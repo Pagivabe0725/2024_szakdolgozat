@@ -1,40 +1,302 @@
 @use "@angular/material" as mat;
+@import "../src/app/shared/styles/colors.scss";
 @include mat.core();
 
-$basic_light-theme: mat.define-theme(
-  (
-    color: (
-      theme-type: light,
-      primary: mat.$azure-palette,
-      tertiary: mat.$blue-palette,
-    ),
-    density: (
-      scale: 0,
-    ),
-  )
-);
-
-$basic_dark-theme: mat.define-theme(
-  (
-    color: (
-      theme-type: dark,
-      primary: mat.$azure-palette,
-      tertiary: mat.$blue-palette,
-    ),
-    density: (
-      scale: 0,
-    ),
-  )
-);
+$primary-dark-const: 20;
+$primary-light-const: 60;
+$primary-dark-highlight-const: 80;
+$primary-light-highlight-const: 40;
+$accent-light-const: 70;
+$accent-dark-const: 60;
 
 .basic-light {
-  background-color: white;
-  @include mat.core-theme($basic_light-theme);
+  $primary-color: mat.get-theme-color(
+    $basic_light-theme,
+    primary,
+    $primary-light-const
+  );
+  $primary-highlight: mat.get-theme-color(
+    $basic_light-theme,
+    primary,
+    $primary-light-highlight-const
+  );
+  $accent-color: mat.get-theme-color(
+    $basic_light-theme,
+    tertiary,
+    $accent-light-const
+  );
+  background: mat.get-theme-color($basic_light-theme, surface);
+  color: $primary-color;
+  mat-toolbar {
+    background-color: $primary-color;
+  }
+
+  mat-icon {
+    color: black;
+  }
+  .own-primary-background {
+    background-color: $primary-color;
+  }
+  .own-primary-highlight-background {
+    background-color: $primary-highlight;
+  }
+  .own-accent-background {
+    background-color: $accent-color;
+  }
+  @include mat.all-component-themes($basic_light-theme);
 }
 
 .basic-dark {
-  background-color: rgba(0, 0, 0, 0.85);
-  @include mat.core-theme($basic_dark-theme);
+  $primary-color: mat.get-theme-color(
+    $basic_dark-theme,
+    primary,
+    $primary-dark-const
+  );
+  $primary-highlight: mat.get-theme-color(
+    $basic_dark-theme,
+    primary,
+    $primary-dark-highlight-const
+  );
+  $accent-color: mat.get-theme-color(
+    $basic_dark-theme,
+    tertiary,
+    $accent-dark-const
+  );
+  background: mat.get-theme-color($basic_dark-theme, surface);
+  color: $primary-color;
+  mat-toolbar {
+    background-color: $primary-color;
+  }
+  mat-icon {
+    color: $accent-color;
+  }
+  .own-primary-background {
+    background-color: $primary-color;
+  }
+  .own-primary-highlight-background {
+    background-color: $primary-highlight;
+  }
+  .own-accent-background {
+    background-color: $accent-color;
+  }
+  @include mat.all-component-themes($basic_dark-theme);
+}
+
+.azure-light {
+  $primary-color: mat.get-theme-color(
+    $azure_blue_light-theme,
+    primary,
+    $primary-light-const
+  );
+  $primary-highlight: mat.get-theme-color(
+    $azure_blue_light-theme,
+    primary,
+    $primary-light-highlight-const
+  );
+  $accent-color: mat.get-theme-color(
+    $azure_blue_light-theme,
+    tertiary,
+    $accent-light-const
+  );
+  background: mat.get-theme-color($azure_blue_light-theme, surface);
+  color: $primary-color;
+  mat-toolbar {
+    background-color: $primary-color;
+  }
+  mat-icon {
+    color: black;
+  }
+  .own-primary-background {
+    background-color: $primary-color;
+  }
+  .own-primary-highlight-background {
+    background-color: $primary-highlight;
+  }
+  .own-accent-background {
+    background-color: $accent-color;
+  }
+  @include mat.all-component-themes($azure_blue_light-theme);
+}
+
+.azure-dark {
+  $primary-color: mat.get-theme-color(
+    $azure_blue_dark-theme,
+    primary,
+    $primary-dark-const
+  );
+  $primary-highlight: mat.get-theme-color(
+    $azure_blue_dark-theme,
+    primary,
+    $primary-dark-highlight-const
+  );
+  $accent-color: mat.get-theme-color(
+    $azure_blue_dark-theme,
+    tertiary,
+    $accent-dark-const
+  );
+  background: mat.get-theme-color($azure_blue_dark-theme, surface);
+  color: $primary-color;
+  mat-toolbar {
+    background-color: $primary-color;
+  }
+  mat-icon {
+    color: $accent-color;
+  }
+  .own-primary-background {
+    background-color: $primary-color;
+  }
+  .own-primary-highlight-background {
+    background-color: $primary-highlight;
+  }
+  .own-accent-background {
+    background-color: $accent-color;
+  }
+  @include mat.all-component-themes($azure_blue_dark-theme);
+}
+
+.magenta-light {
+  $primary-color: mat.get-theme-color(
+    $magenta_violet_light-theme,
+    primary,
+    $primary-light-const
+  );
+  $primary-highlight: mat.get-theme-color(
+    $magenta_violet_light-theme,
+    primary,
+    $primary-light-highlight-const
+  );
+  $accent-color: mat.get-theme-color(
+    $magenta_violet_light-theme,
+    tertiary,
+    $accent-light-const
+  );
+  background: mat.get-theme-color($magenta_violet_light-theme, surface);
+  color: $primary-color;
+  mat-toolbar {
+    background-color: $primary-color;
+  }
+  mat-icon {
+    color: black;
+  }
+  .own-primary-background {
+    background-color: $primary-color;
+  }
+  .own-primary-highlight-background {
+    background-color: $primary-highlight;
+  }
+  .own-accent-background {
+    background-color: $accent-color;
+  }
+  @include mat.all-component-themes($magenta_violet_light-theme);
+}
+
+.magenta-dark {
+  $primary-color: mat.get-theme-color(
+    $magenta_violet_dark-theme,
+    primary,
+    $primary-dark-const
+  );
+  $primary-highlight: mat.get-theme-color(
+    $magenta_violet_dark-theme,
+    primary,
+    $primary-dark-highlight-const
+  );
+  $accent-color: mat.get-theme-color(
+    $magenta_violet_dark-theme,
+    tertiary,
+    $accent-dark-const
+  );
+  background: mat.get-theme-color($magenta_violet_dark-theme, surface);
+  color: $primary-color;
+  mat-toolbar {
+    background-color: $primary-color;
+  }
+  mat-icon {
+    color: $accent-color;
+  }
+  .own-primary-background {
+    background-color: $primary-color;
+  }
+  .own-primary-highlight-background {
+    background-color: $primary-highlight;
+  }
+  .own-accent-background {
+    background-color: $accent-color;
+  }
+
+  @include mat.all-component-themes($magenta_violet_dark-theme);
+}
+
+.cyan-light {
+  $primary-color: mat.get-theme-color(
+    $cyan_orange_light-theme,
+    primary,
+    $primary-light-const
+  );
+  $primary-highlight: mat.get-theme-color(
+    $cyan_orange_light-theme,
+    primary,
+    $primary-light-highlight-const
+  );
+  $accent-color: mat.get-theme-color(
+    $cyan_orange_light-theme,
+    tertiary,
+    $accent-light-const
+  );
+  background: mat.get-theme-color($cyan_orange_light-theme, surface);
+  color: $primary-color;
+  mat-toolbar {
+    background-color: $primary-color;
+  }
+  mat-icon {
+    color: black;
+  }
+  .own-primary-background {
+    background-color: $primary-color;
+  }
+  .own-primary-highlight-background {
+    background-color: $primary-highlight;
+  }
+  .own-accent-background {
+    background-color: $accent-color;
+  }
+  @include mat.all-component-themes($cyan_orange_light-theme);
+}
+
+.cyan-dark {
+  $primary-color: mat.get-theme-color(
+    $cyan_orange_dark-theme,
+    primary,
+    $primary-dark-const
+  );
+  $primary-highlight: mat.get-theme-color(
+    $cyan_orange_dark-theme,
+    primary,
+    $primary-dark-highlight-const
+  );
+  $accent-color: mat.get-theme-color(
+    $cyan_orange_dark-theme,
+    tertiary,
+    $accent-dark-const
+  );
+  background: mat.get-theme-color($cyan_orange_dark-theme, surface);
+  color: $primary-color;
+  mat-toolbar {
+    background-color: $primary-color;
+  }
+  mat-icon {
+    color: $accent-color;
+  }
+  .own-primary-background {
+    background-color: $primary-color;
+  }
+  .own-primary-highlight-background {
+    background-color: $primary-highlight;
+  }
+  .own-accent-background {
+    background-color: $accent-color;
+  }
+  @include mat.all-component-themes($cyan_orange_dark-theme);
 }
 
 :root {
@@ -45,5 +307,6 @@ html,
 body {
   height: 100%;
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  //font-family: Roboto, "Helvetica Neue", sans-serif;
 }
