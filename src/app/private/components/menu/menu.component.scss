@@ -1,4 +1,4 @@
-@import '../../../../styles.scss';
+@import "../../../../styles.scss";
 
 mat-toolbar {
   display: grid;
@@ -8,7 +8,7 @@ mat-toolbar {
   top: 0;
   padding: 0;
   height: 8vh;
- 
+  z-index: 999;
 }
 
 .own-menu_component-content-div {
@@ -19,4 +19,7 @@ mat-toolbar {
   padding: 0 1vw;
 }
 
-
+.own-menu_component-menupoints {
+  width: 10vw;
+  font-size: 1.2vw;
+}

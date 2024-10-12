@@ -1,0 +1,15 @@
+<div
+  [ngClass]="
+    color === 'primary'
+      ? 'own-primary-background '
+      : color === 'highlight'
+      ? 'own-primary-highlight-background'
+      : color === 'accent'
+      ? 'own-accent-background'
+      : ''
+  "
+  class="own-info_in_main_component-div"
+  [@infoElementAnimation]="animation()"
+>
+  <mat-icon>account_circle</mat-icon>
+</div>

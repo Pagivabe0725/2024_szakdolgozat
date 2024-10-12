@@ -1,0 +1,18 @@
+.own-info_in_main_component-div {
+  position: relative;
+  width: 60%;
+  min-height: 20vh;
+  margin: 0 auto;
+  cursor: pointer;
+  border-radius: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+    overflow: hidden;
+}
+
+mat-icon {
+  color: white;
+}

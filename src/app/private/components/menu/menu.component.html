@@ -1,30 +1,58 @@
 <mat-toolbar>
   <div class="own-menu_component-content-div">
-    <button mat-flat-button>test</button>
     <button mat-icon-button><mat-icon>account_circle</mat-icon></button>
     <button mat-icon-button><mat-icon>groups</mat-icon></button>
   </div>
   <div class="own-menu_component-content-div">
-   
-    <button mat-button >Főoldal</button>
-    <button mat-raised-button>Fórumok</button>
-    <button mat-raised-button>Műhelyek</button>
-    <button mat-raised-button>Saját</button>
+    <button class="own-menu_component-menupoints" mat-raised-button>
+      Főoldal
+    </button>
+    <button class="own-menu_component-menupoints" mat-raised-button>
+      Fórumok
+    </button>
+    <button class="own-menu_component-menupoints" mat-raised-button>
+      Műhelyek
+    </button>
+    <button class="own-menu_component-menupoints" mat-raised-button>
+      Saját
+    </button>
   </div>
   <div class="own-menu_component-content-div">
     <button mat-icon-button [matMenuTriggerFor]="colors">
       <mat-icon>trip_origin</mat-icon>
     </button>
     <mat-menu #colors="matMenu">
-      <button mat-menu-item (click)="changeColor('basic')">Rose & Red</button>
-      <button mat-menu-item (click)="changeColor('azure')">Azure & Blue</button>
-      <button mat-menu-item (click)="changeColor('magenta')">
+      <button
+        mat-menu-item
+        (click)="changeColor('basic')"
+        [ngClass]="sameColor('basic') ? 'own-accent-background' : ''"
+      >
+        Rose & Red
+      </button>
+      <button
+        mat-menu-item
+        (click)="changeColor('azure')"
+        [ngClass]="sameColor('azure') ? 'own-accent-background' : ''"
+      >
+        Azure & Blue
+      </button>
+      <button
+        mat-menu-item
+        (click)="changeColor('magenta')"
+        [ngClass]="sameColor('magenta') ? 'own-accent-background' : ''"
+      >
         Magenta & Violet
       </button>
-      <button mat-menu-item (click)="changeColor('cyan')">Cyan & Orange</button>
+      <button
+        mat-menu-item
+        (click)="changeColor('cyan')"
+        [ngClass]="sameColor('cyan') ? 'own-accent-background' : ''"
+      >
+        Cyan & Orange
+      </button>
     </mat-menu>
     <button mat-icon-button (click)="changeDarkness()">
-      <mat-icon >@if(mode==='light'){brightness_2} @else {sunny}</mat-icon>
+      <mat-icon>@if(mode==='light'){brightness_2} @else {sunny}</mat-icon>
     </button>
     <button mat-icon-button><mat-icon>sensor_door</mat-icon></button>
   </div>

@@ -1,0 +1,21 @@
+<div
+  [ngClass]="
+    color === 'primary'
+      ? 'own-primary-background '
+      : color === 'highlight'
+      ? 'own-primary-highlight-background'
+      : color === 'accent'
+      ? 'own-accent-background'
+      : ''
+  "
+  [ngClass]="
+    columns === 2
+      ? 'own-page_component-grid-display-2column'
+      : 'own-page_component-grid-display-3column'
+  "
+  class="own-page_component-div"
+>
+  <app-infoboard-in-main [color]="'highlight'"></app-infoboard-in-main>
+  <app-infoboard-in-main [color]="'accent'"></app-infoboard-in-main>
+  
+</div>

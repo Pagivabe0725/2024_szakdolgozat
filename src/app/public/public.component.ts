@@ -7,7 +7,8 @@ import { LeftSideComponent } from './components/left-side/left-side.component';
   standalone: true,
   imports: [LeftSideComponent,RouterOutlet],
   templateUrl: './public.component.html',
-  styleUrl: './public.component.scss'
+  styleUrl: './public.component.scss',
+  
 })
 export class PublicComponent {
 
