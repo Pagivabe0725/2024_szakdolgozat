@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { InfoboardInMainComponent } from '../infoboard-in-main/infoboard-in-main.component';
+import { infoboxInMain_component } from '../../../shared/interfaces/info_board';
 
 @Component({
   selector: 'app-page',
@@ -11,5 +12,6 @@ import { InfoboardInMainComponent } from '../infoboard-in-main/infoboard-in-main
 })
 export class PageComponent {
   @Input() columns: number = 2;
-  @Input() color: 'primary' | 'accent' | 'highlight' | 'none' = 'none';
+  @Input() color!: 'primary' | 'accent' | 'highlight' | 'none' ;
+  @Input() actualInfoBoardArray!:Array<infoboxInMain_component>
 }

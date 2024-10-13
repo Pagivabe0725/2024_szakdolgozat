@@ -1,15 +1,24 @@
-<div
+<mat-card
+  [appearance]="'raised'"
   [ngClass]="
-    color === 'primary'
+    actualInfoBoard.color === 'primary'
       ? 'own-primary-background '
-      : color === 'highlight'
+      : actualInfoBoard.color === 'highlight'
       ? 'own-primary-highlight-background'
-      : color === 'accent'
+      : actualInfoBoard.color === 'accent'
       ? 'own-accent-background'
       : ''
   "
   class="own-info_in_main_component-div"
   [@infoElementAnimation]="animation()"
 >
-  <mat-icon>account_circle</mat-icon>
-</div>
+  @if (!collectionDisplay){
+  <mat-icon>{{ actualInfoBoard.icon }}</mat-icon>
+  } @else {
+  <div class="own-infoboard-content-div">
+    <h1>{{ actualInfoBoard.title }}</h1>
+    <mat-icon>{{ actualInfoBoard.icon }}</mat-icon>
+    <div><p>{{ actualInfoBoard.text }}<p></div>
+  </div>
+  }
+</mat-card>

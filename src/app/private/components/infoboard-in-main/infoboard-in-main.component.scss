@@ -10,9 +10,26 @@
   justify-content: center;
   align-items: center;
   color: white;
-    overflow: hidden;
+  overflow: hidden;
+  opacity: 0.9;
 }
 
 mat-icon {
-  color: white;
+  color: black;
+}
+
+.own-infoboard-content-div {
+  height: 100%;
+  width: 80%;
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  color: black;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  mat-icon {
+    //position: absolute;
+    width: 100%;
+    left: 0;
+  }
 }
