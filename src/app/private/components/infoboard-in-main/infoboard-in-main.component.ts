@@ -38,27 +38,34 @@ import { infoboxInMain_component } from '../../../shared/interfaces/info_board';
       state('close', style({ height: '20vh' })),
       transition('close <=> open', [animate('0.3s ease-in')]),
     ]),
+
+    trigger('infoAnimations', [
+      transition(':enter', [
+        style({ opacity: 0.1 }),
+        animate('0.2s ease-in', style({ opacity: 1 })),
+      ]),
+    ]),
   ],
 })
 export class InfoboardInMainComponent {
   @HostListener('mouseover') onMouseOver() {
     this.animation.set('open');
-    this.animationFinished=true;
-    setTimeout(()=>{
-      if(this.animationFinished){
-        this.collectionDisplay=true
+    this.animationFinished = true;
+    setTimeout(() => {
+      if (this.animationFinished) {
+        this.collectionDisplay = true;
       }
-    },300)
-   
+    }, 100);
   }
 
   @HostListener('mouseleave') onMouseLeave() {
     this.animation.set('close');
-    this.animationFinished=false;
-    this.collectionDisplay=false;
+
+    this.animationFinished = false;
+    this.collectionDisplay = false;
   }
   protected animation: WritableSignal<'open' | 'close'> = signal('close');
-  protected animationFinished:boolean=false;
+  protected animationFinished: boolean = false;
   protected collectionDisplay: boolean = false;
   @Input() actualInfoBoard!: infoboxInMain_component;
 }

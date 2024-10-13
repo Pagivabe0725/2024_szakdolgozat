@@ -13,12 +13,15 @@
   [@infoElementAnimation]="animation()"
 >
   @if (!collectionDisplay){
-  <mat-icon>{{ actualInfoBoard.icon }}</mat-icon>
+  <mat-icon >{{ actualInfoBoard.icon }}</mat-icon>
   } @else {
-  <div class="own-infoboard-content-div">
+  <div class="own-infoboard-content-div" @infoAnimations>
     <h1>{{ actualInfoBoard.title }}</h1>
     <mat-icon>{{ actualInfoBoard.icon }}</mat-icon>
-    <div><p>{{ actualInfoBoard.text }}<p></div>
+    <div>
+      <p>{{ actualInfoBoard.text }}</p>
+      <p></p>
+    </div>
   </div>
   }
 </mat-card>
