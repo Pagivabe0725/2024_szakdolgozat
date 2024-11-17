@@ -1,0 +1,20 @@
+<div id="own-forum_component-left-side-div">
+  <app-leftside-console></app-leftside-console>
+</div>
+<div
+  id="own-forum_component-right-side-div"
+  [@forumElementsAnimation]="{
+    value: forumObjectArray,
+    params: {
+      actualDuration: '0.5s ease-in',
+      basicOpacity: 0,
+      basicScale: 0.2
+    }
+  }"
+>
+  @for (element of forumObjectArray; track $index; let i= $index) {
+  <app-card-element
+    [actiualForumMessage]="forumObjectArray[i]"
+  ></app-card-element>
+  }
+</div>

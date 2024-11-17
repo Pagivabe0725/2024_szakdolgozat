@@ -5,16 +5,32 @@
     <button mat-icon-button><mat-icon>groups</mat-icon></button>
   </div>
   <div class="own-menu_component-content-div">
-    <button class="own-menu_component-menupoints" mat-raised-button>
+    <button
+      class="own-menu_component-menupoints"
+      mat-raised-button
+      (click)="menuNavigation('main')"
+    >
       Főoldal
     </button>
-    <button class="own-menu_component-menupoints" mat-raised-button>
+    <button
+      class="own-menu_component-menupoints"
+      mat-raised-button
+      (click)="menuNavigation('forum')"
+    >
       Fórumok
     </button>
-    <button class="own-menu_component-menupoints" mat-raised-button>
+    <button
+      class="own-menu_component-menupoints"
+      mat-raised-button
+      (click)="menuNavigation('workshop')"
+    >
       Műhelyek
     </button>
-    <button class="own-menu_component-menupoints" mat-raised-button>
+    <button
+      class="own-menu_component-menupoints"
+      mat-raised-button
+      (click)="menuNavigation('own')"
+    >
       Saját
     </button>
   </div>

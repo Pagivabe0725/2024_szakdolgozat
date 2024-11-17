@@ -1,0 +1,14 @@
+<mat-card
+  [ngClass]="
+    isDarkmode()
+      ? ['dark', 'own-primary-highlight-background']
+      : ['light', 'own-accent-background']
+  "
+  appearance="outlined"
+>
+  <mat-card-header>{{ actiualForumMessage.title }}</mat-card-header>
+  <mat-card-content>{{ actiualForumMessage.text }}</mat-card-content>
+  <mat-card-footer
+    ><span>készítette: {{ actiualForumMessage.author }}</span></mat-card-footer
+  >
+</mat-card>

@@ -1,11 +1,4 @@
-import {
-  animate,
-  animation,
-  group,
-  keyframes,
-  stagger,
-  style,
-} from '@angular/animations';
+import { animate, animation, group, style } from '@angular/animations';
 
 const duration: string = `${0.5}s ease-in`;
 
@@ -25,3 +18,5 @@ export const formAnimations = animation([
 
   animate('0.2s ease-in', style({ 'border-radius': '5em' })),
 ]);
+
+

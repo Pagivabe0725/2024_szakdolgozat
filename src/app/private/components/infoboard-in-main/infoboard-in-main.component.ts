@@ -68,4 +68,8 @@ export class InfoboardInMainComponent {
   protected animationFinished: boolean = false;
   protected collectionDisplay: boolean = false;
   @Input() actualInfoBoard!: infoboxInMain_component;
+
+  getTheme(): boolean {
+    return localStorage.getItem('theme')!.includes('dark');
+  }
 }

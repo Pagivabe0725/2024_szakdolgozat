@@ -1,0 +1,48 @@
+#own-addForum_component-container-div {
+  width: 100%;
+  height: 92vh;
+  display: grid;
+  grid-template-rows: 20% 65% 15%;
+}
+
+#own-addForum_component-header-div {
+  display: grid;
+  grid-template-columns: 30% 70%;
+  div {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  mat-form-field {
+    width: 90%;
+  }
+}
+#own-addForum_component-content-div {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  mat-form-field {
+    width: 90%;
+    height: 100%;
+  }
+}
+#own-addForum_component-footer-div {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  button {
+    width: 15%;
+    height: 50%;
+    font-size: 1.2vw;
+  }
+}
+
+.own-addForum_component-shared-div-properties {
+  width: 100%;
+  height: 100%;
+}

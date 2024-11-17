@@ -1,0 +1,17 @@
+#own-forum_component-left-side-div {
+  width: 30vw;
+  height: 92vh;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+#own-forum_component-right-side-div {
+  width: 70vw;
+  height: 92vh;
+  position: absolute;
+  margin-left: 30vw;
+  overflow: auto;
+}
+
+

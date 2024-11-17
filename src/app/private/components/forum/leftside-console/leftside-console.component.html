@@ -1,0 +1,34 @@
+<div
+  id="own-leftside-console_component-div"
+  class="own-primary-background"
+  [@leftside-console_Animation]="state()"
+>
+  <div
+    id="own-leftside-console_component-left-container-div"
+    [@elementAnimations]="{
+      value: categoryTitleArray,
+      params: {
+        actualDuration: '0.2s ease-in'
+      }
+    }"
+  >
+    @if (listVisible) { @for (title of categoryTitleArray; track $index) {
+    <div
+      class="own-primary-highlight-background own-leftside-console_component-list-element"
+    >
+      {{ title }}
+    </div>
+    } }
+  </div>
+  <div id="own-leftside-console_component-right-container-div">
+    <mat-icon (click)="changeMenu()">filter_list</mat-icon>
+  </div>
+</div>
+
+@if(!listVisible){
+<div id="own-forum_component-plusButton-div">
+  <button mat-icon-button class="own-primary-background" (click)="addButtonAction()">
+    <mat-icon >add</mat-icon>
+  </button>
+</div>
+}

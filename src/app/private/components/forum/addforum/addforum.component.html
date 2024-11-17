@@ -1,0 +1,40 @@
+<div id="own-addForum_component-container-div" [formGroup]="forumForm">
+  <div
+    id="own-addForum_component-header-div"
+    class="own-addForum_component-shared-div-properties"
+  >
+    <div>
+      <mat-form-field>
+        <mat-label>Kategória</mat-label>
+        <mat-select formControlName="category">
+          <mat-option [value]="1">1</mat-option>
+          <mat-option [value]="2">2</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field>
+        <mat-label>Cím</mat-label>
+        <input matInput type="=text" formControlName="title" />
+      </mat-form-field>
+    </div>
+  </div>
+  <div
+    id="own-addForum_component-content-div"
+    class="own-addForum_component-shared-div-properties"
+  >
+    <mat-form-field>
+      <mat-label>Üzenet</mat-label>
+      <textarea matInput id="textarea" formControlName="content"></textarea>
+    </mat-form-field>
+  </div>
+  <div
+    id="own-addForum_component-footer-div"
+    class="own-addForum_component-shared-div-properties"
+  >
+    <button mat-flat-button (click)="back()">Mégsem</button>
+    <button mat-flat-button>Piszkozat mentése</button>
+    <button mat-flat-button (click)="clearFormFields()">Képernyő tisztítása</button>
+    <button mat-flat-button>Hozzáad</button>
+  </div>
+</div>

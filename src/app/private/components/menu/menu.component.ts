@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { NavigateAndurlinfoService } from '../../../shared/services/navigate-andurlinfo.service';
 
 @Component({
   selector: 'app-menu',
@@ -34,7 +35,7 @@ export class MenuComponent implements OnInit {
     'cyan-dark',
   ];
   public actualColor: string = 'basic-light';
-  constructor() {}
+  constructor(private navigateAndUrlinfo: NavigateAndurlinfoService) {}
 
   ngOnInit(): void {
     const actualTheme: string | null = localStorage.getItem('theme');
@@ -51,7 +52,7 @@ export class MenuComponent implements OnInit {
     document.body.classList.add(this.actualColor);
     localStorage.setItem('theme', this.actualColor);
   }
-    
+
   changeColor(color: string): void {
     this.removeAllCollor();
     this.actualColor = color + '-' + this.mode;
@@ -65,5 +66,9 @@ export class MenuComponent implements OnInit {
 
   sameColor(color: string): boolean {
     return this.actualColor.includes(color);
+  }
+
+  menuNavigation(path: string): void {
+    this.navigateAndUrlinfo.navigate(true, path);
   }
 }

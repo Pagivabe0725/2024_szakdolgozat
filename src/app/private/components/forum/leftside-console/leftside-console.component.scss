@@ -1,0 +1,71 @@
+#own-leftside-console_component-div {
+  width: 8vw;
+  height: 10vh;
+  position: relative;
+  border-radius: 0 5vw 5vw 0;
+  margin-top: auto;
+  margin-bottom: auto;
+  display: grid;
+  grid-template-columns: 60% 40%;
+  border: 1px outset white;
+}
+
+#own-leftside-console_component-right-container-div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#own-leftside-console_component-left-container-div {
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  overflow: auto;
+  scroll-behavior: smooth;
+  direction: rtl;
+}
+
+.own-leftside-console_component-list-element {
+  text-align: center;
+  margin: 1vh;
+  color: black;
+  font-size: 2vw;
+  width: 80%;
+  border: 2px white outset;
+  border-radius: 1vw;
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+.own-leftside-console_component-list-element:hover {
+  opacity: 1;
+  width: 82%;
+}
+
+mat-icon:hover {
+  color: white;
+  cursor: pointer;
+}
+
+#own-forum_component-plusButton-div {
+  position: fixed;
+  width: 32%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  bottom: 5%;
+  left: 0;
+
+  button {
+    height: 10vh;
+    width: 10vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}
