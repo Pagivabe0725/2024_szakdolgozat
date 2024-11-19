@@ -3,6 +3,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { forum } from '../../../../shared/interfaces/forum';
 import { CommonModule } from '@angular/common';
+import { NavigateAndurlinfoService } from '../../../../shared/services/navigate-andurlinfo.service';
 
 @Component({
   selector: 'app-card-element',
@@ -12,9 +13,15 @@ import { CommonModule } from '@angular/common';
   styleUrl: './card-element.component.scss',
 })
 export class CardElementComponent {
-  @Input() public actiualForumMessage!: forum ;
-  
-  isDarkmode():boolean{
-    return localStorage.getItem('theme')!.includes('dark')
+  @Input() public actiualForumMessage!: forum;
+
+  constructor(private navigateService: NavigateAndurlinfoService) {}
+  isDarkmode(): boolean {
+    return localStorage.getItem('theme')!.includes('dark');
+  }
+
+  loadForumElement(): void {
+    console.log(this.actiualForumMessage.id)
+    this.navigateService.navigate(false, this.actiualForumMessage.id);
   }
 }

@@ -1,0 +1,47 @@
+#own-forum-element-info_component-forum-content {
+  width: 90vw;
+}
+
+mat-card {
+  min-height: 20vh;
+  display: grid;
+  grid-template-rows: 10% 80% 10%;
+  align-items: center;
+  width: 65vw;
+  padding: 1vh 2.5%;
+  margin: 2vh auto;
+}
+
+mat-card-header {
+  font-size: 2vw;
+  text-align: start;
+  padding: 1vh 0 0 0;
+  margin-bottom: 1vh;
+}
+mat-card-content {
+  font-size: 1.2vw;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  text-align: justify;
+  max-width: 90vw;
+}
+mat-card-footer {
+  font-size: 1.2vw;
+  text-align: end;
+}
+
+.own-dark-comment{
+    width: 80vw;
+    border: 1px outset white;
+    box-shadow: 1px 1px 5px white;
+    color: white;
+}
+
+
+.own-light-comment{
+    width: 80vw;
+    border: 1px outset black;
+    box-shadow: 1px 1px 5px black;
+
+}

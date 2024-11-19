@@ -8,6 +8,7 @@ import { ForumComponent } from './private/components/forum/forum.component';
 import { WorkshopComponent } from './private/components/workshop/workshop.component';
 import { OwnComponent } from './private/components/own/own.component';
 import { AddforumComponent } from './private/components/forum/addforum/addforum.component';
+import { ForumElementInfoComponent } from './private/components/forum/forum-element-info/forum-element-info.component';
 
 export const routes: Routes = [
   {
@@ -54,6 +55,11 @@ export const routes: Routes = [
         path:'forum',
         component:ForumComponent,
         title:'forum'
+      },
+      {
+        path:'forum/:forumId',
+        component:ForumElementInfoComponent,
+        title:'chosen Forum'
       },
       {
         path:'addForum',

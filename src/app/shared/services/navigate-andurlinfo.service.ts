@@ -20,14 +20,12 @@ export class NavigateAndurlinfoService {
   }
 
   navigate(basicSide: boolean, path: string): void {
-    if (path && navigations.includes(path)) {
-      if (basicSide) {
+    if (path) {
+      if (basicSide && navigations.includes(path)) {
         this.router.navigateByUrl(`private/${path}`);
       } else {
-        this.router.navigateByUrl(`${this.actualUrl}/${path}`);
+        this.router.navigateByUrl(`${this.actualUrl()}/${path}`);
       }
     }
   }
-
-
 }

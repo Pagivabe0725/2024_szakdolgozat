@@ -31,7 +31,7 @@ export class ForumComponent implements OnInit {
     setTimeout(() => {
       this.forumObjectArray = [
         {
-          id: '4',
+          id: '1',
           title: 'els3ő valami',
           text: 'Egyszer a nyulacska elment az erdőbe virágot szedni',
           author: 'Vilibácsi',
@@ -43,13 +43,13 @@ export class ForumComponent implements OnInit {
           author: 'Vilibácsi',
         },
         {
-          id: '2',
+          id: '3',
           title: 'második valami',
           text: 'asjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsd asjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsd asjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsd asjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsdasjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsdasjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsd asjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsd asjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsd asjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd',
           author: 'Vilibácsi',
         },
         {
-          id: '2',
+          id: '4',
           title: 'második valami',
           text: 'asjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsd asjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsd asjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsd asjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsdasjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsdasjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsd asjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsd asjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsd asjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd',
           author: 'Vilibácsi',
