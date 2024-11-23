@@ -13,8 +13,10 @@
   }"
 >
   @for (element of forumObjectArray; track $index; let i= $index) {
+
   <app-card-element
     [actiualForumMessage]="forumObjectArray[i]"
   ></app-card-element>
+
   }
 </div>

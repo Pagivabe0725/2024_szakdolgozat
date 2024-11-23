@@ -43,6 +43,16 @@ $accent-dark-const: 60;
   .own-accent-background {
     background-color: $accent-color;
   }
+
+  .own-primary-text-color {
+    color: $primary-color;
+  }
+  .own-primary-highlight-text-color {
+    color: $primary-highlight;
+  }
+  .own-accent-text-color {
+    color: $accent-color;
+  }
   @include mat.all-component-themes($basic_light-theme);
 }
 
@@ -78,6 +88,15 @@ $accent-dark-const: 60;
   }
   .own-accent-background {
     background-color: $accent-color;
+  }
+  .own-primary-text-color {
+    color: $primary-color;
+  }
+  .own-primary-highlight-text-color {
+    color: $primary-highlight;
+  }
+  .own-accent-text-color {
+    color: $accent-color;
   }
   @include mat.all-component-themes($basic_dark-theme);
 }
@@ -115,6 +134,15 @@ $accent-dark-const: 60;
   .own-accent-background {
     background-color: $accent-color;
   }
+  .own-primary-text-color {
+    color: $primary-color;
+  }
+  .own-primary-highlight-text-color {
+    color: $primary-highlight;
+  }
+  .own-accent-text-color {
+    color: $accent-color;
+  }
   @include mat.all-component-themes($azure_blue_light-theme);
 }
 
@@ -150,6 +178,15 @@ $accent-dark-const: 60;
   }
   .own-accent-background {
     background-color: $accent-color;
+  }
+  .own-primary-text-color {
+    color: $primary-color;
+  }
+  .own-primary-highlight-text-color {
+    color: $primary-highlight;
+  }
+  .own-accent-text-color {
+    color: $accent-color;
   }
   @include mat.all-component-themes($azure_blue_dark-theme);
 }
@@ -187,6 +224,15 @@ $accent-dark-const: 60;
   .own-accent-background {
     background-color: $accent-color;
   }
+  .own-primary-text-color {
+    color: $primary-color;
+  }
+  .own-primary-highlight-text-color {
+    color: $primary-highlight;
+  }
+  .own-accent-text-color {
+    color: $accent-color;
+  }
   @include mat.all-component-themes($magenta_violet_light-theme);
 }
 
@@ -222,6 +268,15 @@ $accent-dark-const: 60;
   }
   .own-accent-background {
     background-color: $accent-color;
+  }
+  .own-primary-text-color {
+    color: $primary-color;
+  }
+  .own-primary-highlight-text-color {
+    color: $primary-highlight;
+  }
+  .own-accent-text-color {
+    color: $accent-color;
   }
 
   @include mat.all-component-themes($magenta_violet_dark-theme);
@@ -260,6 +315,15 @@ $accent-dark-const: 60;
   .own-accent-background {
     background-color: $accent-color;
   }
+  .own-primary-text-color {
+    color: $primary-color;
+  }
+  .own-primary-highlight-text-color {
+    color: $primary-highlight;
+  }
+  .own-accent-text-color {
+    color: $accent-color;
+  }
   @include mat.all-component-themes($cyan_orange_light-theme);
 }
 
@@ -295,6 +359,15 @@ $accent-dark-const: 60;
   }
   .own-accent-background {
     background-color: $accent-color;
+  }
+  .own-primary-text-color {
+    color: $primary-color;
+  }
+  .own-primary-highlight-text-color {
+    color: $primary-highlight;
+  }
+  .own-accent-text-color {
+    color: $accent-color;
   }
   @include mat.all-component-themes($cyan_orange_dark-theme);
 }
