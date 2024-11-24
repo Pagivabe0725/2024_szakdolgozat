@@ -1,8 +1,18 @@
 <div class="own-workcard_component-card-div own-accent-background">
   @for (item of points; track $index; let i = $index) {
-  <div class="own-workcard-element" [ngStyle]="i%2===0 ? {}:{'border-right':'1px outset black','border-left':'1px outset black'}">
-    <span >{{ item }}:</span>
-    <span>a asd as asd asd as d asdasd asd sdcsdc sd sdv sdv</span>
+  <div
+    class="own-workcard-element"
+    [ngStyle]="
+      i % 2 === 0
+        ? {}
+        : {
+            'border-right': '1px outset black',
+            'border-left': '1px outset black'
+          }
+    "
+  >
+    <span>{{ item }}:</span>
+    <span></span>
   </div>
   }
 </div>

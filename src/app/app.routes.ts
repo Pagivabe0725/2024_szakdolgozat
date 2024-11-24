@@ -9,6 +9,8 @@ import { WorkshopComponent } from './private/components/workshop/workshop.compon
 import { OwnComponent } from './private/components/own/own.component';
 import { AddforumComponent } from './private/components/forum/addforum/addforum.component';
 import { ForumElementInfoComponent } from './private/components/forum/forum-element-info/forum-element-info.component';
+import { WorksComponent } from './private/components/workshop/works/works.component';
+import { TimelineComponent } from './private/components/workshop/timeline/timeline.component';
 
 export const routes: Routes = [
   {
@@ -40,42 +42,59 @@ export const routes: Routes = [
   {
     path: 'private',
     component: PrivateComponent,
-    children:[
+    children: [
       {
-        path:'',
-        redirectTo:'main',
-        pathMatch:'full'
+        path: '',
+        redirectTo: 'main',
+        pathMatch: 'full',
       },
       {
-        path:'main',
-        component:MainComponent,
-        title:'main page'
+        path: 'main',
+        component: MainComponent,
+        title: 'main page',
       },
       {
-        path:'forum',
-        component:ForumComponent,
-        title:'forum'
+        path: 'forum',
+        component: ForumComponent,
+        title: 'forum',
       },
       {
-        path:'forum/:forumId',
-        component:ForumElementInfoComponent,
-        title:'chosen Forum'
+        path: 'forum/:forumId',
+        component: ForumElementInfoComponent,
+        title: 'chosen Forum',
       },
       {
-        path:'addForum',
-        component:AddforumComponent,
-        title:'addForum'
+        path: 'addForum',
+        component: AddforumComponent,
+        title: 'addForum',
       },
       {
-        path:'workshop',
-        component:WorkshopComponent,
-        title:'workshop'
+        path: 'workshop',
+        component: WorkshopComponent,
+        title: 'workshop',
+        children: [
+          {
+            path: '',
+            redirectTo: 'works',
+            pathMatch: 'full',
+          },
+          {
+            path: 'works',
+            component: WorksComponent,
+            title: 'works',
+          },
+          {
+            path: ':worid',
+            component: TimelineComponent,
+            title: 'chosen work',
+          },
+        ],
       },
       {
-        path:'own',
-        component:OwnComponent,
-        title:'own'
-      }
-    ]
+        path: 'own',
+        component: OwnComponent,
+        title: 'own',
+      },
+    ],
   },
 ];
