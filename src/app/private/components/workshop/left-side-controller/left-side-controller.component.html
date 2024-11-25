@@ -1,5 +1,20 @@
 <div
   class="own-primary-background own-accent-text-color"
   id="own-left-side-controller_component-div"
-></div>
+  
+>
+  @if (getDirection()==='basic') {
 
+  <div class="own-left-side-controller_component-first-div">
+    <button mat-icon-button><mat-icon>arrow_back</mat-icon></button>
+    <span>Munkáim</span>
+  </div>
+  <div class="own-left-side-controller_component-second-div">
+    <button mat-flat-button class="own-accent-background">Új munkamenet létrehozása</button>
+    <button mat-flat-button>Munkamenet törlése</button>
+    <button mat-flat-button>Egyéni munkák listázása</button>
+  </div>
+  <div class="own-left-side-controller_component-thirth-div"></div>
+
+  }
+</div>

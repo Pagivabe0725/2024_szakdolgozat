@@ -84,7 +84,7 @@ export const routes: Routes = [
             title: 'works',
           },
           {
-            path: ':worid',
+            path: ':workId',
             component: TimelineComponent,
             title: 'chosen work',
           },
