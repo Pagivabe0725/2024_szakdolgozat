@@ -1,32 +1,56 @@
-<form @signupAnimation>
+<form [formGroup]="signupForm" @signupAnimation>
   <mat-form-field>
     <mat-label>Vezetéknév:</mat-label>
-    <input type="text" matInput />
+    <input type="text" matInput formControlName="lastName" />
+    @if (signupForm.get('lastName')?.hasError('required')) {
+    <mat-error>Kötelezően kitöltendő mező</mat-error>
+    }
   </mat-form-field>
   <mat-form-field>
     <mat-label>Keresztnév:</mat-label>
-    <input type="text" matInput />
+    <input type="text" matInput formControlName="firstName" />
+    @if (signupForm.get('lastName')?.hasError('required')) {
+    <mat-error>Kötelezően kitöltendő mező</mat-error>
+    }
   </mat-form-field>
   <mat-form-field>
     <mat-label>Email-cím:</mat-label>
-    <input type="email" matInput />
+    <input type="email" matInput formControlName="email" />
+    @if (signupForm.get('email')?.hasError('required')) {
+    <mat-error>Kötelezően kitöltendő mező</mat-error>
+    } @else if (signupForm.get('email')?.hasError('email')) {
+    <mat-error>A formátum nem megfelelő</mat-error>
+    }
   </mat-form-field>
   <mat-form-field>
     <mat-label>Város:</mat-label>
-    <input type="text" matInput />
+    <input type="text" matInput formControlName="city" />
   </mat-form-field>
   <mat-form-field>
     <mat-label>Tel-szám:</mat-label>
-    <input type="tel" matInput />
+    <input type="tel" matInput formControlName="telNum" />
+    @if (signupForm.get('telNum')?.hasError('required')) {
+    <mat-error>Kötelezően kitöltendő mező</mat-error>
+    }
   </mat-form-field>
 
   <mat-form-field>
     <mat-label>Jelszó:</mat-label>
-    <input type="password" matInput />
+    <input type="password" matInput formControlName="password" />
+    @if (signupForm.get('password')?.hasError('required')) {
+    <mat-error>Kötelezően kitöltendő mező</mat-error>
+    } @else if (signupForm.get('password')?.hasError('minlength')) {
+    <mat-error>Túl rövid(6)</mat-error>
+    }
   </mat-form-field>
   <mat-form-field>
     <mat-label>Jelszó megerősítése:</mat-label>
-    <input type="password" matInput />
+    <input type="password" matInput formControlName="rePassword" />
+    @if (signupForm.get('rePassword')?.hasError('required')) {
+    <mat-error>Kötelezően kitöltendő mező</mat-error>
+    } @else if (signupForm.get('rePassword')?.hasError('minlength')) {
+    <mat-error>Túl rövid(6)</mat-error>
+    }
   </mat-form-field>
-  <button mat-flat-button>Regisztráció</button>
+  <button mat-flat-button (click)="check()">Regisztráció</button>
 </form>
