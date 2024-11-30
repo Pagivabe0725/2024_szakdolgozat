@@ -3,6 +3,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { formAnimations } from '../../../shared/animations/forms.animations';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'
 import {
   FormControl,
   FormGroup,
@@ -20,7 +21,7 @@ import { Dialog } from '../../../shared/interfaces/dialog';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [MatInputModule, MatButtonModule, ReactiveFormsModule],
+  imports: [MatInputModule, MatButtonModule, ReactiveFormsModule, MatProgressSpinnerModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
   host: { 'style._theme': 'getColor()' },
@@ -72,7 +73,7 @@ export class LoginComponent implements OnDestroy {
                 .updateUser(actualUser)
                 .then(() => {
                   localStorage.setItem('userId', actualUser.id);
-                  this.navigationService.navigate(true,'main')
+                  this.navigationService.navigate(true, 'main');
                 })
                 .catch((err) => {
                   console.error(err);

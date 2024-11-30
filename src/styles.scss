@@ -1,5 +1,6 @@
 @use "@angular/material" as mat;
 @import "../src/app/shared/styles/colors.scss";
+@import "../src/app/shared/styles/spinner.scss";
 @include mat.core();
 
 $primary-dark-const: 20;
@@ -53,6 +54,11 @@ $accent-dark-const: 60;
   .own-accent-text-color {
     color: $accent-color;
   }
+
+  .own-mat-progress-spinner {
+    @include spinner($accent-color);
+  }
+
   @include mat.all-component-themes($basic_light-theme);
 }
 
@@ -98,6 +104,10 @@ $accent-dark-const: 60;
   .own-accent-text-color {
     color: $accent-color;
   }
+  .own-mat-progress-spinner {
+    @include spinner($accent-color);
+  }
+
   @include mat.all-component-themes($basic_dark-theme);
 }
 
@@ -143,6 +153,11 @@ $accent-dark-const: 60;
   .own-accent-text-color {
     color: $accent-color;
   }
+
+  .own-mat-progress-spinner {
+    @include spinner($accent-color);
+  }
+
   @include mat.all-component-themes($azure_blue_light-theme);
 }
 
@@ -188,6 +203,11 @@ $accent-dark-const: 60;
   .own-accent-text-color {
     color: $accent-color;
   }
+
+  .own-mat-progress-spinner {
+    @include spinner($accent-color);
+  }
+
   @include mat.all-component-themes($azure_blue_dark-theme);
 }
 
@@ -233,6 +253,10 @@ $accent-dark-const: 60;
   .own-accent-text-color {
     color: $accent-color;
   }
+  .own-mat-progress-spinner {
+    @include spinner($accent-color);
+  }
+
   @include mat.all-component-themes($magenta_violet_light-theme);
 }
 
@@ -277,6 +301,9 @@ $accent-dark-const: 60;
   }
   .own-accent-text-color {
     color: $accent-color;
+  }
+  .own-mat-progress-spinner {
+    @include spinner($accent-color);
   }
 
   @include mat.all-component-themes($magenta_violet_dark-theme);
@@ -324,6 +351,10 @@ $accent-dark-const: 60;
   .own-accent-text-color {
     color: $accent-color;
   }
+  .own-mat-progress-spinner {
+    @include spinner($accent-color);
+  }
+
   @include mat.all-component-themes($cyan_orange_light-theme);
 }
 
@@ -369,6 +400,10 @@ $accent-dark-const: 60;
   .own-accent-text-color {
     color: $accent-color;
   }
+  .own-mat-progress-spinner {
+    @include spinner($accent-color);
+  }
+
   @include mat.all-component-themes($cyan_orange_dark-theme);
 }
 

@@ -1,0 +1,15 @@
+@mixin spinner($color){
+    z-index: 999;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    background-color: rgba($color, $alpha: 0.9);
+    
+}

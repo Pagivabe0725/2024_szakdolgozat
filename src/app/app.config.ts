@@ -27,6 +27,4 @@ export const appConfig: ApplicationConfig = {
       AngularFireAuthModule,
       AngularFirestoreModule,
     ]),],
-
- 
 };
