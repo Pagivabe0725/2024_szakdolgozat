@@ -1,11 +1,21 @@
-<form @loginAnimation>
+<form @loginAnimation [formGroup]="loginForm">
   <mat-form-field>
     <mat-label>Email:</mat-label>
-    <input type="email" matInput />
+    <input type="email" matInput formControlName="email" />
+    @if (loginForm.get('email')?.hasError('required')) {
+    <mat-error> Kötelezően kitöltendő mező </mat-error>
+    } @else if (loginForm.get('email')?.hasError('email')) {
+    <mat-error>A formátum nem megfelelő</mat-error>
+    }
   </mat-form-field>
   <mat-form-field>
     <mat-label>Jelszó:</mat-label>
-    <input type="password" matInput />
+    <input type="password" matInput formControlName="password" />
+    @if (loginForm.get('password')?.hasError('required')) {
+    <mat-error> Kötelezően kitöltendő mező </mat-error>
+    } @else if (loginForm.get('password')?.hasError('minlength')) {
+    <mat-error>Túl rövid(6)</mat-error>
+    }
   </mat-form-field>
-  <button mat-flat-button>Belépés</button>
+  <button mat-flat-button (click)="login()">Belépés</button>
 </form>

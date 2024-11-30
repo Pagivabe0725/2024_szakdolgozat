@@ -11,10 +11,13 @@ import { RouterOutlet } from '@angular/router';
 export class AppComponent implements OnInit {
   ngOnInit(): void {
     if (localStorage.getItem('theme')) {
+      console.log('theme')
       document.body.classList.add(localStorage.getItem('theme')!);
     }
     else{
+      
       document.body.classList.add('basic-light');
+      localStorage.setItem('theme','basic-light')
     }
   }
 }

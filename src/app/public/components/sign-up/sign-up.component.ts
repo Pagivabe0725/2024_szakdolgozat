@@ -45,20 +45,16 @@ export class SignUpComponent {
     ]),
   });
 
-  private popupDialogTemplate: Dialog = {
-    width: '70%',
-    height: '70%',
-    hostComponent: 'SignupComponent',
-    title: 'Nem megegyező jelszavak!',
-    content: 'Nézd át a két jelszó mezőt, mert nem egyeznek meg',
-    action: false,
-  };
+  private popupDialogTemplate: Dialog;
 
   constructor(
     private userService: UserService,
     private popupService: PopupService,
     private navigationService: NavigateAndurlinfoService
-  ) {}
+  ) {
+    this.popupDialogTemplate = popupService.getTemplateDialog();
+    this.popupDialogTemplate.hostComponent = 'SignupComponent';
+  }
 
   isValidForm(): { valid: boolean; passwords: boolean } {
     return {

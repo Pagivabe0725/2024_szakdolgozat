@@ -19,6 +19,13 @@ export class UserService {
       .set(user);
   }
 
+  updateUser(user: user): Promise<void> {
+    return this.angularFirestore
+      .collection<user>('Users')
+      .doc(user.id)
+      .set(user);
+  }
+
   userRegistration(email: string, password: string): Promise<any> {
     return this.angularFireAuth.createUserWithEmailAndPassword(email, password);
   }
@@ -29,5 +36,12 @@ export class UserService {
 
   logout() {
     return this.angularFireAuth.signOut();
+  }
+
+  getUserInfoByUserId(id: string) {
+    return this.angularFirestore
+      .collection<user>('Users')
+      .doc(id)
+      .valueChanges();
   }
 }
