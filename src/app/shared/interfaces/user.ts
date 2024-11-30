@@ -8,4 +8,5 @@ export interface user {
   telNumber: string;
   lastLogin: Timestamp;
   city: string | undefined;
+  dateOfRegistration:Timestamp
 }

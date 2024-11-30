@@ -12,6 +12,9 @@ import {
 import { UserService } from '../../../shared/services/user.service';
 import { PopupService } from '../../../shared/services/popup.service';
 import { Dialog } from '../../../shared/interfaces/dialog';
+import { user } from '../../../shared/interfaces/user';
+import { Timestamp } from '@angular/fire/firestore';
+import { NavigateAndurlinfoService } from '../../../shared/services/navigate-andurlinfo.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -42,9 +45,19 @@ export class SignUpComponent {
     ]),
   });
 
+  private popupDialogTemplate: Dialog = {
+    width: '70%',
+    height: '70%',
+    hostComponent: 'SignupComponent',
+    title: 'Nem megegyező jelszavak!',
+    content: 'Nézd át a két jelszó mezőt, mert nem egyeznek meg',
+    action: false,
+  };
+
   constructor(
     private userService: UserService,
-    private popupService: PopupService
+    private popupService: PopupService,
+    private navigationService: NavigateAndurlinfoService
   ) {}
 
   isValidForm(): { valid: boolean; passwords: boolean } {
@@ -57,26 +70,63 @@ export class SignUpComponent {
   }
 
   check() {
-    this.popupService.displayPopUp({
-      width: '70%',
-      height: '70%',
-      hostComponent: 'SignupComponent',
-      title: 'Nem megegyező jelszavak!',
-      content: 'Nézd át a két jelszó mezőt, mert nem egyeznek meg',
-      action: false,
-    } as Dialog);
-    console.log('bent');
     const actualStatus: { valid: boolean; passwords: boolean } =
       this.isValidForm();
-/*    if (actualStatus.valid && !actualStatus.passwords) {
-      this.popupService.displayPopUp({
-        width: '70%',
-        height: '70%',
-        hostComponent: 'SignupComponent',
-        title: 'Nem megegyező jelszavak!',
-        content: 'Nézd át a két jelszó mezőt, mert nem egyeznek meg',
-        action: false,
-      } as Dialog);
-    }*/
+    if (actualStatus.valid && !actualStatus.passwords) {
+      this.popupDialogTemplate.title = 'Nem megegyező jelszavak!';
+      this.popupDialogTemplate.content =
+        'Nézd át a két jelszó mezőt, mert nem egyeznek meg';
+      this.popupService.displayPopUp(this.popupDialogTemplate);
+    } else if (actualStatus.passwords && actualStatus.valid) {
+      this.registration(this.createUserObject());
+    }
+  }
+
+  registration(user: user): void {
+    const emailAndPassword: { email: string; password: string } = {
+      email: user.email,
+      password: this.signupForm.get('password')?.value!,
+    };
+    this.userService
+      .userRegistration(emailAndPassword.email, emailAndPassword.password)
+      .then((userVarible) => {
+        user.id = userVarible.user!.uid;
+        localStorage.setItem('userId', user.id);
+        this.userService
+          .createNewUser(user)
+          .then(() => {
+            this.userService
+              .login(emailAndPassword.email, emailAndPassword.password)
+              .then(() => {
+                this.navigationService.navigate(true, 'main');
+              })
+              .catch((err) => {
+                console.error(err);
+              });
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      })
+      .catch((error) => {
+        this.popupDialogTemplate.content =
+          'Hiba történt a regisztráció során! Kérlek próbáld újra';
+        this.popupDialogTemplate.title = 'hiba!';
+        this.popupService.displayPopUp(this.popupDialogTemplate);
+        console.error(error);
+      });
+  }
+
+  createUserObject(): user {
+    return {
+      id: 'temporary id',
+      lastName: this.signupForm.get('lastName')?.value,
+      firstName: this.signupForm.get('firstName')?.value,
+      email: this.signupForm.get('email')?.value,
+      telNumber: this.signupForm.get('telNum')?.value,
+      city: this.signupForm.get('city')?.value,
+      lastLogin: Timestamp.now(),
+      dateOfRegistration: Timestamp.now(),
+    } as user;
   }
 }
