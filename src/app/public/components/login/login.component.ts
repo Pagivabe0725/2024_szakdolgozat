@@ -67,6 +67,7 @@ export class LoginComponent implements OnDestroy, OnInit {
 
   login() {
     if (this.loginForm.valid) {
+      this.loaded = false;
       this.userService
         .login(
           this.loginForm.get('email')!.value!,
@@ -86,14 +87,17 @@ export class LoginComponent implements OnDestroy, OnInit {
                   this.navigationService.navigate(true, 'main');
                 })
                 .catch((err) => {
+                  this.loaded = true;
                   console.error(err);
                   this.popupDialogTemplate.content =
                     'Hiba történt a bejelentkezési folyamat során. Próbáld újra';
                   this.popupDialogTemplate.title = 'hiba!';
+                  this.popupSercice.displayPopUp(this.popupDialogTemplate);
                 });
             });
         })
         .catch((err) => {
+          this.loaded = true;
           console.error(err);
           this.popupDialogTemplate.content =
             'Valószinüleg hibás az email vagy a jelszó';

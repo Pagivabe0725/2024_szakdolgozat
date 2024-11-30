@@ -1,3 +1,7 @@
+@if (!loaded) {
+<app-spinner></app-spinner>
+}
+
 <form [formGroup]="signupForm" @signupAnimation>
   <mat-form-field>
     <mat-label>Vezetéknév:</mat-label>

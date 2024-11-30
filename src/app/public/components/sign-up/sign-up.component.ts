@@ -1,5 +1,5 @@
 import { transition, trigger, useAnimation } from '@angular/animations';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { formAnimations } from '../../../shared/animations/forms.animations';
@@ -15,11 +15,17 @@ import { Dialog } from '../../../shared/interfaces/dialog';
 import { user } from '../../../shared/interfaces/user';
 import { Timestamp } from '@angular/fire/firestore';
 import { NavigateAndurlinfoService } from '../../../shared/services/navigate-andurlinfo.service';
+import { SpinnerComponent } from '../../../shared/components/spinner/spinner.component';
 
 @Component({
   selector: 'app-sign-up',
   standalone: true,
-  imports: [MatInputModule, MatButtonModule, ReactiveFormsModule],
+  imports: [
+    MatInputModule,
+    MatButtonModule,
+    ReactiveFormsModule,
+    SpinnerComponent,
+  ],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.scss',
   animations: [
@@ -28,7 +34,7 @@ import { NavigateAndurlinfoService } from '../../../shared/services/navigate-and
     ]),
   ],
 })
-export class SignUpComponent {
+export class SignUpComponent implements OnInit {
   protected signupForm = new FormGroup({
     firstName: new FormControl('', [Validators.required]),
     lastName: new FormControl('', [Validators.required]),
@@ -46,7 +52,7 @@ export class SignUpComponent {
   });
 
   private popupDialogTemplate: Dialog;
-
+  public loaded: boolean = false;
   constructor(
     private userService: UserService,
     private popupService: PopupService,
@@ -54,6 +60,10 @@ export class SignUpComponent {
   ) {
     this.popupDialogTemplate = popupService.getTemplateDialog();
     this.popupDialogTemplate.hostComponent = 'SignupComponent';
+  }
+
+  ngOnInit(): void {
+    this.loaded = true;
   }
 
   isValidForm(): { valid: boolean; passwords: boolean } {
@@ -79,6 +89,7 @@ export class SignUpComponent {
   }
 
   registration(user: user): void {
+    this.loaded = false;
     const emailAndPassword: { email: string; password: string } = {
       email: user.email,
       password: this.signupForm.get('password')?.value!,
@@ -97,14 +108,17 @@ export class SignUpComponent {
                 this.navigationService.navigate(true, 'main');
               })
               .catch((err) => {
+                this.loaded = true;
                 console.error(err);
               });
           })
           .catch((err) => {
+            this.loaded = true;
             console.error(err);
           });
       })
       .catch((error) => {
+        this.loaded = true;
         this.popupDialogTemplate.content =
           'Hiba történt a regisztráció során! Kérlek próbáld újra';
         this.popupDialogTemplate.title = 'hiba!';
