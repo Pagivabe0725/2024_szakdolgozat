@@ -1,6 +1,6 @@
-<span class="own-mat-progress-spinner" >
-  <mat-spinner></mat-spinner>
-</span>
+@if (!loaded) {
+<app-spinner></app-spinner>
+}
 
 <form @loginAnimation [formGroup]="loginForm">
   <mat-form-field>

@@ -1,9 +1,9 @@
 import { transition, trigger, useAnimation } from '@angular/animations';
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { formAnimations } from '../../../shared/animations/forms.animations';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'
+
 import {
   FormControl,
   FormGroup,
@@ -17,11 +17,17 @@ import { Subscription } from 'rxjs';
 import { Timestamp } from '@angular/fire/firestore';
 import { PopupService } from '../../../shared/services/popup.service';
 import { Dialog } from '../../../shared/interfaces/dialog';
+import { SpinnerComponent } from '../../../shared/components/spinner/spinner.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [MatInputModule, MatButtonModule, ReactiveFormsModule, MatProgressSpinnerModule],
+  imports: [
+    MatInputModule,
+    MatButtonModule,
+    ReactiveFormsModule,
+    SpinnerComponent,
+  ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
   host: { 'style._theme': 'getColor()' },
@@ -31,7 +37,7 @@ import { Dialog } from '../../../shared/interfaces/dialog';
     ]),
   ],
 })
-export class LoginComponent implements OnDestroy {
+export class LoginComponent implements OnDestroy, OnInit {
   protected loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [
@@ -41,7 +47,7 @@ export class LoginComponent implements OnDestroy {
   });
   private popupDialogTemplate: Dialog;
   private userValuesChangesService?: Subscription;
-
+  public loaded: boolean = false;
   constructor(
     private userService: UserService,
     private navigationService: NavigateAndurlinfoService,
@@ -49,6 +55,10 @@ export class LoginComponent implements OnDestroy {
   ) {
     this.popupDialogTemplate = this.popupSercice.getTemplateDialog();
     this.popupDialogTemplate.hostComponent = 'LoginComponent';
+  }
+
+  ngOnInit(): void {
+    this.loaded = true;
   }
 
   ngOnDestroy(): void {
