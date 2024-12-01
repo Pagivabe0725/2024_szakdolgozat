@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { PopupComponent } from '../components/popup/popup.component';
 import { Dialog } from '../interfaces/dialog';
 
@@ -17,11 +17,11 @@ export class PopupService {
       title: '',
       content: '',
       action: false,
-      hasInput:false,
+      hasInput: false,
     } as Dialog;
   }
 
-  displayPopUp(actualDialog: Dialog) {
+  displayPopUp(actualDialog: Dialog): MatDialogRef<PopupComponent, any> {
     return this.matDialog.open(PopupComponent, {
       width: '50%',
       height: '50%',

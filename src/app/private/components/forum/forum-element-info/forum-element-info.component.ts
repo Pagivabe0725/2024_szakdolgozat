@@ -254,10 +254,10 @@ export class ForumElementInfoComponent implements OnInit, OnDestroy {
       .afterClosed()
       .subscribe((result) => {
         if (result) {
+          this.loaded = false;
           this.collectionService
             .deleteDatas('ForumComments', commentIdToDelete)
             .then(() => {
-              this.loaded = false;
               this.actualForumElement?.commentsIdArray.splice(index, 1);
               this.collectionService
                 .updateDatas(
@@ -275,10 +275,16 @@ export class ForumElementInfoComponent implements OnInit, OnDestroy {
                 });
             })
             .catch((err) => {
+              this.loaded = false;
               console.error(err);
               dialogSub.unsubscribe();
             });
         }
       });
+  }
+
+  isMyComment(uId:string):boolean{
+    
+    return localStorage.getItem('userId')===uId
   }
 }

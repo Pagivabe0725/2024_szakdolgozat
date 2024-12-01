@@ -53,7 +53,7 @@
 <mat-card [ngClass]="isDarkmode() ? 'own-dark-comment' : 'own-light-comment'">
   <mat-card-content>{{ comment.content }}</mat-card-content>
   <mat-card-footer>
-    <div><button mat-icon-button  (click)="deleteComment(i)"><mat-icon>delete</mat-icon></button></div>
+    <div> @if (isMyForumElement() || isMyComment(comment.userid)) {<button mat-icon-button  (click)="deleteComment(i)"><mat-icon>delete</mat-icon></button>}</div>
     <div>{{ "Készítette:" + comment.author }}</div></mat-card-footer>
 </mat-card>
 } }@else {
