@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { user } from '../interfaces/user';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -38,7 +39,7 @@ export class UserService {
     return this.angularFireAuth.signOut();
   }
 
-  getUserInfoByUserId(id: string) {
+  getUserInfoByUserId(id: string): Observable<unknown> {
     return this.angularFirestore
       .collection<user>('Users')
       .doc(id)

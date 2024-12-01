@@ -1,5 +1,11 @@
+@if (!loaded) {
+<app-spinner></app-spinner>
+}
+
 <div id="own-forum_component-left-side-div">
-  <app-leftside-console></app-leftside-console>
+  <app-leftside-console
+    [categoryTitleArray]="categoryArray"
+  ></app-leftside-console>
 </div>
 <div
   id="own-forum_component-right-side-div"
@@ -12,11 +18,14 @@
     }
   }"
 >
-  @for (element of forumObjectArray; track $index; let i= $index) {
-
+  @if (forumObjectArray.length) { @for (element of forumObjectArray; track
+  $index; let i= $index) {
   <app-card-element
     [actiualForumMessage]="forumObjectArray[i]"
   ></app-card-element>
-
+  } } @else if(!forumObjectArray.length && loaded ) {
+  <h1 class="own-accent-text-color" style="text-align: center">
+    Jelenleg nincsenek elemek
+  </h1>
   }
 </div>

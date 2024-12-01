@@ -7,8 +7,9 @@
       <mat-form-field>
         <mat-label>Kategória</mat-label>
         <mat-select formControlName="category">
-          <mat-option [value]="1">1</mat-option>
-          <mat-option [value]="2">2</mat-option>
+          @for (item of categoryTitleArray; track $index) {
+          <mat-option [value]="item">{{ item }}</mat-option>
+          }
         </mat-select>
       </mat-form-field>
     </div>
@@ -37,6 +38,6 @@
     <button mat-flat-button (click)="clearFormFields()">
       Képernyő tisztítása
     </button>
-    <button mat-flat-button>Hozzáad</button>
+    <button mat-flat-button (click)="check()">Hozzáad</button>
   </div>
 </div>

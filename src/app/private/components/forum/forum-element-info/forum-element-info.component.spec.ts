@@ -8,9 +8,8 @@ describe('ForumElementInfoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ForumElementInfoComponent]
-    })
-    .compileComponents();
+      imports: [ForumElementInfoComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ForumElementInfoComponent);
     component = fixture.componentInstance;

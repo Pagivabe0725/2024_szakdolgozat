@@ -6,6 +6,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { transition, trigger, useAnimation } from '@angular/animations';
 import { fadeInAnimations } from '../../../shared/animations/fadeIn.animation';
+import { CollectionService } from '../../../shared/services/collection.service';
+import { SpinnerComponent } from '../../../shared/components/spinner/spinner.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-forum',
@@ -14,7 +17,7 @@ import { fadeInAnimations } from '../../../shared/animations/fadeIn.animation';
     LeftsideConsoleComponent,
     CardElementComponent,
     MatButtonModule,
-    MatIcon,
+    SpinnerComponent,
   ],
   templateUrl: './forum.component.html',
   styleUrl: './forum.component.scss',
@@ -26,35 +29,50 @@ import { fadeInAnimations } from '../../../shared/animations/fadeIn.animation';
 })
 export class ForumComponent implements OnInit {
   public forumObjectArray: Array<forum> = [];
+  public categoryArray: Array<string> = [];
+  public loaded: boolean = false;
+  private keyArray: Array<string> = [];
 
+  constructor(private collectionService: CollectionService) {}
   ngOnInit(): void {
-    setTimeout(() => {
-      this.forumObjectArray = [
-        {
-          id: '1',
-          title: 'els3ő valami',
-          text: 'Egyszer a nyulacska elment az erdőbe virágot szedni',
-          author: 'Vilibácsi',
-        },
-        {
-          id: '2',
-          title: 'második valami',
-          text: 'asjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsd asjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsd asjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsd asjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsdasjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsdasjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsd asjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsd asjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsd asjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd',
-          author: 'Vilibácsi',
-        },
-        {
-          id: '3',
-          title: 'második valami',
-          text: 'asjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsd asjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsd asjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsd asjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsdasjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsdasjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsd asjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsd asjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsd asjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd',
-          author: 'Vilibácsi',
-        },
-        {
-          id: '4',
-          title: 'második valami',
-          text: 'asjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsd asjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsd asjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsd asjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsdasjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsdasjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsd asjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsd asjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsd asjhabsdhabsdkabskdjaskjdnakjsb aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd aksjdbnkajsnd akjsbdkjasbnd asdabsd',
-          author: 'Vilibácsi',
-        },
-      ];
-    }, 100);
+    let collectionSub: Subscription = this.collectionService
+      .getCollectionByCollectionAndDoc('Categories', 'all')
+      .subscribe((data) => {
+        if (data) {
+          this.categoryArray = ['Összes', 'Saját'];
+          this.categoryArray = this.categoryArray.concat(
+            Object.values(data)[0]
+          );
+          collectionSub.unsubscribe();
+        }
+      });
+
+    let forumKeysSub: Subscription = this.collectionService
+      .getAllDocByCollectionName('Forums')
+      .subscribe((data: any) => {
+        const allInfoFromDatabaseCollection: Array<any> = Object.values(data);
+        for (const iterator of allInfoFromDatabaseCollection) {
+          if (iterator['docs']) {
+            for (const iterator2 of iterator['docs']) {
+              this.keyArray.push(iterator2['id']);
+            }
+          }
+        }
+        if (this.keyArray.length) {
+          for (const iterator of this.keyArray) {
+            let forumsSub: Subscription = this.collectionService
+              .getCollectionByCollectionAndDoc('Forums', iterator)
+              .subscribe((data) => {
+                console.log(iterator);
+                this.forumObjectArray.push(data as forum);
+                this.loaded = true;
+                forumsSub.unsubscribe();
+              });
+          }
+        } else {
+          this.loaded = true;
+        }
+        forumKeysSub.unsubscribe();
+      });
   }
 }

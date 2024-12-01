@@ -1,48 +1,64 @@
+
+@if (!loaded) {
+  <app-spinner></app-spinner>
+}
+@if (actualForumElement && loaded) {
 <mat-card
   id="own-forum-element-info_component-forum-content"
   [ngClass]="
     isDarkmode() ? 'own-primary-highlight-background' : 'own-accent-background'
   "
-  [ngStyle]=" !isDarkmode() ? {'color':'black'}:{}"
+  [ngStyle]="!isDarkmode() ? { color: 'black' } : {}"
 >
-  <mat-card-header>a</mat-card-header>
-  <mat-card-content
-    >asdasdasdasd asd asd asd as d asd as d asd as d asd a sd as da sd as da sd
-    as da sd as d asd a sdasda as da sd aa sd asd asd asd asd as d a sd a sd
-    asdasdas d sd fg dff w df sd g we fw df sdv sd f wf as f d as d asd as d asd
-    a sd as da sd as da sd as da sd as d asd a sdasda as da sd aa sd asd asd asd
-    asd as d a sd a sd asdasdas d sd fg dff w df sd g we fw df sdv sd f wf as f
-    d as d asd as d asd a sd as da sd as da sd as da sd as d asd a sdasda as da
-    sd aa sd asd asd asd asd as d a sd a sd asdasdas d sd fg dff w df sd g we fw
-    df sdv sd f wf as f d as d asd as d asd a sd as da sd as da sd as da sd as d
-    asd a sdasda as da sd aa sd asd asd asd asd as d a sd a sd asdasdas d sd fg
-    dff w df sd g we fw df sdv sd f wf as f d as d asd as d asd a sd as da sd as
-    da sd as da sd as d asd a sdasda as da sd aa sd asd asd asd asd as d a sd a
-    sd asdasdas d sd fg dff w df sd g we fw df sdv sd f wf as asd as d a sd a sd
-    asdasdas d sd fg dff w df sd g we fw df sdv sd f wf as f d as d asd as d asd
-    a sd as da sd as da sd as da sd as d asd a sdasda as da sd aa sd asd asd asd
-    asd as d a sd a sd asdasdas d sd fg dff w df sd g we fw df sdv sd f wf as f
-    d as d asd as d asd a sd as da sd as da sd as da sd as d asd a sdasda as da
-    sd aa sd asd asd asd asd as d a sd a sd asdasdas d sd fg dff w df sd g we fw
-    df sdv sd f wf as f d as d asd as d asd a sd as da sd as da sd as da sd as d
-    asd a sdasda as da sd aa sd asd asd asd asd as d a sd a sd asdasdas d sd fg
-    dff w df sd g we fw df sdv sd f wf as f</mat-card-content
-  >
-  <mat-card-footer
-    ><button mat-icon-button>
-      <mat-icon>thumb_down</mat-icon>
-    </button>
-    <button mat-icon-button><mat-icon>comment</mat-icon></button>
-    <button mat-icon-button><mat-icon>favorite</mat-icon></button>
+  <mat-card-header>{{ actualForumElement?.title }}</mat-card-header>
+  <mat-card-content>{{ actualForumElement?.text }} </mat-card-content>
+  <mat-card-footer>
+    <span>Készítette: {{ actualForumElement?.author }}</span>
+    <div>
+      @if (isMyForumElement()) {
+      <button mat-icon-button (click)="deleteForumElement()">
+        <mat-icon>delete</mat-icon>
+      </button>
+      }
+      <button mat-icon-button (click)="Interact('dislikeArray')">
+        <mat-icon
+          [matBadge]="numberOfSpecificAction('dislikeArray')"
+          [matBadgeHidden]="numberOfSpecificAction('dislikeArray') === 0"
+          [ngStyle]="
+            didYouInteractWithThis('dislikeArray') ? { color: 'red' } : {}
+          "
+          >thumb_down</mat-icon
+        >
+      </button>
+      <button mat-icon-button (click)="commentAction()">
+        <mat-icon
+          [matBadge]="numberOfSpecificAction('commentsIdArray')"
+          [matBadgeHidden]="numberOfSpecificAction('commentsIdArray') === 0"
+          >comment</mat-icon
+        >
+      </button>
+      <button mat-icon-button (click)="Interact('likeArray')">
+        <mat-icon
+          [matBadge]="numberOfSpecificAction('likeArray')"
+          [matBadgeHidden]="numberOfSpecificAction('likeArray') === 0"
+          [ngStyle]="
+            didYouInteractWithThis('likeArray') ? { color: 'red' } : {}
+          "
+          >favorite</mat-icon
+        >
+      </button>
+    </div>
   </mat-card-footer>
 </mat-card>
 
-<mat-card [ngClass]="isDarkmode() ? 'own-dark-comment' : 'own-light-comment'"
-  >aasd
+@for (comment of commentsOfActualForumElementArray; track $index) {
+<mat-card [ngClass]="isDarkmode() ? 'own-dark-comment' : 'own-light-comment'">
+  <mat-card-content>{{ comment.content }}</mat-card-content>
+  <mat-card-footer
+    ><div></div>
+    <div>{{ "Készítette:" + comment.author }}</div></mat-card-footer
+  >
 </mat-card>
-<mat-card [ngClass]="isDarkmode() ? 'own-dark-comment' : 'own-light-comment'"
-  >aasd
-</mat-card>
-<mat-card [ngClass]="isDarkmode() ? 'own-dark-comment' : 'own-light-comment'"
-  >aasd
-</mat-card>
+} }@else {
+<h1>Ilyen bejegyzés nincs</h1>
+}

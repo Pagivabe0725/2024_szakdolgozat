@@ -7,15 +7,27 @@ import {
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 @Component({
   selector: 'app-popup',
   standalone: true,
-  imports: [MatDialogModule, MatButtonModule, CommonModule],
+  imports: [
+    MatDialogModule,
+    MatButtonModule,
+    CommonModule,
+    MatInputModule,
+    ReactiveFormsModule,
+  ],
   templateUrl: './popup.component.html',
   styleUrl: './popup.component.scss',
 })
 export class PopupComponent implements OnInit {
   protected actualDialog?: Dialog;
+  public commentControl: FormControl = new FormControl('', [
+    Validators.required,
+    Validators.minLength(50),
+  ]);
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: any,
@@ -23,10 +35,20 @@ export class PopupComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.actualDialog= this.data as Dialog ;
+    this.actualDialog = this.data as Dialog;
   }
 
   close(value: boolean) {
     this.dialogRef.close(value);
+  }
+
+  closeReturnWithComment(value: boolean) {
+    if (value ) {
+      if(this.commentControl.valid){
+      this.dialogRef.close(this.commentControl.value);
+      }
+    } else {
+      this.dialogRef.close('');
+    }
   }
 }

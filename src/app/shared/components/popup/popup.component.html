@@ -1,6 +1,35 @@
-<div id="own-popup_component-container-div">
-    <h1 mat-dialog-title><div id="own-popup_component-title-div">{{ actualDialog?.title }}</div></h1>
-<div mat-dialog-content>{{ actualDialog?.content }}</div>
-<div mat-dialog-actions>{{ actualDialog?.action }}</div>
-</div>
+<h1 mat-dialog-title>
+  {{ actualDialog?.title }}
+</h1>
+<div mat-dialog-content id="own-popup_component-content-div">
+  @if (actualDialog?.hasInput===false) {
+  {{ actualDialog?.content }}}@else {
+  <mat-form-field>
+    <mat-label>Komment</mat-label>
+    <textarea rows="5" matInput [formControl]="commentControl"></textarea>
+  </mat-form-field>
 
+  }
+</div>
+<div mat-dialog-actions>
+  @if (actualDialog?.action) {
+  <button
+    mat-flat-button
+    (click)="
+      actualDialog?.hasInput! ? closeReturnWithComment(true) : close(true)
+    "
+  >
+    Igen
+  </button>
+  <button
+    mat-flat-button
+    (click)="
+      actualDialog?.hasInput! ? closeReturnWithComment(false) : close(false)
+    "
+  >
+    nem
+  </button>
+  } @else if (!actualDialog?.action) {
+  <button mat-flat-button (click)="close(true)">Ok</button>
+  }
+</div>

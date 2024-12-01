@@ -1,24 +1,22 @@
 mat-card {
   min-height: 20vh;
-  display: grid;
-  grid-template-rows: 10% 80% 10%;
-  align-items: center;
+  
   width: 65vw;
-  padding: 1vh 2.5%;
   margin: 4vh auto 4vh auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 mat-card:hover {
   cursor: pointer;
-  rotate: -0.5deg;
-  scale: 105%  ;
-  z-index: 99;
+  margin: 4vh 0 4vh 0;
 }
 
 mat-card-header {
   font-size: 2vw;
-  text-align: start;
-  padding: 1vh 0 0 0;
+
+  padding: 1vh 0 0 1vw;
   margin-bottom: 1vh;
 }
 mat-card-content {
@@ -32,13 +30,9 @@ mat-card-content {
 mat-card-footer {
   font-size: 1.2vw;
   text-align: end;
+  padding-right: 1vw;
 }
 
-.light{
-  
+.light {
   color: black;
 }
-
-
-
-

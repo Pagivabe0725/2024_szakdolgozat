@@ -6,7 +6,7 @@ import {
   trigger,
   useAnimation,
 } from '@angular/animations';
-import { Component, WritableSignal, signal } from '@angular/core';
+import { Component, Input, OnInit, WritableSignal, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { turnUpAnimation } from '../../../../shared/animations/usefullAnimations';
 import { MatButtonModule } from '@angular/material/button';
@@ -53,13 +53,15 @@ import { NavigateAndurlinfoService } from '../../../../shared/services/navigate-
     ]),
   ],
 })
-export class LeftsideConsoleComponent {
+export class LeftsideConsoleComponent implements OnInit {
   protected state: WritableSignal<'open' | 'close'> = signal('close');
   protected listVisible: boolean = false;
-  protected categoryTitleArray: Array<string> = ['Összes', '1'];
+  @Input() public categoryTitleArray!: Array<string>;
 
-  constructor(private navigateService:NavigateAndurlinfoService){
+  constructor(private navigateService: NavigateAndurlinfoService) {}
 
+  ngOnInit(): void {
+    
   }
 
   changeMenu(): void {
@@ -81,8 +83,8 @@ export class LeftsideConsoleComponent {
     }
   }
 
-  addButtonAction():void{
-    console.log('HALIKA')
-    this.navigateService.navigate(true,'addForum')
+  addButtonAction(): void {
+    console.log('HALIKA');
+    this.navigateService.navigate(true, 'addForum');
   }
 }

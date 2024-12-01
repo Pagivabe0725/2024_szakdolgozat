@@ -2,21 +2,23 @@
   width: 90vw;
 }
 
+h1{
+  text-align: center;
+  height: 100%;
+  width: 100%;
+}
+
 mat-card {
   min-height: 20vh;
-  display: grid;
-  grid-template-rows: 10% 80% 10%;
-  align-items: center;
-  width: 65vw;
-  padding: 1vh 2.5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   margin: 2vh auto;
 }
 
 mat-card-header {
   font-size: 2vw;
   text-align: start;
-  padding: 1vh 0 0 0;
-  margin-bottom: 1vh;
 }
 mat-card-content {
   font-size: 1.2vw;
@@ -24,24 +26,33 @@ mat-card-content {
   flex-wrap: wrap;
   flex-direction: column;
   text-align: justify;
+  align-items: flex-start;
   max-width: 90vw;
 }
 mat-card-footer {
   font-size: 1.2vw;
   text-align: end;
+  display: grid;
+  grid-template-columns: 85% 15%;
+  justify-content: end;
+  align-items: center;
 }
 
-.own-dark-comment{
-    width: 80vw;
-    border: 1px outset white;
-    box-shadow: 1px 1px 5px white;
-    color: white;
+mat-icon {
+  color: black;
 }
 
+.own-dark-comment {
+  width: 80vw;
+  border: 1px outset white;
+  box-shadow: 1px 1px 5px white;
+  color: white;
+  padding: 1vh;
+}
 
-.own-light-comment{
-    width: 80vw;
-    border: 1px outset black;
-    box-shadow: 1px 1px 5px black;
-
+.own-light-comment {
+  width: 80vw;
+  border: 1px outset black;
+  box-shadow: 1px 1px 5px black;
+  padding: 1vh;
 }

@@ -1,18 +1,241 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { CollectionService } from '../../../../shared/services/collection.service';
+import { forum } from '../../../../shared/interfaces/forum';
+import { MatBadgeModule } from '@angular/material/badge';
+import { PopupService } from '../../../../shared/services/popup.service';
+import { Dialog } from '../../../../shared/interfaces/dialog';
+import { NavigateAndurlinfoService } from '../../../../shared/services/navigate-andurlinfo.service';
+import { ArrayService } from '../../../services/array.service';
+import { forumComment } from '../../../../shared/interfaces/forumComment';
+import { idGenerator } from '../../../../shared/Functions/idGenerator';
+import { Timestamp } from '@angular/fire/firestore';
+import { user } from '../../../../shared/interfaces/user';
+import { UserService } from '../../../../shared/services/user.service';
+import { author } from '../../../../shared/Functions/author';
+import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
 
 @Component({
   selector: 'app-forum-element-info',
   standalone: true,
-  imports: [MatCardModule, MatIconModule, MatButtonModule, CommonModule],
+  imports: [
+    MatCardModule,
+    MatIconModule,
+    MatButtonModule,
+    CommonModule,
+    MatBadgeModule,
+    SpinnerComponent,
+  ],
   templateUrl: './forum-element-info.component.html',
   styleUrl: './forum-element-info.component.scss',
 })
-export class ForumElementInfoComponent {
+export class ForumElementInfoComponent implements OnInit, OnDestroy {
+  private httpSub!: Subscription;
+  private actualForumId!: string;
+  private forumSub?: Subscription;
+  protected actualForumElement?: forum;
+  protected commentsOfActualForumElementArray?: Array<forumComment> = [];
+  private popupDialogTemplate: Dialog;
+  private actualUser?: user;
+  public loaded: boolean = false;
+  private commentSub!: Subscription;
+
+  constructor(
+    private actRout: ActivatedRoute,
+    private collectionService: CollectionService,
+    private popupService: PopupService,
+    private navigationService: NavigateAndurlinfoService,
+    private arrayService: ArrayService,
+    private userService: UserService
+  ) {
+    this.popupDialogTemplate = this.popupService.getTemplateDialog();
+    this.popupDialogTemplate.hostComponent = 'ForumElementInfoComponent';
+  }
+
+  ngOnInit(): void {
+    this.httpSub = this.actRout.params.subscribe((data) => {
+      this.actualForumId = data['forumId'];
+      let userSub: Subscription = this.userService
+        .getUserInfoByUserId(localStorage.getItem('userId')!)
+        .subscribe((data) => {
+          this.actualUser = data as user;
+          userSub.unsubscribe();
+        });
+    });
+
+    if (this.actualForumId) {
+      this.forumSub = this.collectionService
+        .getCollectionByCollectionAndDoc('Forums', this.actualForumId)
+        .subscribe((data) => {
+          this.actualForumElement = data as forum;
+          this.commentsOfActualForumElementArray = [];
+
+          for (const comment of this.actualForumElement.commentsIdArray) {
+            this.commentSub = this.collectionService
+              .getCollectionByCollectionAndDoc('ForumComments', comment)
+              .subscribe((commentData) => {
+                this.commentsOfActualForumElementArray?.push(
+                  commentData as forumComment
+                );
+              });
+          }
+          this.loaded = true;
+        });
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.httpSub.unsubscribe();
+    this.forumSub?.unsubscribe();
+    this.commentSub.unsubscribe();
+  }
+
   isDarkmode(): boolean {
     return localStorage.getItem('theme')!.includes('dark');
+  }
+
+  didYouInteractWithThis(action: 'likeArray' | 'dislikeArray'): boolean {
+    if (this.actualForumElement) {
+      return this.arrayService.elementInArray(
+        localStorage.getItem('userId')!,
+        this.actualForumElement[action]
+      );
+    }
+    return false;
+  }
+
+  numberOfSpecificAction(
+    action: 'likeArray' | 'dislikeArray' | 'commentsIdArray'
+  ): number {
+    if (this.actualForumElement && this.actualForumElement[action]) {
+      return this.actualForumElement[action].length;
+    } else return 0;
+  }
+
+  whichIndex(action: 'likeArray' | 'dislikeArray'): number {
+    return this.arrayService.getIndex(
+      localStorage.getItem('userId')!,
+      this.actualForumElement![action]
+    );
+  }
+
+  isMyForumElement(): boolean {
+    return this.actualForumElement?.userId === localStorage.getItem('userId');
+  }
+
+  arrayAction(action: 'likeArray' | 'dislikeArray'): void {
+    if (this.didYouInteractWithThis(action)) {
+      this.arrayService.deleteElementFromArray(
+        localStorage.getItem('userId')!,
+        this.actualForumElement![action]
+      );
+    } else {
+      this.arrayService.addElementToArray(
+        localStorage.getItem('userId')!,
+        this.actualForumElement![action]
+      );
+    }
+  }
+
+  Interact(action: 'likeArray' | 'dislikeArray'): void {
+    if (!this.isMyForumElement()) {
+      this.arrayAction(action);
+      if (
+        action === 'dislikeArray' &&
+        this.didYouInteractWithThis('likeArray')
+      ) {
+        this.arrayAction('likeArray');
+      } else if (
+        action === 'likeArray' &&
+        this.didYouInteractWithThis('dislikeArray')
+      ) {
+        this.arrayAction('dislikeArray');
+      }
+
+      this.collectionService
+        .updateDatas(
+          'Forums',
+          this.actualForumElement!.id,
+          this.actualForumElement!
+        )
+        .then(() => {})
+        .catch((err) => console.error(err));
+    }
+  }
+
+  deleteForumElement() {
+    this.popupDialogTemplate.title = 'Biztosan';
+    this.popupDialogTemplate.content =
+      'Biztosan törölni szeretné ezt a bejegyzést?';
+    this.popupDialogTemplate.hasInput = false;
+    this.popupDialogTemplate.action = true;
+    let popupSub: Subscription = this.popupService
+      .displayPopUp(this.popupDialogTemplate)
+      .afterClosed()
+      .subscribe((result) => {
+        if (result) {
+          for (const iterator of this.actualForumElement!.commentsIdArray) {
+            this.collectionService
+              .deleteDatas('ForumComments', iterator)
+              .then(() => {})
+              .catch((err) => console.error(err));
+          }
+          this.collectionService
+            .deleteDatas('Forums', this.actualForumElement!.id)
+            .then(() => {
+              this.navigationService.navigate(true, 'forum');
+            })
+            .catch((err) => console.error(err));
+        }
+      });
+  }
+
+  commentAction(): void {
+    this.popupDialogTemplate.hasInput = true;
+    this.popupDialogTemplate.action = true;
+    this.popupDialogTemplate.title = 'Kommentelj';
+    this.popupService
+      .displayPopUp(this.popupDialogTemplate)
+      .afterClosed()
+      .subscribe((data) => {
+        if (data) {
+          const comment: forumComment = this.createComment(data);
+          this.collectionService
+            .createCollectionDoc('ForumComments', comment.id, comment)
+            .then(() => {
+              this.actualForumElement!.commentsIdArray =
+                this.arrayService.addElementToArray(
+                  comment.id,
+                  this.actualForumElement!.commentsIdArray
+                );
+              this.collectionService
+                .updateDatas(
+                  'Forums',
+                  this.actualForumElement!.id,
+                  this.actualForumElement
+                )
+                .then(() => {})
+                .catch((err) => console.error(err));
+            })
+            .catch((err) => {
+              console.error(err);
+            });
+        }
+      });
+  }
+
+  createComment(content: string): forumComment {
+    return {
+      id: idGenerator(),
+      date: Timestamp.now(),
+      author: author(this.actualUser!),
+      userid: localStorage.getItem('userId')!,
+      content: content,
+    } as forumComment;
   }
 }

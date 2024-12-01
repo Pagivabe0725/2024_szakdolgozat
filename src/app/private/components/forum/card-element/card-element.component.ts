@@ -21,7 +21,7 @@ export class CardElementComponent {
   }
 
   loadForumElement(): void {
-    console.log(this.actiualForumMessage.id)
+    console.log(this.actiualForumMessage.id);
     this.navigateService.navigate(false, this.actiualForumMessage.id);
   }
 }
