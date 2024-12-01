@@ -238,4 +238,47 @@ export class ForumElementInfoComponent implements OnInit, OnDestroy {
       content: content,
     } as forumComment;
   }
+
+  deleteComment(index: number) {
+    let commentIdToDelete: string =
+      this.actualForumElement!.commentsIdArray[index];
+
+    this.popupDialogTemplate.action = true;
+    this.popupDialogTemplate.hasInput = false;
+    this.popupDialogTemplate.title = 'Biztosan?';
+    this.popupDialogTemplate.content =
+      'Biztosan törölni szeretnéd a kommentet?';
+
+    let dialogSub: Subscription = this.popupService
+      .displayPopUp(this.popupDialogTemplate)
+      .afterClosed()
+      .subscribe((result) => {
+        if (result) {
+          this.collectionService
+            .deleteDatas('ForumComments', commentIdToDelete)
+            .then(() => {
+              this.loaded = false;
+              this.actualForumElement?.commentsIdArray.splice(index, 1);
+              this.collectionService
+                .updateDatas(
+                  'Forums',
+                  this.actualForumElement!.id,
+                  this.actualForumElement
+                )
+                .then(() => {
+                  dialogSub.unsubscribe();
+                  window.location.reload();
+                })
+                .catch((err) => {
+                  console.error(err);
+                  dialogSub.unsubscribe();
+                });
+            })
+            .catch((err) => {
+              console.error(err);
+              dialogSub.unsubscribe();
+            });
+        }
+      });
+  }
 }

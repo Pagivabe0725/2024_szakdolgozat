@@ -2,7 +2,7 @@
   width: 90vw;
 }
 
-h1{
+h1 {
   text-align: center;
   height: 100%;
   width: 100%;
@@ -48,6 +48,10 @@ mat-icon {
   box-shadow: 1px 1px 5px white;
   color: white;
   padding: 1vh;
+
+  mat-icon {
+    color: white;
+  }
 }
 
 .own-light-comment {
@@ -55,4 +59,5 @@ mat-icon {
   border: 1px outset black;
   box-shadow: 1px 1px 5px black;
   padding: 1vh;
+  color: black;
 }
