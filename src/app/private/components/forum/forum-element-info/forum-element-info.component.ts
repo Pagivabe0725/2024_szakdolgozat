@@ -283,8 +283,7 @@ export class ForumElementInfoComponent implements OnInit, OnDestroy {
       });
   }
 
-  isMyComment(uId:string):boolean{
-    
-    return localStorage.getItem('userId')===uId
+  isMyComment(uId: string): boolean {
+    return localStorage.getItem('userId') === uId;
   }
 }

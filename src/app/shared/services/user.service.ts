@@ -45,4 +45,8 @@ export class UserService {
       .doc(id)
       .valueChanges();
   }
+
+  getUsers(){
+    return this.angularFirestore.collection('Users').valueChanges()
+  }
 }

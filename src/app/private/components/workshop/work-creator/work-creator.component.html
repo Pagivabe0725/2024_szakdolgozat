@@ -1,0 +1,28 @@
+<form [formGroup]="creatorForm">
+  <mat-form-field>
+    <mat-label>Munka neve</mat-label>
+    <input type="text" formControlName="name" matInput />
+  </mat-form-field>
+
+  @for (member of memberFormControls; track $index) { @let $i =$index;
+  <mat-form-field>
+    <mat-label>Ember hozzáadása</mat-label>
+    <input type="text" [formControlName]="'member' + member" matInput />
+    @if (invalidEmails.includes($i)) {
+    <mat-error> Nincs ilyen felhasználói email </mat-error>
+    }
+  </mat-form-field>
+
+  }
+
+  <div id="own-work-creator_component-button-div">
+    <button mat-flat-button (click)="createWork()">Létrehoz</button>
+    <button mat-flat-button (click)="checkEmails()">
+      Email-ek ellenőrzése
+    </button>
+    @if (memberFormControls.length>1) {
+    <button mat-flat-button (click)="minusMember()">-Ember</button>
+    }
+    <button mat-flat-button (click)="addMember()">+Ember</button>
+  </div>
+</form>

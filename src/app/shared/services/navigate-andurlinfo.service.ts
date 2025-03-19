@@ -28,4 +28,12 @@ export class NavigateAndurlinfoService {
       }
     }
   }
+
+  basicNavigate(path: string): void {
+    this.router.navigateByUrl(path);
+  }
+
+  endpoint(): string {
+    return this.actualUrl().split('/')[this.actualUrl().split('/').length - 1];
+  }
 }

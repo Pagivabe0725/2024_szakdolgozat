@@ -1,3 +1,4 @@
-@for (item of myWorksArray; track $index) {
-    <app-workcard></app-workcard>
+@for (work of works; track $index) {
+
+    <app-workcard [work]="work"></app-workcard>
 }

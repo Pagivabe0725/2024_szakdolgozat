@@ -11,6 +11,7 @@ import { AddforumComponent } from './private/components/forum/addforum/addforum.
 import { ForumElementInfoComponent } from './private/components/forum/forum-element-info/forum-element-info.component';
 import { WorksComponent } from './private/components/workshop/works/works.component';
 import { TimelineComponent } from './private/components/workshop/timeline/timeline.component';
+import { WorkCreatorComponent } from './private/components/workshop/work-creator/work-creator.component';
 
 export const routes: Routes = [
   {
@@ -82,6 +83,11 @@ export const routes: Routes = [
             path: 'works',
             component: WorksComponent,
             title: 'works',
+          },
+          {
+            path: 'workcreator',
+            component: WorkCreatorComponent,
+            title: 'Work creator',
           },
           {
             path: ':workId',

@@ -1,9 +1,13 @@
-
-
-
 <div class="own-timeline_component-line-container-div">
-    <span  [ngClass]="!isDarkmode()? 'own-primary-highlight-text-color':'own-accent-text-color'">időpont:</span>
-    <hr class="own-primary-highlight-text-color" />
-  </div>
-  <app-work-message [darkmode]="isDarkmode()"></app-work-message>
-  <app-work-message-comment [darkmode]="isDarkmode()"></app-work-message-comment>
+  <span
+    [ngClass]="
+      !isDarkmode()
+        ? 'own-primary-highlight-text-color'
+        : 'own-accent-text-color'
+    "
+    >időpont:</span
+  >
+  <hr class="own-primary-highlight-text-color" />
+</div>
+<app-work-message [darkmode]="isDarkmode()"></app-work-message>
+<app-work-message-comment [darkmode]="isDarkmode()"></app-work-message-comment>

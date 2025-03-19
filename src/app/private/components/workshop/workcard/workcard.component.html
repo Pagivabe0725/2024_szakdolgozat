@@ -1,4 +1,4 @@
-<div class="own-workcard_component-card-div own-accent-background">
+<div class="own-workcard_component-card-div own-accent-background" (click)="workLoader()">
   @for (item of points; track $index; let i = $index) {
   <div
     class="own-workcard-element"
@@ -11,7 +11,7 @@
           }
     "
   >
-    <span>{{ item }}:</span>
+    <span>{{ item }}</span>
     <span></span>
   </div>
   }

@@ -1,0 +1,18 @@
+form {
+  width: 60vw;
+  display: flex;
+  flex-direction: column;
+  margin: 1vh 0;
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+#own-work-creator_component-button-div {
+  display: flex;
+  justify-content: space-around;
+  button {
+    font-size: 1vw;
+    width: 20%;
+  }
+}
