@@ -10,7 +10,7 @@ import { RouterPlusService } from '../../../shared/services/router-plus.service'
   styleUrl: './left-side.component.scss',
 })
 export class LeftSideComponent implements OnInit {
-  public page: string = 'login';
+  public page = 'login';
 
   constructor(private routerPlus: RouterPlusService) {}
 

@@ -47,7 +47,7 @@ export class LoginComponent implements OnDestroy, OnInit {
   });
   private popupDialogTemplate: Dialog;
   private userValuesChangesService?: Subscription;
-  public loaded: boolean = false;
+  public loaded = false;
   constructor(
     private userService: UserService,
     private navigationService: NavigateAndurlinfoService,

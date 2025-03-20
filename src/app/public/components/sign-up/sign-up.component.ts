@@ -52,7 +52,7 @@ export class SignUpComponent implements OnInit {
   });
 
   private popupDialogTemplate: Dialog;
-  public loaded: boolean = false;
+  public loaded = false;
   constructor(
     private userService: UserService,
     private popupService: PopupService,
@@ -92,7 +92,7 @@ export class SignUpComponent implements OnInit {
     this.loaded = false;
     const emailAndPassword: { email: string; password: string } = {
       email: user.email,
-      password: this.signupForm.get('password')?.value!,
+      password: this.signupForm.get('password')!.value!,
     };
     this.userService
       .userRegistration(emailAndPassword.email, emailAndPassword.password)
