@@ -13,7 +13,7 @@ export class PopupService {
     return {
       width: '70%',
       height: '70%',
-      hostComponent: '',
+      hostComponent: 'LoginComponent',
       title: '',
       content: '',
       action: false,

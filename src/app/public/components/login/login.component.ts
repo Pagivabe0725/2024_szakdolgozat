@@ -38,7 +38,7 @@ import { SpinnerComponent } from '../../../shared/components/spinner/spinner.com
   ],
 })
 export class LoginComponent implements OnDestroy, OnInit {
-  protected loginForm = new FormGroup({
+  public loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [
       Validators.required,
