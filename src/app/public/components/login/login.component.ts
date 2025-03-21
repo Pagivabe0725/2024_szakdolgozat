@@ -65,6 +65,10 @@ export class LoginComponent implements OnDestroy, OnInit {
     this.userValuesChangesService?.unsubscribe();
   }
 
+  public get userValuesChangesSuscription():Subscription{
+    return this.userValuesChangesService!;
+  }
+
   login() {
     if (this.loginForm.valid) {
       this.loaded = false;
@@ -74,6 +78,7 @@ export class LoginComponent implements OnDestroy, OnInit {
           this.loginForm.get('password')!.value!
         )
         .then((userVarible) => {
+          console.log(userVarible);
           let actualUser: user;
           this.userValuesChangesService = this.userService
             .getUserInfoByUserId(userVarible.user.uid)
