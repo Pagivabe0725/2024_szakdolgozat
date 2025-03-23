@@ -33,9 +33,9 @@ fdescribe('SignUpComponent', () => {
 
   beforeEach(async () => {
     userServiceMock = jasmine.createSpyObj('UserService', [
+      'createNewUser',
+      'userRegistration',
       'login',
-      'getUserInfoByUserId',
-      'updateUser',
     ]);
     navigationServiceMock = jasmine.createSpyObj('NavigateAndurlinfoService', [
       'navigate',
@@ -250,4 +250,83 @@ fdescribe('SignUpComponent', () => {
       expect(actualUserObject.dateOfRegistration).toEqual(Timestamp.now());
     });
   });
+
+  describe('check function', () => {
+    it('check when isValidForm returns with wrong value', () => {
+      spyOn(component, 'isValidForm').and.returnValue({
+        valid: true,
+        passwords: false,
+      });
+      component.check();
+      const popupArgs =
+        popupServiceMock.displayPopUp.calls.mostRecent().args[0];
+      expect(popupArgs.title).toEqual('Nem megegyező jelszavak!');
+      expect(popupArgs.content).toEqual(
+        'Nézd át a két jelszó mezőt, mert nem egyeznek meg'
+      );
+    });
+
+    it('check when isValidForm returns with right value', () => {
+      spyOn(component, 'isValidForm').and.returnValue({
+        valid: true,
+        passwords: true,
+      });
+      spyOn(component, 'registration');
+      spyOn(component, 'createUserObject');
+      component.check();
+      expect(component.registration).toHaveBeenCalled();
+      expect(component.createUserObject).toHaveBeenCalled();
+    });
+  });
+
+   /*
+  describe('registration function', () => {
+    beforeEach(() => {
+      component['signupForm'].setValue({
+        firstName: 'Elek',
+        lastName: 'lastname',
+        city: '',
+        telNum: '0606060606',
+        email: 'teszt@gmail.com',
+        password: '123456',
+        rePassword: '123456',
+      });
+
+      popupServiceMock.getTemplateDialog.and.returnValue({ ...basicDialog });
+      ///ez fontos rész
+      spyOn(localStorage, 'setItem');
+    });
+
+
+   
+    describe('valid form', () => {
+      beforeEach(async () => {
+        userServiceMock.userRegistration.and.returnValue(
+          Promise.resolve({ user: { uid: mockUserCredential.id } })
+        );
+
+        await component.check();
+      });
+
+      it('userRegistration', () => {
+        expect(userServiceMock.userRegistration).toHaveBeenCalled();
+      });
+
+      it('createNewUser', () => {
+        expect(userServiceMock.createNewUser).toHaveBeenCalled();
+        expect(userServiceMock.login).toHaveBeenCalled();
+      });
+
+      it('userRegistration failed', () => {
+        expect(
+          popupServiceMock.displayPopUp.calls.mostRecent().args[0].title
+        ).toEqual('hiba!');
+        expect(
+          popupServiceMock.displayPopUp.calls.mostRecent().args[0].content
+        ).toEqual('Hiba történt a regisztráció során! Kérlek próbáld újra');
+      });
+    });
+   
+  });
+  */ 
 });

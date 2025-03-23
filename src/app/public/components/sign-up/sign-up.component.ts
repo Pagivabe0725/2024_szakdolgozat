@@ -66,7 +66,6 @@ export class SignUpComponent implements OnInit {
     this.loaded = true;
   }
 
-
   isValidForm(): { valid: boolean; passwords: boolean } {
     return {
       valid: this.signupForm.valid,
