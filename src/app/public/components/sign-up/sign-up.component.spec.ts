@@ -279,7 +279,6 @@ fdescribe('SignUpComponent', () => {
     });
   });
 
-   /*
   describe('registration function', () => {
     beforeEach(() => {
       component['signupForm'].setValue({
@@ -297,36 +296,57 @@ fdescribe('SignUpComponent', () => {
       spyOn(localStorage, 'setItem');
     });
 
-
-   
     describe('valid form', () => {
-      beforeEach(async () => {
-        userServiceMock.userRegistration.and.returnValue(
-          Promise.resolve({ user: { uid: mockUserCredential.id } })
-        );
-
+      it('registration function have been called', async () => {
+        spyOn(component, 'registration');
         await component.check();
+        expect(component.registration).toHaveBeenCalled();
       });
 
-      it('userRegistration', () => {
+      it('userRegistration', async () => {
+        userServiceMock.userRegistration.and.returnValue(
+          Promise.resolve({ user: { uid: 'ilEc8ARQiVUiOWGS6fLDjoHGfrJ3' } })
+        );
+        await component.check();
         expect(userServiceMock.userRegistration).toHaveBeenCalled();
       });
 
-      it('createNewUser', () => {
+      it('createNewUser', async () => {
+        userServiceMock.userRegistration.and.returnValue(
+          Promise.resolve({ user: { uid: 'ilEc8ARQiVUiOWGS6fLDjoHGfrJ3' } })
+        );
+        await component.check();
         expect(userServiceMock.createNewUser).toHaveBeenCalled();
-        expect(userServiceMock.login).toHaveBeenCalled();
       });
 
-      it('userRegistration failed', () => {
-        expect(
-          popupServiceMock.displayPopUp.calls.mostRecent().args[0].title
-        ).toEqual('hiba!');
-        expect(
-          popupServiceMock.displayPopUp.calls.mostRecent().args[0].content
-        ).toEqual('Hiba történt a regisztráció során! Kérlek próbáld újra');
+      it('login function valid when createNewUser is valid', async () => {
+        userServiceMock.userRegistration.and.returnValue(
+          Promise.resolve({ user: { uid: 'ilEc8ARQiVUiOWGS6fLDjoHGfrJ3' } })
+        );
+        userServiceMock.createNewUser.and.returnValue(Promise.resolve());
+        await component.check();
+        await fixture.whenStable();
+        expect(userServiceMock.createNewUser).toHaveBeenCalled();
+        expect(userServiceMock.login).toHaveBeenCalledWith(
+          component['signupForm'].get('email')!.value!,
+          component['signupForm'].get('password')!.value!
+        );
+      });
+
+      it('login function valid when createNewUser is not valid', async () => {
+        userServiceMock.userRegistration.and.returnValue(
+          Promise.resolve({ user: { uid: 'ilEc8ARQiVUiOWGS6fLDjoHGfrJ3' } })
+        );
+        userServiceMock.createNewUser.and.returnValue(Promise.reject());
+        await component.check();
+        await fixture.whenStable();
+        expect(userServiceMock.createNewUser).toHaveBeenCalled();
+        expect(userServiceMock.login).not.toHaveBeenCalled();
+        expect(userServiceMock.login).not.toHaveBeenCalledWith(
+          component['signupForm'].get('email')!.value!,
+          component['signupForm'].get('password')!.value!
+        );
       });
     });
-   
   });
-  */ 
 });
