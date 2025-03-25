@@ -16,20 +16,7 @@ fdescribe('SignUpComponent', () => {
   let navigationServiceMock: jasmine.SpyObj<NavigateAndurlinfoService>;
   let popupServiceMock: jasmine.SpyObj<PopupService>;
   let basicDialog: Dialog;
-  let mockUserCredential: user = {
-    firstName: 'Elek',
-    lastName: 'lastname',
-    city: 'Tesztváros',
-    telNumber: '0606060606',
-    email: 'teszt@gmail.com',
-    id: 'ilEc8ARQiVUiOWGS6fLDjoHGfrJ3',
-    dateOfRegistration: Timestamp.fromDate(
-      new Date('November 30, 2024 at 10:47:27 PM UTC+1')
-    ),
-    lastLogin: Timestamp.fromDate(
-      new Date('December 1, 2024 at 5:54:24 PM UTC+1')
-    ),
-  };
+  
 
   beforeEach(async () => {
     userServiceMock = jasmine.createSpyObj('UserService', [
@@ -293,17 +280,33 @@ fdescribe('SignUpComponent', () => {
 
       popupServiceMock.getTemplateDialog.and.returnValue({ ...basicDialog });
       ///ez fontos rész
-      spyOn(localStorage, 'setItem');
+
+      navigationServiceMock.navigate.and.returnValue();
     });
 
     describe('valid form', () => {
-      it('registration function have been called', async () => {
+      it('should call the registration function', async () => {
         spyOn(component, 'registration');
         await component.check();
         expect(component.registration).toHaveBeenCalled();
       });
 
-      it('userRegistration', async () => {
+      it('userRegistration failed', async () => {
+        userServiceMock.userRegistration.and.returnValue(Promise.reject());
+        popupServiceMock.displayPopUp.and.stub();
+        await component.check();
+        await fixture.whenStable();
+        expect(userServiceMock.userRegistration).toHaveBeenCalled();
+        expect(popupServiceMock.displayPopUp).toHaveBeenCalled();
+        expect(
+          popupServiceMock.displayPopUp.calls.mostRecent().args[0].title
+        ).toEqual('hiba!');
+        expect(
+          popupServiceMock.displayPopUp.calls.mostRecent().args[0].content
+        ).toEqual('Hiba történt a regisztráció során! Kérlek próbáld újra');
+      });
+
+      it('should call the userRegistration function', async () => {
         userServiceMock.userRegistration.and.returnValue(
           Promise.resolve({ user: { uid: 'ilEc8ARQiVUiOWGS6fLDjoHGfrJ3' } })
         );
@@ -311,7 +314,7 @@ fdescribe('SignUpComponent', () => {
         expect(userServiceMock.userRegistration).toHaveBeenCalled();
       });
 
-      it('createNewUser', async () => {
+      it('should call the createNewUser function', async () => {
         userServiceMock.userRegistration.and.returnValue(
           Promise.resolve({ user: { uid: 'ilEc8ARQiVUiOWGS6fLDjoHGfrJ3' } })
         );
@@ -319,7 +322,7 @@ fdescribe('SignUpComponent', () => {
         expect(userServiceMock.createNewUser).toHaveBeenCalled();
       });
 
-      it('login function valid when createNewUser is valid', async () => {
+      it('should call the login function', async () => {
         userServiceMock.userRegistration.and.returnValue(
           Promise.resolve({ user: { uid: 'ilEc8ARQiVUiOWGS6fLDjoHGfrJ3' } })
         );
@@ -333,7 +336,7 @@ fdescribe('SignUpComponent', () => {
         );
       });
 
-      it('login function valid when createNewUser is not valid', async () => {
+      it('shouldn not call the login function', async () => {
         userServiceMock.userRegistration.and.returnValue(
           Promise.resolve({ user: { uid: 'ilEc8ARQiVUiOWGS6fLDjoHGfrJ3' } })
         );
@@ -341,11 +344,83 @@ fdescribe('SignUpComponent', () => {
         await component.check();
         await fixture.whenStable();
         expect(userServiceMock.createNewUser).toHaveBeenCalled();
-        expect(userServiceMock.login).not.toHaveBeenCalled();
         expect(userServiceMock.login).not.toHaveBeenCalledWith(
           component['signupForm'].get('email')!.value!,
           component['signupForm'].get('password')!.value!
         );
+      });
+
+      it('navigation function when login is valid', async () => {
+        userServiceMock.userRegistration.and.returnValue(
+          Promise.resolve({ user: { uid: 'ilEc8ARQiVUiOWGS6fLDjoHGfrJ3' } })
+        );
+        userServiceMock.createNewUser.and.returnValue(Promise.resolve());
+        userServiceMock.login.and.returnValue(Promise.resolve());
+        await component.check();
+        await fixture.whenStable();
+        expect(userServiceMock.createNewUser).toHaveBeenCalled();
+        expect(userServiceMock.login).toHaveBeenCalledWith(
+          component['signupForm'].get('email')!.value!,
+          component['signupForm'].get('password')!.value!
+        );
+        //segít bevárni a promise lánc végén lévé promise-t
+        await new Promise((resolve) => setTimeout(resolve, 0));
+        expect(navigationServiceMock.navigate).toHaveBeenCalledWith(
+          true,
+          'main'
+        );
+      });
+
+      it('should not call navigation function of navigationService', async () => {
+        userServiceMock.userRegistration.and.returnValue(
+          Promise.resolve({ user: { uid: 'ilEc8ARQiVUiOWGS6fLDjoHGfrJ3' } })
+        );
+        userServiceMock.createNewUser.and.returnValue(Promise.resolve());
+        userServiceMock.login.and.returnValue(Promise.reject());
+        await component.check();
+        await fixture.whenStable();
+        expect(userServiceMock.createNewUser).toHaveBeenCalled();
+        expect(userServiceMock.login).toHaveBeenCalledWith(
+          component['signupForm'].get('email')!.value!,
+          component['signupForm'].get('password')!.value!
+        );
+        //segít bevárni a promise lánc végén lévé promise-t
+        await new Promise((resolve) => setTimeout(resolve, 0));
+        expect(navigationServiceMock.navigate).not.toHaveBeenCalled();
+        expect(component.loaded).toBeTrue();
+      });
+
+      it('should call setItem function of localStorage ', async () => {
+        spyOn(localStorage, 'setItem');
+        userServiceMock.userRegistration.and.returnValue(
+          Promise.resolve({ user: { uid: 'ilEc8ARQiVUiOWGS6fLDjoHGfrJ3' } })
+        );
+        await component.check();
+        expect(localStorage.setItem).toHaveBeenCalled();
+      });
+    });
+
+    describe('invalid form', () => {
+      beforeEach(() => {
+        component['signupForm'].setValue({
+          firstName: 'Elek',
+          lastName: 'lastname',
+          city: '',
+          telNum: '0606060606',
+          email: 'teszt@gmail.com',
+          password: '123456',
+          rePassword: '1234567',
+        });
+
+        popupServiceMock.getTemplateDialog.and.returnValue({ ...basicDialog });
+        ///ez fontos rész
+        spyOn(localStorage, 'setItem');
+      });
+
+      it('should not call registration function', async () => {
+        spyOn(component, 'registration');
+        await component.check();
+        expect(component.registration).not.toHaveBeenCalled();
       });
     });
   });

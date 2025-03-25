@@ -17,7 +17,7 @@ fdescribe('LoginComponent', () => {
   let navigationServiceMock: jasmine.SpyObj<NavigateAndurlinfoService>;
   let popupServiceMock: jasmine.SpyObj<PopupService>;
   let basicDialog: Dialog;
-  let mockUserCredential: user = {
+  const mockUserCredential: user = {
     firstName: 'Elek',
     lastName: 'lastname',
     city: 'Tesztváros',
