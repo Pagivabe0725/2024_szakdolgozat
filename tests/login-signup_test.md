@@ -1,4 +1,4 @@
-Dokumentum száma: **kp-login-signup**
+Dokumentum száma: **kp-main**
 
 ## A Tervet készítette:
 
@@ -8,42 +8,22 @@ Dokumentum száma: **kp-login-signup**
 
 | Verzió | Kiadási dátum | Leírás                     |
 | ------ | ------------- | -------------------------- |
-| 1.0    | 2025.03.18    | A dokumentum első verziója |
-
+| 1.0    | 2025.03.26    | A dokumentum első verziója |
 
 ## A tesztelési feladat kontextusa
+Jelen dokumentum a 2024/2025 2. félévében készül a kötelező 320 órás gyakorlat teljesítése érdekében. A dokumentum tartalmazza a **Zenész** projekt **main** részét. Ez magában foglalja a kövekező komponenseket:
+- **page**
+- **main**
+- **infoboard-in-main**
 
-Jelen dokumentum a 2024/2025 2. félévében készül a kötelező 320 órás gyakorlat teljesítése érdekében. A dokumentum tartalmazza a **Zenész** projekt *bejelentkezésért* és a *regisztrációért* felelős modul teszttervét. 
 
-A modul felelős a bejelentkezési/regisztrációs adatok számonkéréséért, ellenőrzéséért és azok kezeléséért. Több komponens (component) és szolgáltatás (service) tartozik ehhez a modulhoz. A komponensekben meglévő logika felel az űrlapok és a hozzájuk tartozó információs szöveg megjelenítéséért, az űrlapok adatainak ellenőrzéséért, a felhasználó figyelmének felhívásáért a hibás formátumu adatokra.
+Ez a modul felelős a bejelentkezés utáni elösszőr betöltött oldalért. A **page** kompones arra szolgál, hogy a menüsáv kivételével, egy teljes oldal nagyságát kitöltő `<div>` elemet adjunk az oldalhoz, ami igény szerint bontható kettő, illetve 3 egységes oszlopra.
 
-A **Komponensek** tartalmazzák a böngészőkben megjelenítendő *(html/css)* fájlokat, valamint a komponensek mögötti logikákat tartalmazó *typeScript* és azok tesztelésére szolgáló *spec.ts* fájlokat. Jelen modulban szereplő komponensek a következőek:
- - **left-side**:
-   A böngésző bal oldalán elhelyezkedő, a regisztráció és bejelentkezés menetéről információt tároló rész.
+Az **infoboard-in-main** komponens a főoldalon megjelenő infókártyákért felelős
 
- - **login**:
-   A bejelentkezési űrlapot tartalmazó komponens.
+A **main** kompones magában foglalja az elöző két komponenst.
 
- - **sign-up**:
-   A regisztrációs űrlapot tartalmazó komponens.
-
- - **public**:
-   Az ezt megelőző komponenseket összefoglaló komponens.
-
-A **Szolgáltatások** tartalmazzák a a projekt során többször felhasznált _komponensfüggetlen_ kódrészleteket. Ez a modul a következő szolgáltatásokat használják:
-
- - **userService**:
- A felhasználók be/ki jelentkeztetéséért és adataik lekéréséért felelős szolgáltatás.
-
- - **navigationService**:
- A különböző url műveleteket tartalmazó szolgáltatás.
-
- - **popupSercice**:
- A különböző felhasználói műveleteket követő felugró ablakot működtető szolgáltatás.
-
-A tesztelés fő célja, a modul által magában foglalt elemek funkcióinak tesztelése, unit tesztek írása, az esetlegesen felmerülő hibák korrigálása és a modul stabil futásának biztosítása.
-
-**Statikus** tesztek során megtörténik a forráskód elemzése, mely magában foglalja a kódminőség ellenőrzését és javítását. Valamint a szemmel látható kódhibák javítását. A **használhatósági** tesztelés során a modul komponenseinek kezelőfelületét és felhasználói élményét vizsgáljuk és javítjuk az esetlegesen felmerülő hibákat. Uolsó lépésben pedig **egységtesztek**kel látjuk el a komponensek funkcióit.
+Ezek a komponensek **nem tartalmaznak szolgáltatásokat** 
 
 ## Kommunikáció 
 
@@ -51,5 +31,77 @@ A tesztelés során email-ben történik a gyakorlatvezetővel való kommunikác
 
 ## Kockázatmenedzment
 
+![kockazat](uploads/a63b95c90fed39377639bbe3a79d7905/kockazat.png)
+
+## Kockázatcsökkentési lehetőségek:
+ - gyakori commitok
+ - biztonsági mentések
+ - hétvégi munkavégzés szükség esetén
+ - feladatra fordítandó idő felülbecslése
+
+## Tesztmegközelítés
+
+### Teszttechnikák
+
+- **Funkcionális tesztelés:** A funkcionális tesztelés során leellenőrizzük, hogy a mainben definiált elemek megjelennek-e a böngészőben és hogy a különböző események helyesen futnak-e le?
+
+- **Statikus tesztelés:** Statikus tesztelés során a forráskódot speciális eszközökkel elemezzük annak érdekében, hogy azonosítsuk a kódban rejlő potenciális hibákat, stílusbeli problémákat, vagy rossz gyakorlatokat. Ezek az eszközök figyelmeztetnek a kód hibáira anélkül, hogy azt futtatnánk, és segítenek felderíteni a lehetséges hiányosságokat. Ezáltal javítható a kód minősége és biztonsága. Egy ilyen eszköz például az _ESLint_, amely typescript kódok elemzésére szolgál.
+
+- **Usability tesztelés:** A Usability tesztelés esetében használati eset alapú teszteket alkalmazunk, és különböző szcenáriókat definiálunk.
+
+- **Egységtesztelés:** Az Angular cli megfelelő _Karma_ és _Jasmine_ verzióival valósítható meg. A Jasmine nyújtja nekünk a tesztelési környezetet. Itt definiáljuk a különböző eseteket és megnézzük, hogy futnak le az adott metódust használva. A Karma egy böngészői felületen keresztül visszacsatolást ad majd a tesztjeink eredményeiről.
+
+### Belépési feltételek
+
+- **Funkcionális tesztelés:**
+  - A tesztterv elfogadása. 
+
+- **Statikus tesztelés:** 
+  - A tesztterv jóváhagyása.
+  - Az ESlint megfelelő verziójának megléte.
+  - Valamely text editor (pl. integrált GitLab editor, Visual Studio Code markdown pluginokkal stb.) rendelkezésre állása
+
+- **Használhatósági tesztelés:** 
+  - A tesztterv jóváhagyása.
+  - Szcenáriók elkészülte.
+  - Google form elkészítése(jelenleg készülőben)
+
+- **Egységtesztelés:** 
+  - A tesztterv jóváhagyása.
+  - Megfelelő Karma/Jasmine verziók.
+  - 
+### Kilépési feltételek
+
+- **Funkcionális tesztelés:**
+  - Az esetleges hibák kijavítása 
+
+- **Statikus tesztelés:** 
+  - Review riport elkészítése
+
+- **Használhatósági tesztelés:** 
+  - A felvázolt szenáriók ellenőrzése.
+  - A googleform-ra való visszajelzések ellenőrzése és a hibák esetleges javítása
+
+- **Egységtesztelés:** 
+  - Legalább 80%-os lefedetségi szint.
 
 
+### Tesztkörnyezet
+- Minden teszt egy **Lenovo Legion 5**-ös laptopon fog lefutni. Viszont nincs specifikus hardverkövetelmény.
+- A statikus teszteléshez szükséges az : **ESlint** `npm init @eslint/config@latest`
+- Az egységtesztekhez a megfelelő **Karma/Jasmine** verziók (Ezek előzetesen telepítve lettek)
+
+## Ütemterv
+A modul tesztelésére a teszterv elfogadásától kezdve maximum 2 munkanap áll rendelkezésre. A különböző tesztek előrelátható eloszlása a következő:
+
+| Funkcionális tesztelés | Statikus elemzés | Usability tesztelés | Egységtesztelés |
+|------------------------|------------------|---------------------|-----------------|
+| 10%                   | 10%              | 20%                 | 60%             |
+
+Mivel a jelenlegi komponensekben leginkább a DOM ellenőrizhető és az ehhez való tudást még nem sajátítottam el, ezért az **egységtesztek**re szánt idő jóval nagyobb arányban szerepel az ütemtervben. 
+
+## Felelősségek kiosztása
+
+| Név | Felelősség |
+| ----------- | ------ |
+|Kovács Patrik|Tesztelő/Fejlesztő|

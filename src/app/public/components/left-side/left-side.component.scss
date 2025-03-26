@@ -12,7 +12,7 @@ h1 {
   color: black;
 }
 
-p{
+p {
   color: black;
   width: 80%;
   text-align: justify;
@@ -22,7 +22,7 @@ p{
 #own-grid-center-row {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
 }
 
@@ -39,6 +39,6 @@ button {
   font-size: 1.2vw;
 }
 
-h1{
-    font-size: 2vw;
+h1 {
+  font-size: 2vw;
 }
