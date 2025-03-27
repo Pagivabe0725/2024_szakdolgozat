@@ -70,6 +70,6 @@ export class InfoboardInMainComponent {
   @Input() actualInfoBoard!: infoboxInMain_component;
 
   getTheme(): boolean {
-    return (localStorage.getItem('theme') || '').includes('dark');
+    return (localStorage.getItem('Theme') || '').includes('dark');
   }
 }

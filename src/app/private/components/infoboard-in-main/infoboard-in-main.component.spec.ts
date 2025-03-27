@@ -86,4 +86,17 @@ fdescribe('InfoboardInMainComponent', () => {
     await new Promise((resolve) => setTimeout(resolve, 200));
     expect(component['collectionDisplay']).toBeFalse();
   });
+
+  it('getTheme function works', () => {
+    localStorage.clear();
+
+    expect(component.getTheme()).toBeFalse();
+    localStorage.setItem('Theme', 'dark-valami');
+
+    console.log(component.getTheme());
+    expect(component.getTheme()).toBeTrue();
+    localStorage.setItem('Theme', 'light-valami');
+
+    expect(component.getTheme()).toBeFalse();
+  });
 });
