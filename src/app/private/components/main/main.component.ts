@@ -48,4 +48,8 @@ export class MainComponent {
       color: 'accent',
     },
   ];
+
+  getComponentVariables(): string[] {
+    return Object.keys(this);
+  }
 }

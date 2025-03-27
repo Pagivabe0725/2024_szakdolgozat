@@ -10,18 +10,27 @@ fdescribe('MainComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MainComponent,PageComponent,BrowserAnimationsModule]
-    })
-    .compileComponents();
+      imports: [MainComponent, PageComponent, BrowserAnimationsModule],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(MainComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    
   });
 
-  it('should create', async() => {
-    await fixture.whenStable()
-    //expect(component).toBeTruthy();
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should render the correct number of Page components', async () => {
+    let expectedNumber = 0;
+    for (const i of component.getComponentVariables()) {
+      if (i.includes('infoBoard')) {
+        expectedNumber++;
+      }
+    }
+    const compiled = fixture.nativeElement as HTMLElement;
+    const pageComponents = compiled.querySelectorAll('app-page');
+    expect(pageComponents.length).toBe(expectedNumber);
   });
 });
