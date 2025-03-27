@@ -19,9 +19,10 @@ export class MainComponent {
     },
     {
       title: 'sötét/világos mód',
-      icon: localStorage.getItem('theme')?.includes('dark')
+      icon: (localStorage.getItem('theme') || '').includes('dark')
         ? 'sunny'
         : 'brightness_2',
+
       text: 'Ezen menüpont alatt tudod beállítani, hogy a weboldal sötét, avagy világos módban jelenjen meg',
       color: 'accent',
     },
