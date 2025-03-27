@@ -10,7 +10,7 @@ import { user } from '../../../shared/interfaces/user';
 import { Timestamp } from '@angular/fire/firestore';
 import { of } from 'rxjs';
 
-fdescribe('LoginComponent', () => {
+describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   let userServiceMock: jasmine.SpyObj<UserService>;

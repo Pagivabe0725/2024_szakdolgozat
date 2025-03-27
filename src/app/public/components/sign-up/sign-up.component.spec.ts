@@ -9,7 +9,7 @@ import { user } from '../../../shared/interfaces/user';
 import { Timestamp } from '@angular/fire/firestore';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-fdescribe('SignUpComponent', () => {
+describe('SignUpComponent', () => {
   let component: SignUpComponent;
   let fixture: ComponentFixture<SignUpComponent>;
   let userServiceMock: jasmine.SpyObj<UserService>;

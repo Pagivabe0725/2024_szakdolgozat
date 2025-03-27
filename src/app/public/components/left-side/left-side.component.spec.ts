@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LeftSideComponent } from './left-side.component';
 import { RouterPlusService } from '../../../shared/services/router-plus.service';
 
-fdescribe('left-side.component', () => {
+describe('left-side.component', () => {
   let component: LeftSideComponent;
   let fixture: ComponentFixture<LeftSideComponent>;
   let routerPlusMock: jasmine.SpyObj<RouterPlusService>;

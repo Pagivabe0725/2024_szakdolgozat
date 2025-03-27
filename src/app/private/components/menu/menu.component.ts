@@ -18,9 +18,11 @@ import { NavigateAndurlinfoService } from '../../../shared/services/navigate-and
   ],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss',
+  /*
   host: {
     '[$valami]': '[blue]',
   },
+  */
 })
 export class MenuComponent implements OnInit {
   public mode: 'dark' | 'light' = 'light';
