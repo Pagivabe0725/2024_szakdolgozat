@@ -10,7 +10,7 @@ import { infoboxInMain_component } from '../../../shared/interfaces/info_board';
   styleUrl: './main.component.scss',
 })
 export class MainComponent {
-  protected infoBoardFirstArray: Array<infoboxInMain_component> = [
+  protected infoBoardFirstArray: infoboxInMain_component[] = [
     {
       title: 'Témák',
       icon: 'trip_origin',
@@ -19,7 +19,7 @@ export class MainComponent {
     },
     {
       title: 'sötét/világos mód',
-      icon: (localStorage.getItem('theme') || '').includes('dark')
+      icon: (localStorage.getItem('Theme') || '').includes('dark')
         ? 'sunny'
         : 'brightness_2',
 
@@ -34,7 +34,7 @@ export class MainComponent {
     },
   ];
 
-  protected infoBoardSecondArray: Array<infoboxInMain_component> = [
+  protected infoBoardSecondArray:  infoboxInMain_component[]= [
     {
       title: 'Account',
       icon: 'account_circle',

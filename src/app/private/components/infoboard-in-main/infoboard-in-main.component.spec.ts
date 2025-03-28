@@ -2,10 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { infoboxInMain_component } from '../../../shared/interfaces/info_board';
 import { InfoboardInMainComponent } from './infoboard-in-main.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { WritableSignal } from '@angular/core';
 
 function randomActualInfoBoard(): infoboxInMain_component {
-  const options: Array<'primary' | 'accent' | 'highlight' | 'none'> = [
+  const options: ('primary' | 'accent' | 'highlight' | 'none')[] = [
     'highlight',
     'accent',
     'primary',
@@ -44,8 +43,6 @@ fdescribe('InfoboardInMainComponent', () => {
 
   it('should trigger onMouseOver and update variables', () => {
     const compiled = fixture.nativeElement as HTMLElement;
-    let animation: WritableSignal<'open' | 'close'>;
-
     // Esemény szimulálása
     expect(component['animation']()).toEqual('close');
     expect(component['animationFinished']).toBeFalse();

@@ -11,7 +11,7 @@ import { infoboxInMain_component } from '../../../shared/interfaces/info_board';
   styleUrl: './page.component.scss',
 })
 export class PageComponent {
-  @Input() columns: number = 2;
+  @Input() columns = 2;
   @Input() color!: 'primary' | 'accent' | 'highlight' | 'none' ;
-  @Input() actualInfoBoardArray!:Array<infoboxInMain_component>
+  @Input() actualInfoBoardArray!:[infoboxInMain_component]
 }

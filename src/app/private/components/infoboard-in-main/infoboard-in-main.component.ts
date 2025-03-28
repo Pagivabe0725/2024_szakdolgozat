@@ -1,6 +1,5 @@
 import {
   animate,
-  group,
   state,
   style,
   transition,
@@ -65,8 +64,8 @@ export class InfoboardInMainComponent {
     this.collectionDisplay = false;
   }
   protected animation: WritableSignal<'open' | 'close'> = signal('close');
-  protected animationFinished: boolean = false;
-  protected collectionDisplay: boolean = false;
+  protected animationFinished = false;
+  protected collectionDisplay = false;
   @Input() actualInfoBoard!: infoboxInMain_component;
 
   getTheme(): boolean {

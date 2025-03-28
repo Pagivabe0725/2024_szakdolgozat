@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PageComponent } from '../page/page.component';
-import { infoboxInMain_component } from '../../../shared/interfaces/info_board';
 import { MainComponent } from './main.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -20,6 +19,30 @@ fdescribe('MainComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should set icon to sunny if theme includes dark', () => {
+    localStorage.setItem('Theme', 'dark-valami');
+    const fixture = TestBed.createComponent(MainComponent);
+    const component = fixture.componentInstance;
+    fixture.detectChanges();
+    expect(component['infoBoardFirstArray'][1].icon).toBe('sunny');
+  });
+
+  it('should set icon to brightness_2 if theme does not include dark', () => {
+    localStorage.setItem('Theme', 'light-valami');
+    const fixture = TestBed.createComponent(MainComponent);
+    const component = fixture.componentInstance;
+    fixture.detectChanges();
+    expect(component['infoBoardFirstArray'][1].icon).toBe('brightness_2');
+  });
+
+  it('should set icon to brightness_2 when theme is null or empty', () => {
+    localStorage.removeItem('Theme');
+    const fixture = TestBed.createComponent(MainComponent);
+    const component = fixture.componentInstance;
+    fixture.detectChanges();
+    expect(component['infoBoardFirstArray'][1].icon).toBe('brightness_2');
   });
 
   it('should render the correct number of Page components', async () => {
