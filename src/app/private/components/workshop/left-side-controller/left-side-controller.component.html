@@ -2,10 +2,10 @@
   class="own-primary-background own-accent-text-color"
   id="own-left-side-controller_component-div"
 >
-  @if (getDirection()==='basic') {
+  @if (direction==='basic') {
 
   <div class="own-left-side-controller_component-first-div">
-    <button mat-icon-button (click)="back()"><mat-icon>arrow_back</mat-icon></button>
+    <div></div>
     <span>Munkáim</span>
   </div>
   <div class="own-left-side-controller_component-second-div">
@@ -17,15 +17,15 @@
   </div>
   <div class="own-left-side-controller_component-thirth-div"></div>
 
-  } @else if (getDirection()==='work') {
+  } @else if (direction==='specific') {
 
   <div class="own-left-side-controller_component-first-div">
-    <button mat-icon-button><mat-icon>arrow_back</mat-icon></button>
+    <button mat-icon-button (click)="back()"><mat-icon>arrow_back</mat-icon></button>
     <span>XYMunka</span>
   </div>
   <div class="own-left-side-controller_component-second-div">
     <button mat-flat-button>Résztvevő hozzáadása</button>
-    <button mat-flat-button>Bejegyzés hozzáadása</button>
+    <button mat-flat-button (click)="createMessage()">Bejegyzés hozzáadása</button>
     <button mat-flat-button>Komment törlése</button>
   </div>
   <div class="own-left-side-controller_component-thirth-div"></div>

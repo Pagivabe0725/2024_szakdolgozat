@@ -13,5 +13,5 @@ import { infoboxInMain_component } from '../../../shared/interfaces/info_board';
 export class PageComponent {
   @Input() columns = 2;
   @Input() color!: 'primary' | 'accent' | 'highlight' | 'none' ;
-  @Input() actualInfoBoardArray!:[infoboxInMain_component]
+  @Input() actualInfoBoardArray!:infoboxInMain_component[]
 }

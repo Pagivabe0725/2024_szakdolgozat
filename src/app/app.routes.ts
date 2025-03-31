@@ -12,6 +12,7 @@ import { ForumElementInfoComponent } from './private/components/forum/forum-elem
 import { WorksComponent } from './private/components/workshop/works/works.component';
 import { TimelineComponent } from './private/components/workshop/timeline/timeline.component';
 import { WorkCreatorComponent } from './private/components/workshop/work-creator/work-creator.component';
+import { MessageCommentComponent } from './private/components/workshop/message-comment/message-comment.component';
 
 export const routes: Routes = [
   {
@@ -68,6 +69,17 @@ export const routes: Routes = [
         path: 'addForum',
         component: AddforumComponent,
         title: 'addForum',
+      },
+
+      {
+        path: 'message/:workId',
+        component: MessageCommentComponent,
+        title: 'message',
+      },
+      {
+        path: 'message-comment/:workId',
+        component: MessageCommentComponent,
+        title: 'message-comment',
       },
       {
         path: 'workshop',
