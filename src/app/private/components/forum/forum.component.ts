@@ -35,6 +35,7 @@ export class ForumComponent implements OnInit {
 
   constructor(private collectionService: CollectionService) {}
   ngOnInit(): void {
+    
     const collectionSub: Subscription = this.collectionService
       .getCollectionByCollectionAndDoc('Categories', 'all')
       .subscribe((data) => {

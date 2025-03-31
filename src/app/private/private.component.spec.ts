@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PrivateComponent } from './private.component';
 
-fdescribe('PrivateComponent', () => {
+describe('PrivateComponent', () => {
   let component: PrivateComponent;
   let fixture: ComponentFixture<PrivateComponent>;
   let compiled: HTMLElement;
