@@ -44,10 +44,10 @@ export class AddforumComponent implements OnInit {
     ]),
     category: new FormControl('', Validators.required),
   });
-  protected categoryTitleArray: Array<string> = [];
-  public loaded: boolean = false;
+  protected categoryTitleArray: string[] = [];
+  public loaded = false;
   private popupDialogTemplate: Dialog;
-  private fullName: string = '';
+  private fullName = '';
 
   constructor(
     private navigationService: NavigateAndurlinfoService,
@@ -62,7 +62,7 @@ export class AddforumComponent implements OnInit {
   ngOnInit(): void {
     this.getUserName();
     this.textAreaRowCalculator();
-    let collectionSub: Subscription = this.collectionService
+    const collectionSub: Subscription = this.collectionService
       .getCollectionByCollectionAndDoc('Categories', 'all')
       .subscribe((data) => {
         if (data) {
@@ -94,7 +94,7 @@ export class AddforumComponent implements OnInit {
       this.popupDialogTemplate.content =
         'Biztosan szeretnéd hozzáadni a bejegyzésedet?';
       this.popupDialogTemplate.action = true;
-      let popupSub: Subscription = this.popupService
+      const popupSub: Subscription = this.popupService
         .displayPopUp(this.popupDialogTemplate)
         .afterClosed()
         .subscribe((result) => {
@@ -124,11 +124,12 @@ export class AddforumComponent implements OnInit {
   }
 
   getUserName(): void {
-    let nameSub: Subscription = this.userService
+    const nameSub: Subscription = this.userService
       .getUserInfoByUserId(localStorage.getItem('userId')!)
       .subscribe((data) => {
         const user: user = data as user;
         this.fullName= author(user)
+        nameSub.unsubscribe()
       });
   }
 

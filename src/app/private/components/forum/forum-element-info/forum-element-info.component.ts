@@ -39,10 +39,10 @@ export class ForumElementInfoComponent implements OnInit, OnDestroy {
   private actualForumId!: string;
   private forumSub?: Subscription;
   protected actualForumElement?: forum;
-  protected commentsOfActualForumElementArray?: Array<forumComment> = [];
+  protected commentsOfActualForumElementArray?: forumComment[] = [];
   private popupDialogTemplate: Dialog;
   private actualUser?: user;
-  public loaded: boolean = false;
+  public loaded = false;
   private commentSub!: Subscription;
 
   constructor(
@@ -60,7 +60,7 @@ export class ForumElementInfoComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.httpSub = this.actRout.params.subscribe((data) => {
       this.actualForumId = data['forumId'];
-      let userSub: Subscription = this.userService
+      const userSub: Subscription = this.userService
         .getUserInfoByUserId(localStorage.getItem('userId')!)
         .subscribe((data) => {
           this.actualUser = data as user;
@@ -163,7 +163,9 @@ export class ForumElementInfoComponent implements OnInit, OnDestroy {
           this.actualForumElement!.id,
           this.actualForumElement!
         )
-        .then(() => {})
+        .then(() => {
+          console.log('sikeres');
+        })
         .catch((err) => console.error(err));
     }
   }
@@ -174,7 +176,7 @@ export class ForumElementInfoComponent implements OnInit, OnDestroy {
       'Biztosan törölni szeretné ezt a bejegyzést?';
     this.popupDialogTemplate.hasInput = false;
     this.popupDialogTemplate.action = true;
-    let popupSub: Subscription = this.popupService
+    const popupSub: Subscription = this.popupService
       .displayPopUp(this.popupDialogTemplate)
       .afterClosed()
       .subscribe((result) => {
@@ -182,15 +184,20 @@ export class ForumElementInfoComponent implements OnInit, OnDestroy {
           for (const iterator of this.actualForumElement!.commentsIdArray) {
             this.collectionService
               .deleteDatas('ForumComments', iterator)
-              .then(() => {})
+              .then(() => {
+                console.log('delete forum element');
+              })
               .catch((err) => console.error(err));
           }
           this.collectionService
             .deleteDatas('Forums', this.actualForumElement!.id)
             .then(() => {
               this.navigationService.navigate(true, 'forum');
+              popupSub.unsubscribe();
             })
             .catch((err) => console.error(err));
+        } else {
+          popupSub.unsubscribe();
         }
       });
   }
@@ -219,7 +226,7 @@ export class ForumElementInfoComponent implements OnInit, OnDestroy {
                   this.actualForumElement!.id,
                   this.actualForumElement
                 )
-                .then(() => {})
+                .then(() => {console.log('comment action')})
                 .catch((err) => console.error(err));
             })
             .catch((err) => {
@@ -240,7 +247,7 @@ export class ForumElementInfoComponent implements OnInit, OnDestroy {
   }
 
   deleteComment(index: number) {
-    let commentIdToDelete: string =
+    const commentIdToDelete: string =
       this.actualForumElement!.commentsIdArray[index];
 
     this.popupDialogTemplate.action = true;
@@ -249,7 +256,7 @@ export class ForumElementInfoComponent implements OnInit, OnDestroy {
     this.popupDialogTemplate.content =
       'Biztosan törölni szeretnéd a kommentet?';
 
-    let dialogSub: Subscription = this.popupService
+    const dialogSub: Subscription = this.popupService
       .displayPopUp(this.popupDialogTemplate)
       .afterClosed()
       .subscribe((result) => {

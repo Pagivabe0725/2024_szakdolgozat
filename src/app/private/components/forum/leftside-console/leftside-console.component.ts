@@ -6,7 +6,7 @@ import {
   trigger,
   useAnimation,
 } from '@angular/animations';
-import { Component, Input, OnInit, WritableSignal, signal } from '@angular/core';
+import { Component, Input, WritableSignal, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { turnUpAnimation } from '../../../../shared/animations/usefullAnimations';
 import { MatButtonModule } from '@angular/material/button';
@@ -53,19 +53,17 @@ import { NavigateAndurlinfoService } from '../../../../shared/services/navigate-
     ]),
   ],
 })
-export class LeftsideConsoleComponent implements OnInit {
+export class LeftsideConsoleComponent  {
   protected state: WritableSignal<'open' | 'close'> = signal('close');
-  protected listVisible: boolean = false;
-  @Input() public categoryTitleArray!: Array<string>;
+  protected listVisible = false;
+  @Input() public categoryTitleArray!: string[];
 
   constructor(private navigateService: NavigateAndurlinfoService) {}
 
-  ngOnInit(): void {
-    
-  }
+  
 
   changeMenu(): void {
-    let helperArray = [...this.categoryTitleArray];
+    const helperArray = [...this.categoryTitleArray];
     if (this.state() === 'close') {
       this.state.set('open');
       setTimeout(() => {

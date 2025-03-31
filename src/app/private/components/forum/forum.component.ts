@@ -3,7 +3,7 @@ import { LeftsideConsoleComponent } from './leftside-console/leftside-console.co
 import { CardElementComponent } from './card-element/card-element.component';
 import { forum } from '../../../shared/interfaces/forum';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
+
 import { transition, trigger, useAnimation } from '@angular/animations';
 import { fadeInAnimations } from '../../../shared/animations/fadeIn.animation';
 import { CollectionService } from '../../../shared/services/collection.service';
@@ -28,14 +28,14 @@ import { Subscription } from 'rxjs';
   ],
 })
 export class ForumComponent implements OnInit {
-  public forumObjectArray: Array<forum> = [];
-  public categoryArray: Array<string> = [];
-  public loaded: boolean = false;
-  private keyArray: Array<string> = [];
+  public forumObjectArray: forum[] = [];
+  public categoryArray: string[] = [];
+  public loaded = false;
+  private keyArray: string[] = [];
 
   constructor(private collectionService: CollectionService) {}
   ngOnInit(): void {
-    let collectionSub: Subscription = this.collectionService
+    const collectionSub: Subscription = this.collectionService
       .getCollectionByCollectionAndDoc('Categories', 'all')
       .subscribe((data) => {
         if (data) {
@@ -47,10 +47,10 @@ export class ForumComponent implements OnInit {
         }
       });
 
-    let forumKeysSub: Subscription = this.collectionService
+    const forumKeysSub: Subscription = this.collectionService
       .getAllDocByCollectionName('Forums')
       .subscribe((data: any) => {
-        const allInfoFromDatabaseCollection: Array<any> = Object.values(data);
+        const allInfoFromDatabaseCollection: any[] = Object.values(data);
         for (const iterator of allInfoFromDatabaseCollection) {
           if (iterator['docs']) {
             for (const iterator2 of iterator['docs']) {
@@ -60,7 +60,7 @@ export class ForumComponent implements OnInit {
         }
         if (this.keyArray.length) {
           for (const iterator of this.keyArray) {
-            let forumsSub: Subscription = this.collectionService
+            const forumsSub: Subscription = this.collectionService
               .getCollectionByCollectionAndDoc('Forums', iterator)
               .subscribe((data) => {
                 console.log(iterator);
