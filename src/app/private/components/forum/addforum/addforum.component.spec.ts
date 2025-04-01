@@ -39,6 +39,7 @@ fdescribe('AddforumComponent', () => {
   let navigateAndurlinfoServiceMock: jasmine.SpyObj<NavigateAndurlinfoService>;
   let popupServiceMock: jasmine.SpyObj<PopupService>;
   let userServiceMock: jasmine.SpyObj<UserService>;
+
   beforeEach(async () => {
     collectionServiceMock = jasmine.createSpyObj('CollectionService', [
       'getCollectionByCollectionAndDoc',
@@ -80,7 +81,79 @@ fdescribe('AddforumComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  describe('Basic state check', () => {
+    it('should create', () => {
+      expect(component).toBeTruthy();
+    });
+
+    it('loaded should be true', () => {
+      expect(component.loaded).toBeTruthy();
+    });
+
+    it('forumForm should be exist', () => {
+      expect(component['forumForm']).toBeDefined();
+      console.log(component['forumForm']);
+    });
+
+    it('categoryTitleArray should not be empty', () => {
+      expect(component['categoryTitleArray']).toEqual([
+        'category1',
+        'category2',
+      ]);
+    });
+
+    it('popupDialogTemplate should not be empty', () => {
+      expect(component['popupDialogTemplate']).toEqual({ ...dialogTemplate });
+    });
+
+    it('fullName should not be correct', () => {
+      expect(component['fullName']).toEqual(author(userTemplate));
+      console.log(author(userTemplate));
+    });
+  });
+
+  describe('Functions', () => {
+    it('back function is correct', () => {
+      const html: HTMLElement = fixture.nativeElement;
+      const button = html.querySelector('#own-back-button');
+      button!.dispatchEvent(new Event('click'));
+      expect(navigateAndurlinfoServiceMock.navigate).toHaveBeenCalledOnceWith(
+        true,
+        'forum'
+      );
+    });
+
+    it('clearFormFields function is correct', () => {
+      component['forumForm'].get('category')?.setValue('category1');
+      component['forumForm'].get('title')?.setValue('tester');
+      component['forumForm']
+        .get('content')
+        ?.setValue(
+          'it is a simple long text, because the it must be minimum 60 character'
+        );
+      component.clearFormFields();
+      expect(component['forumForm'].get('category')!.value).toBeFalsy();
+      expect(component['forumForm'].get('title')!.value).toBeFalsy();
+      expect(component['forumForm'].get('content')!.value).toBeFalsy();
+    });
+
+    /*
+
+    it('check function is correct', () => {
+      component['forumForm'].get('category')?.setValue('category1');
+      component['forumForm'].get('title')?.setValue('tester');
+      component['forumForm']
+        .get('content')
+        ?.setValue(
+          'it is a simple long text, because the it must be minimum 60 character'
+        );
+
+        component.check()
+        expect(component['popupDialogTemplate'].title).toEqual('Hozzáadod?')
+       
+
+    });
+
+    */
   });
 });

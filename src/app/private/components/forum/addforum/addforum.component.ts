@@ -88,7 +88,7 @@ export class AddforumComponent implements OnInit {
     this.forumForm.reset();
   }
 
-  check() {
+  check():void {
     if (this.forumForm.valid) {
       this.popupDialogTemplate.title = 'Hozzáadod?';
       this.popupDialogTemplate.content =

@@ -18,7 +18,7 @@ const forumTemplate: forum = {
   category: 'Category',
 };
 
-fdescribe('CardElementComponent', () => {
+describe('CardElementComponent', () => {
   let component: CardElementComponent;
   let fixture: ComponentFixture<CardElementComponent>;
   let navigateAndurlinfoServiceMock: jasmine.SpyObj<NavigateAndurlinfoService>;
