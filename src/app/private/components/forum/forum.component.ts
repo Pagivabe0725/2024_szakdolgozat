@@ -32,11 +32,13 @@ export class ForumComponent implements OnInit {
   public categoryArray: string[] = [];
   public loaded = false;
   private keyArray: string[] = [];
+  private collectionSub?:Subscription;
+  private forumKeysSub?:Subscription;
 
   constructor(private collectionService: CollectionService) {}
   ngOnInit(): void {
     
-    const collectionSub: Subscription = this.collectionService
+     this.collectionSub = this.collectionService
       .getCollectionByCollectionAndDoc('Categories', 'all')
       .subscribe((data) => {
         if (data) {
@@ -44,11 +46,11 @@ export class ForumComponent implements OnInit {
           this.categoryArray = this.categoryArray.concat(
             Object.values(data)[0]
           );
-          collectionSub.unsubscribe();
+          this.collectionSub!.unsubscribe();
         }
       });
 
-    const forumKeysSub: Subscription = this.collectionService
+    this.forumKeysSub= this.collectionService
       .getAllDocByCollectionName('Forums')
       .subscribe((data: any) => {
         const allInfoFromDatabaseCollection: any[] = Object.values(data);
@@ -73,7 +75,7 @@ export class ForumComponent implements OnInit {
         } else {
           this.loaded = true;
         }
-        forumKeysSub.unsubscribe();
+        this.forumKeysSub!.unsubscribe();
       });
   }
 }
