@@ -2,8 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ForumComponent } from './forum.component';
 import { CollectionService } from '../../../shared/services/collection.service';
-import { of, throwError } from 'rxjs';
+import { Observable, firstValueFrom, of, throwError } from 'rxjs';
 import { Timestamp } from '@angular/fire/firestore';
+import { forum } from '../../../shared/interfaces/forum';
 
 // Mock adatok definiálása
 const mockCategoryResponse = {
@@ -14,11 +15,37 @@ const mockForumResponse = {
 };
 const mockForumDetails = { forumName: 'Test Forum' };
 
+const forumTemplate: forum = {
+  title: 'first',
+  id: '1',
+  userId: '1',
+  text: 'It is a test text',
+  author: 'Tester',
+  date: Timestamp.now(),
+  commentsIdArray: [],
+  dislikeArray: [],
+  likeArray: [],
+  category: mockCategoryResponse[0][0],
+};
+
+const forumTemplate2: forum = {
+  title: 'first',
+  id: '2',
+  userId: '2',
+  text: 'It is a test text too',
+  author: 'Tester2',
+  date: Timestamp.now(),
+  commentsIdArray: [],
+  dislikeArray: [],
+  likeArray: [],
+  category: mockCategoryResponse[0][1],
+};
+
 function randoNumber(): number {
   return Math.floor(Math.random() * 1000);
 }
 
-fdescribe('ForumComponent', () => {
+describe('ForumComponent', () => {
   let component: ForumComponent;
   let fixture: ComponentFixture<ForumComponent>;
   let collectionServiceMock: jasmine.SpyObj<CollectionService>;
@@ -51,6 +78,14 @@ fdescribe('ForumComponent', () => {
 
     it('categoryArray should be empty', () => {
       expect(component['keyArray']).toEqual([]);
+    });
+
+    it('collectionSub should be undefined', () => {
+      expect(component['collectionSub']).not.toBeDefined();
+    });
+
+    it('forumKeysSub should be undefined', () => {
+      expect(component['forumKeysSub']).not.toBeDefined();
     });
   });
 
@@ -112,6 +147,12 @@ fdescribe('ForumComponent', () => {
     it('HTML structure should not be contains app-spinner', () => {
       expect(html.querySelector('app-spinner')).toBeFalsy();
     });
+    it('collectionSub should be definied', () => {
+      expect(component['collectionSub']).toBeDefined();
+    });
+    it('forumKeysSub should be definied', () => {
+      expect(component['forumKeysSub']).toBeDefined();
+    });
   });
 
   describe('Observables', () => {
@@ -120,8 +161,19 @@ fdescribe('ForumComponent', () => {
         'getCollectionByCollectionAndDoc',
         'getAllDocByCollectionName',
       ]);
-      collectionServiceMock.getCollectionByCollectionAndDoc.and.returnValue(
-        of(mockCategoryResponse)
+      collectionServiceMock.getCollectionByCollectionAndDoc.and.callFake(
+        (collectionName, docName) => {
+          if (collectionName === 'Categories') {
+            return of(mockCategoryResponse);
+          } else {
+            if (collectionName === 'Forums' && docName === 'forum1') {
+              return of(forumTemplate);
+            } else if (collectionName === 'Forums' && docName === 'forum2') {
+              return of(forumTemplate2);
+            }
+          }
+          return of(null);
+        }
       );
       collectionServiceMock.getAllDocByCollectionName.and.returnValue(
         of(mockForumResponse)
@@ -151,6 +203,35 @@ fdescribe('ForumComponent', () => {
 
     it('forumKeysSub working', async () => {
       expect(component['keyArray']).toEqual(['forum1', 'forum2']);
+    });
+
+    it('Forum details are correct', async () => {
+      let result = await firstValueFrom(
+        collectionServiceMock.getCollectionByCollectionAndDoc(
+          'Categories',
+          'all'
+        )
+      );
+      expect(result).toEqual(mockCategoryResponse);
+
+      result = await firstValueFrom(
+        collectionServiceMock.getCollectionByCollectionAndDoc(
+          'Forums',
+          'forum1'
+        )
+      );
+      expect(result).toEqual(forumTemplate);
+
+      result = await firstValueFrom(
+        collectionServiceMock.getCollectionByCollectionAndDoc(
+          'Forums',
+          'forum2'
+        )
+      );
+      expect(result).toEqual(forumTemplate2);
+
+      console.log('//////');
+      console.log(component.forumObjectArray);
     });
   });
 });

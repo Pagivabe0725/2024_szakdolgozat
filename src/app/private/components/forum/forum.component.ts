@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { LeftsideConsoleComponent } from './leftside-console/leftside-console.component';
 import { CardElementComponent } from './card-element/card-element.component';
 import { forum } from '../../../shared/interfaces/forum';
@@ -27,18 +27,17 @@ import { Subscription } from 'rxjs';
     ]),
   ],
 })
-export class ForumComponent implements OnInit {
+export class ForumComponent implements OnInit, OnDestroy {
   public forumObjectArray: forum[] = [];
   public categoryArray: string[] = [];
   public loaded = false;
   private keyArray: string[] = [];
-  private collectionSub?:Subscription;
-  private forumKeysSub?:Subscription;
+  private collectionSub?: Subscription;
+  private forumKeysSub?: Subscription;
 
   constructor(private collectionService: CollectionService) {}
   ngOnInit(): void {
-    
-     this.collectionSub = this.collectionService
+    this.collectionSub = this.collectionService
       .getCollectionByCollectionAndDoc('Categories', 'all')
       .subscribe((data) => {
         if (data) {
@@ -50,7 +49,9 @@ export class ForumComponent implements OnInit {
         }
       });
 
-    this.forumKeysSub= this.collectionService
+      
+
+    this.forumKeysSub = this.collectionService
       .getAllDocByCollectionName('Forums')
       .subscribe((data: any) => {
         const allInfoFromDatabaseCollection: any[] = Object.values(data);
@@ -77,5 +78,10 @@ export class ForumComponent implements OnInit {
         }
         this.forumKeysSub!.unsubscribe();
       });
+  }
+
+  ngOnDestroy(): void {
+    this.collectionSub?.unsubscribe()
+    this.forumKeysSub?.unsubscribe()
   }
 }
