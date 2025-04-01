@@ -17,78 +17,84 @@ fdescribe('ForumComponent', () => {
   let fixture: ComponentFixture<ForumComponent>;
   let collectionServiceMock: jasmine.SpyObj<CollectionService>;
 
-describe('Before ngOnInit',()=>{
+  describe('Before ngOnInit', () => {
+    beforeEach(async () => {
+      await TestBed.configureTestingModule({
+        imports: [BrowserAnimationsModule, ForumComponent],
+        providers: [
+          { provide: CollectionService, useValue: collectionServiceMock },
+        ],
+      }).compileComponents();
 
-  beforeEach(async()=>{
-    await TestBed.configureTestingModule({
-      imports: [BrowserAnimationsModule, ForumComponent],
-      providers: [
-        { provide: CollectionService, useValue: collectionServiceMock },
-      ],
-    }).compileComponents();
+      fixture = TestBed.createComponent(ForumComponent);
+      component = fixture.componentInstance;
+    });
 
-    fixture = TestBed.createComponent(ForumComponent);
-    component = fixture.componentInstance;
-  })
+    it('loaded should be false', () => {
+      expect(component.loaded).toBeFalse();
+    });
 
-  it('loaded should be false',()=>{
-    expect(component.loaded).toBeFalse()
-  })
+    it('forumObjectArray should be empty', () => {
+      expect(component.forumObjectArray).toEqual([]);
+    });
 
-  it('forumObjectArray should be empty',()=>{
-    expect(component.forumObjectArray).toEqual([])
-  })
+    it('categoryArray should be empty', () => {
+      expect(component.categoryArray).toEqual([]);
+    });
 
-  it('categoryArray should be empty',()=>{
-    expect(component.categoryArray).toEqual([])
-  })
-
-  it('categoryArray should be empty',()=>{
-    expect(component['keyArray']).toEqual([])
-  })
-
-})
-
-describe('Basics',()=>{
-
-
-  beforeEach(async () => {
-    collectionServiceMock = jasmine.createSpyObj('CollectionService', [
-      'getCollectionByCollectionAndDoc',
-      'getAllDocByCollectionName',
-    ]);
-
-    collectionServiceMock.getCollectionByCollectionAndDoc.and.returnValue(of({ 0: ['category1', 'category2'] }));
-    collectionServiceMock.getAllDocByCollectionName.and.returnValue(of({
-      someKey: { docs: [{ id: 'forum1' }, { id: 'forum2' }] }
-    }));
-
-    await TestBed.configureTestingModule({
-      imports: [BrowserAnimationsModule, ForumComponent],
-      providers: [
-        { provide: CollectionService, useValue: collectionServiceMock },
-      ],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(ForumComponent);
-    component = fixture.componentInstance;
-  
-    fixture.detectChanges();
+    it('categoryArray should be empty', () => {
+      expect(component['keyArray']).toEqual([]);
+    });
   });
 
- it('should create',()=>{
-  expect(component).toBeTruthy()
- })
+  describe('Basics', () => {
+    beforeEach(async () => {
+      collectionServiceMock = jasmine.createSpyObj('CollectionService', [
+        'getCollectionByCollectionAndDoc',
+        'getAllDocByCollectionName',
+      ]);
 
-it('loaded should be true',()=>{
-  expect(component.loaded).toBeTrue()
-})
+      collectionServiceMock.getCollectionByCollectionAndDoc.and.returnValue(
+        of(mockCategoryResponse)
+      );
+      collectionServiceMock.getAllDocByCollectionName.and.returnValue(
+        of(mockForumResponse)
+      );
 
-it('valami',()=>{
-  console.log(component.forumObjectArray)
-})
+      await TestBed.configureTestingModule({
+        imports: [BrowserAnimationsModule, ForumComponent],
+        providers: [
+          { provide: CollectionService, useValue: collectionServiceMock },
+        ],
+      }).compileComponents();
 
-})
+      fixture = TestBed.createComponent(ForumComponent);
+      component = fixture.componentInstance;
 
+      fixture.detectChanges();
+    });
 
+    it('should create', () => {
+      expect(component).toBeTruthy();
+    });
+
+    it('loaded should be true', () => {
+      expect(component.loaded).toBeTrue();
+    });
+
+    it('forumObjectArray should not be empty', () => {
+      expect(component.forumObjectArray).not.toEqual([]);
+      console.log(component.forumObjectArray);
+    });
+
+    it('categoryArray should not be empty', () => {
+      expect(component.categoryArray).not.toEqual([]);
+      console.log(component.categoryArray);
+    });
+
+    it('keyArray should not be empty', () => {
+      expect(component['keyArray']).not.toEqual([]);
+      console.log(component['keyArray']);
+    });
+  });
 });
