@@ -3,21 +3,25 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ForumComponent } from './forum.component';
 import { CollectionService } from '../../../shared/services/collection.service';
 import { of, throwError } from 'rxjs';
+import { Timestamp } from '@angular/fire/firestore';
+
+// Mock adatok definiálása
+const mockCategoryResponse = { 0: ['category1', 'category2'] };
+const mockForumResponse = {
+  someKey: { docs: [{ id: 'forum1' }, { id: 'forum2' }] },
+};
+const mockForumDetails = { forumName: 'Test Forum' };
 
 fdescribe('ForumComponent', () => {
   let component: ForumComponent;
   let fixture: ComponentFixture<ForumComponent>;
   let collectionServiceMock: jasmine.SpyObj<CollectionService>;
 
-  beforeEach(async () => {
-    collectionServiceMock = jasmine.createSpyObj('CollectionService', [
-      'getCollectionByCollectionAndDoc',
-      'getAllDocByCollectionName',
-    ]);
+describe('Before ngOnInit',()=>{
 
+  beforeEach(async()=>{
     await TestBed.configureTestingModule({
-      
-      imports: [BrowserAnimationsModule,ForumComponent],
+      imports: [BrowserAnimationsModule, ForumComponent],
       providers: [
         { provide: CollectionService, useValue: collectionServiceMock },
       ],
@@ -25,40 +29,66 @@ fdescribe('ForumComponent', () => {
 
     fixture = TestBed.createComponent(ForumComponent);
     component = fixture.componentInstance;
-    // Mock adatok definiálása
-    const mockCategoryResponse = { 0: ['category1', 'category2'] };
-    const mockForumResponse = {
-      someKey: { docs: [{ id: 'forum1' }, { id: 'forum2' }] },
-    };
-    const mockForumDetails = { forumName: 'Test Forum' };
+  })
 
-    collectionServiceMock.getCollectionByCollectionAndDoc.and.returnValues(
-      of(mockCategoryResponse),
-    );
-    collectionServiceMock.getAllDocByCollectionName.and.returnValue(
-      of(mockForumResponse)
-    );
-    fixture.detectChanges()
+  it('loaded should be false',()=>{
+    expect(component.loaded).toBeFalse()
+  })
+
+  it('forumObjectArray should be empty',()=>{
+    expect(component.forumObjectArray).toEqual([])
+  })
+
+  it('categoryArray should be empty',()=>{
+    expect(component.categoryArray).toEqual([])
+  })
+
+  it('categoryArray should be empty',()=>{
+    expect(component['keyArray']).toEqual([])
+  })
+
+})
+
+describe('Basics',()=>{
+
+
+  beforeEach(async () => {
+    collectionServiceMock = jasmine.createSpyObj('CollectionService', [
+      'getCollectionByCollectionAndDoc',
+      'getAllDocByCollectionName',
+    ]);
+
+    collectionServiceMock.getCollectionByCollectionAndDoc.and.returnValue(of({ 0: ['category1', 'category2'] }));
+    collectionServiceMock.getAllDocByCollectionName.and.returnValue(of({
+      someKey: { docs: [{ id: 'forum1' }, { id: 'forum2' }] }
+    }));
+
+    await TestBed.configureTestingModule({
+      imports: [BrowserAnimationsModule, ForumComponent],
+      providers: [
+        { provide: CollectionService, useValue: collectionServiceMock },
+      ],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(ForumComponent);
+    component = fixture.componentInstance;
+  
+    fixture.detectChanges();
   });
 
-  it('should create', async () => {   
-    expect(component).toBeTruthy();
-  });
+ it('should create',()=>{
+  expect(component).toBeTruthy()
+ })
 
-  it('should contain app-spinner',()=>{
-    const html:HTMLElement = fixture.nativeElement
-    console.log(html.querySelector('app-spinner'))
-    expect(html.getElementsByTagName('app-spinner')).toBeTruthy()
-  })
+it('loaded should be true',()=>{
+  expect(component.loaded).toBeTrue()
+})
 
-  it('should contain app-leftside-console',()=>{
-    const html:HTMLElement = fixture.nativeElement
-    expect(html.getElementsByTagName('app-leftside-console')).toBeTruthy()
-  })
+it('valami',()=>{
+  console.log(component.forumObjectArray)
+})
 
-  it('should contain app-leftside-console',()=>{
-    const html:HTMLElement = fixture.nativeElement
-    expect(html.getElementsByTagName('app-leftside-console')).toBeTruthy()
-  })
+})
+
 
 });

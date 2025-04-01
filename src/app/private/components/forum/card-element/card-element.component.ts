@@ -17,7 +17,8 @@ export class CardElementComponent {
 
   constructor(private navigateService: NavigateAndurlinfoService) {}
   isDarkmode(): boolean {
-    return localStorage.getItem('theme')!.includes('dark');
+    const theme = localStorage.getItem('theme');
+    return theme ? theme.includes('dark') : false;
   }
 
   loadForumElement(): void {

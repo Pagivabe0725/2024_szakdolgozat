@@ -96,7 +96,8 @@ export class ForumElementInfoComponent implements OnInit, OnDestroy {
   }
 
   isDarkmode(): boolean {
-    return localStorage.getItem('theme')!.includes('dark');
+    const theme = localStorage.getItem('theme');
+    return theme ? theme.includes('dark') : false;
   }
 
   didYouInteractWithThis(action: 'likeArray' | 'dislikeArray'): boolean {
@@ -226,7 +227,9 @@ export class ForumElementInfoComponent implements OnInit, OnDestroy {
                   this.actualForumElement!.id,
                   this.actualForumElement
                 )
-                .then(() => {console.log('comment action')})
+                .then(() => {
+                  console.log('comment action');
+                })
                 .catch((err) => console.error(err));
             })
             .catch((err) => {
