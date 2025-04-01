@@ -13,7 +13,7 @@ import { NavigateAndurlinfoService } from '../../../../shared/services/navigate-
   styleUrl: './card-element.component.scss',
 })
 export class CardElementComponent {
-  @Input() public actiualForumMessage!: forum;
+  @Input() public actualForumMessage!: forum;
 
   constructor(private navigateService: NavigateAndurlinfoService) {}
   isDarkmode(): boolean {
@@ -22,7 +22,6 @@ export class CardElementComponent {
   }
 
   loadForumElement(): void {
-    console.log(this.actiualForumMessage.id);
-    this.navigateService.navigate(false, this.actiualForumMessage.id);
+    this.navigateService.navigate(false, this.actualForumMessage.id);
   }
 }
