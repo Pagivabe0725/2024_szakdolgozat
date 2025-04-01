@@ -53,14 +53,12 @@ import { NavigateAndurlinfoService } from '../../../../shared/services/navigate-
     ]),
   ],
 })
-export class LeftsideConsoleComponent  {
+export class LeftsideConsoleComponent {
   protected state: WritableSignal<'open' | 'close'> = signal('close');
   protected listVisible = false;
   @Input() public categoryTitleArray!: string[];
 
   constructor(private navigateService: NavigateAndurlinfoService) {}
-
-  
 
   changeMenu(): void {
     const helperArray = [...this.categoryTitleArray];
@@ -82,7 +80,6 @@ export class LeftsideConsoleComponent  {
   }
 
   addButtonAction(): void {
-    console.log('HALIKA');
     this.navigateService.navigate(true, 'addForum');
   }
 }
