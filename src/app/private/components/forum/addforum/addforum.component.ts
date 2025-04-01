@@ -128,8 +128,8 @@ export class AddforumComponent implements OnInit {
       .getUserInfoByUserId(localStorage.getItem('userId')!)
       .subscribe((data) => {
         const user: user = data as user;
-        this.fullName= author(user)
-        nameSub.unsubscribe()
+        this.fullName = author(user);
+        nameSub.unsubscribe();
       });
   }
 
