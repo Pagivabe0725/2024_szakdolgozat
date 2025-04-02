@@ -1,4 +1,4 @@
-<div id="own-addForum_component-container-div" [formGroup]="forumForm">
+<form id="own-addForum_component-container-div" [formGroup]="forumForm">
   <div
     id="own-addForum_component-header-div"
     class="own-addForum_component-shared-div-properties"
@@ -11,12 +11,20 @@
           <mat-option [value]="item">{{ item }}</mat-option>
           }
         </mat-select>
+        @if (forumForm.get('category')?.hasError('required')) {
+        <mat-error>Kötelezően kitöltendő</mat-error>
+        }
       </mat-form-field>
     </div>
     <div>
       <mat-form-field>
         <mat-label>Cím</mat-label>
         <input matInput type="=text" formControlName="title" />
+        @if (forumForm.get('title')?.hasError('required')) {
+        <mat-error>Kötelezően kitöltendő</mat-error>
+        } @else if (forumForm.get('title')?.hasError('minlength')) {
+        <mat-error>Túl rövid(6)</mat-error>
+        }
       </mat-form-field>
     </div>
   </div>
@@ -27,17 +35,24 @@
     <mat-form-field>
       <mat-label>Üzenet</mat-label>
       <textarea matInput id="textarea" formControlName="content"></textarea>
+      @if (forumForm.get('content')?.hasError('required')) {
+        <mat-error>Kötelezően kitöltendő</mat-error>
+        } @else if (forumForm.get('content')?.hasError('minlength')) {
+        <mat-error>Túl rövid(50)</mat-error>
+        }
     </mat-form-field>
   </div>
   <div
     id="own-addForum_component-footer-div"
     class="own-addForum_component-shared-div-properties"
   >
-    <button mat-flat-button (click)="back()" id="own-back-button">Mégsem</button>
+    <button mat-flat-button (click)="back()" id="own-back-button">
+      Mégsem
+    </button>
     <button mat-flat-button>Piszkozat mentése</button>
     <button mat-flat-button (click)="clearFormFields()">
       Képernyő tisztítása
     </button>
     <button mat-flat-button (click)="check()">Hozzáad</button>
   </div>
-</div>
+</form>
