@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -12,7 +12,7 @@ import {
 import { CollectionService } from '../../../../shared/services/collection.service';
 import { Dialog } from '../../../../shared/interfaces/dialog';
 import { PopupService } from '../../../../shared/services/popup.service';
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { forum } from '../../../../shared/interfaces/forum';
 import { Timestamp } from '@angular/fire/firestore';
 import { UserService } from '../../../../shared/services/user.service';
@@ -32,7 +32,7 @@ import { author } from '../../../../shared/Functions/author';
   templateUrl: './addforum.component.html',
   styleUrl: './addforum.component.scss',
 })
-export class AddforumComponent implements OnInit {
+export class AddforumComponent implements OnInit, OnDestroy {
   @HostListener('window:resize', ['$event']) reSize() {
     this.textAreaRowCalculator();
   }
@@ -48,6 +48,8 @@ export class AddforumComponent implements OnInit {
   public loaded = false;
   private popupDialogTemplate: Dialog;
   private fullName = '';
+  private nameSub?: Subscription;
+  private collectionSub?: Subscription;
 
   constructor(
     private navigationService: NavigateAndurlinfoService,
@@ -62,15 +64,19 @@ export class AddforumComponent implements OnInit {
   ngOnInit(): void {
     this.getUserName();
     this.textAreaRowCalculator();
-    const collectionSub: Subscription = this.collectionService
+    this.collectionSub = this.collectionService
       .getCollectionByCollectionAndDoc('Categories', 'all')
       .subscribe((data) => {
         if (data) {
           this.categoryTitleArray = Object.values(data)[0];
           this.loaded = true;
-          collectionSub.unsubscribe();
         }
       });
+  }
+
+  ngOnDestroy(): void {
+    this.nameSub?.unsubscribe();
+    this.collectionSub?.unsubscribe();
   }
 
   textAreaRowCalculator(): void {
@@ -88,7 +94,7 @@ export class AddforumComponent implements OnInit {
     this.forumForm.reset();
   }
 
-  check():void {
+  check(): void {
     if (this.forumForm.valid) {
       this.popupDialogTemplate.title = 'Hozzáadod?';
       this.popupDialogTemplate.content =
@@ -97,16 +103,16 @@ export class AddforumComponent implements OnInit {
       const popupSub: Subscription = this.popupService
         .displayPopUp(this.popupDialogTemplate)
         .afterClosed()
+        .pipe(take(1))
         .subscribe((result) => {
           if (result) {
-            this.addForm();
+            this.addForum();
           }
-          popupSub.unsubscribe();
         });
     }
   }
 
-  addForm() {
+  addForum() {
     const actualForumElement: forum = this.createForumObject();
     this.collectionService
       .createCollectionDoc('Forums', actualForumElement.id, actualForumElement)
@@ -124,12 +130,11 @@ export class AddforumComponent implements OnInit {
   }
 
   getUserName(): void {
-    const nameSub: Subscription = this.userService
+    this.nameSub = this.userService
       .getUserInfoByUserId(localStorage.getItem('userId')!)
       .subscribe((data) => {
         const user: user = data as user;
         this.fullName = author(user);
-        nameSub.unsubscribe();
       });
   }
 
