@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, forkJoin, take } from 'rxjs';
 import { CollectionService } from '../../../../shared/services/collection.service';
 import { forum } from '../../../../shared/interfaces/forum';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -63,32 +63,34 @@ export class ForumElementInfoComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.httpSub = this.actRout.params.subscribe((data) => {
       this.actualForumId = data['forumId'];
+
       this.userSub = this.userService
         .getUserInfoByUserId(localStorage.getItem('userId')!)
         .subscribe((data) => {
           this.actualUser = data as user;
-        });
-    });
-
-    if (this.actualForumId) {
-      this.forumSub = this.collectionService
-        .getCollectionByCollectionAndDoc('Forums', this.actualForumId)
-        .subscribe((data) => {
-          this.actualForumElement = data as forum;
-          this.commentsOfActualForumElementArray = [];
-
-          for (const comment of this.actualForumElement.commentsIdArray) {
-            this.commentSub = this.collectionService
-              .getCollectionByCollectionAndDoc('ForumComments', comment)
-              .subscribe((commentData) => {
-                this.commentsOfActualForumElementArray?.push(
-                  commentData as forumComment
-                );
-              });
-          }
           this.loaded = true;
         });
-    }
+
+      if (this.actualForumId) {
+        this.forumSub = this.collectionService
+          .getCollectionByCollectionAndDoc('Forums', this.actualForumId)
+          .pipe(take(1))
+          .subscribe((data) => {
+            this.actualForumElement = data as forum;
+
+            const commentObservables =
+              this.actualForumElement.commentsIdArray.map((commentId) =>
+                this.collectionService
+                  .getCollectionByCollectionAndDoc('ForumComments', commentId)
+                  .pipe(take(1))
+              );
+            forkJoin(commentObservables).subscribe((comments) => {
+              this.commentsOfActualForumElementArray =
+                comments as forumComment[];
+            });
+          });
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -99,7 +101,6 @@ export class ForumElementInfoComponent implements OnInit, OnDestroy {
     this.popupSub?.unsubscribe();
     this.dialogSub?.unsubscribe();
   }
-  
 
   isDarkmode(): boolean {
     const theme = localStorage.getItem('theme');
@@ -211,6 +212,7 @@ export class ForumElementInfoComponent implements OnInit, OnDestroy {
     this.popupDialogTemplate.hasInput = true;
     this.popupDialogTemplate.action = true;
     this.popupDialogTemplate.title = 'Kommentelj';
+
     this.popupService
       .displayPopUp(this.popupDialogTemplate)
       .afterClosed()
@@ -220,11 +222,9 @@ export class ForumElementInfoComponent implements OnInit, OnDestroy {
           this.collectionService
             .createCollectionDoc('ForumComments', comment.id, comment)
             .then(() => {
-              this.actualForumElement!.commentsIdArray =
-                this.arrayService.addElementToArray(
-                  comment.id,
-                  this.actualForumElement!.commentsIdArray
-                );
+              this.actualForumElement!.commentsIdArray.push(comment.id);
+
+              this.commentsOfActualForumElementArray?.push(comment);
               this.collectionService
                 .updateDatas(
                   'Forums',
