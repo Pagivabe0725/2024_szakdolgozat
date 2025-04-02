@@ -39,7 +39,7 @@ const dialogRef = {
   afterClosed: () => of(true), // vagy of(false), attól függ mit szeretnél
 } as Partial<MatDialogRef<PopupComponent>> as MatDialogRef<PopupComponent>;
 
-fdescribe('AddforumComponent', () => {
+describe('AddforumComponent', () => {
   let component: AddforumComponent;
   let fixture: ComponentFixture<AddforumComponent>;
   let collectionServiceMock: jasmine.SpyObj<CollectionService>;
