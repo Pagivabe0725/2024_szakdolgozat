@@ -267,38 +267,49 @@ fdescribe('ForumElementInfoComponent', () => {
 
     describe('numberOfSpecificAction', () => {
       let forumTemplate2: forum;
-
+      let rand: number;
       beforeEach(() => {
-        forumTemplate2 = { ...forumTemplate };
+        rand = Math.floor(Math.random() * 9) + 1;
+        forumTemplate2 = {
+          ...forumTemplate,
+          likeArray: Array(rand).fill('1'),
+          dislikeArray: Array(rand).fill('1'),
+          commentsIdArray: Array(rand).fill('1'),
+        };
       });
 
       it('shold return the length of likeArray', () => {
-        forumTemplate2.likeArray = ['1', '1'];
+        //forumTemplate2.likeArray = ['1', '1'];
         component['actualForumElement'] = { ...forumTemplate2 };
-        expect(component.numberOfSpecificAction('likeArray')).toEqual(2);
+        expect(component.numberOfSpecificAction('likeArray')).toEqual(rand);
       });
       it('shold return the length of dislikeArray', () => {
-        forumTemplate2.dislikeArray = ['1', '1'];
+        //forumTemplate2.dislikeArray = ['1', '1'];
         component['actualForumElement'] = { ...forumTemplate2 };
-        expect(component.numberOfSpecificAction('dislikeArray')).toEqual(2);
+        expect(component.numberOfSpecificAction('dislikeArray')).toEqual(rand);
       });
       it('shold return the length of commentsIdArray', () => {
-        forumTemplate2.commentsIdArray = ['1', '1'];
+        //forumTemplate2.commentsIdArray = ['1', '1'];
         component['actualForumElement'] = { ...forumTemplate2 };
-        expect(component.numberOfSpecificAction('commentsIdArray')).toEqual(2);
+        expect(component.numberOfSpecificAction('commentsIdArray')).toEqual(
+          rand
+        );
       });
 
       it('shold 0 if likeArray is empty', () => {
+        forumTemplate2.likeArray = [];
         component['actualForumElement'] = { ...forumTemplate2 };
         expect(component.numberOfSpecificAction('likeArray')).toEqual(0);
       });
 
       it('shold 0 if dislikeArray is empty', () => {
+        forumTemplate2.dislikeArray = [];
         component['actualForumElement'] = { ...forumTemplate2 };
         expect(component.numberOfSpecificAction('dislikeArray')).toEqual(0);
       });
 
       it('shold 0 if commentsIdArray is empty', () => {
+        forumTemplate2.commentsIdArray = [];
         component['actualForumElement'] = { ...forumTemplate2 };
         expect(component.numberOfSpecificAction('commentsIdArray')).toEqual(0);
       });
@@ -306,6 +317,35 @@ fdescribe('ForumElementInfoComponent', () => {
       it('should return 0 if actualForumElement is undefined', () => {
         component['actualForumElement'] = undefined;
         expect(component.numberOfSpecificAction('likeArray')).toBe(0);
+      });
+    });
+
+    describe('isMyForumElement', () => {
+      let forumTemplate2: forum;
+
+      beforeAll(() => {
+        spyOn(localStorage, 'getItem').and.returnValue('1');
+      });
+      beforeEach(() => {
+        forumTemplate2 = { ...forumTemplate };
+      });
+
+      it('should return true when both forum IDs are the same', () => {
+        component['actualForumElement'] = { ...forumTemplate2 };
+        console.log(component['actualForumElement']);
+        expect(component.isMyForumElement()).toBeTrue();
+      });
+
+      it('should return false when both forum IDs are different', () => {
+        forumTemplate2.userId = '2';
+        component['actualForumElement'] = { ...forumTemplate2 };
+        console.log(component['actualForumElement']);
+        expect(component.isMyForumElement()).toBeFalse();
+      });
+
+      it('should return false when actualForumElement is undefined', () => {
+        console.log(component['actualForumElement']);
+        expect(component.isMyForumElement()).toBeFalse();
       });
     });
   });
