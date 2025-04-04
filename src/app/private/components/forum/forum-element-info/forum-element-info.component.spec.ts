@@ -12,6 +12,7 @@ import { of } from 'rxjs';
 import { forum } from '../../../../shared/interfaces/forum';
 import { Timestamp } from '@angular/fire/firestore';
 import { user } from '../../../../shared/interfaces/user';
+import { ArrayService } from '../../../services/array.service';
 
 const dialogTemplate: Dialog = {
   width: '70%',
@@ -35,9 +36,31 @@ const forumTemplate: forum = {
   likeArray: [],
   category: 'category1',
 };
+const forumTemplate2: forum = {
+  title: 'first',
+  id: '1',
+  userId: '1',
+  text: 'It is a test text',
+  author: 'Tester',
+  date: Timestamp.now(),
+  commentsIdArray: [],
+  dislikeArray: ['UserId'],
+  likeArray: ['UserId'],
+  category: 'category1',
+};
 
 const userTemplate: user = {
   id: 'UserId',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  lastLogin: Timestamp.now(),
+  email: 'test@gmail.com',
+  city: undefined,
+  telNumber: '06905777170',
+  dateOfRegistration: Timestamp.now(),
+};
+const userTemplate2: user = {
+  id: 'UserId2',
   firstName: 'firstName',
   lastName: 'lastName',
   lastLogin: Timestamp.now(),
@@ -54,6 +77,7 @@ fdescribe('ForumElementInfoComponent', () => {
   let popupServiceMock: jasmine.SpyObj<PopupService>;
   let navigationServiceMock: jasmine.SpyObj<NavigateAndurlinfoService>;
   let userServiceMock: jasmine.SpyObj<UserService>;
+  let arrayServiceMock: jasmine.SpyObj<ArrayService>
   //let ActivatedRouteMock: jasmine.SpyObj<ActivatedRoute>;
 
   /*
@@ -82,6 +106,8 @@ fdescribe('ForumElementInfoComponent', () => {
       'getUserInfoByUserId',
     ]);
 
+    arrayServiceMock = jasmine.createSpyObj('arrayService',['elementInArray'])
+
     await TestBed.configureTestingModule({
       imports: [ForumElementInfoComponent, CommonModule],
       providers: [
@@ -89,6 +115,7 @@ fdescribe('ForumElementInfoComponent', () => {
         { provide: PopupService, useValue: popupServiceMock },
         { provide: NavigateAndurlinfoService, useValue: navigationServiceMock },
         { provide: UserService, useValue: userServiceMock },
+        { provide: ArrayService, useValue: arrayServiceMock },
         {
           provide: ActivatedRoute,
           useValue: { params: of({ forumId: 'forumId123' }) },
@@ -126,6 +153,17 @@ fdescribe('ForumElementInfoComponent', () => {
     it('actualForumElement should be undefined', () => {
       expect(component['actualForumElement']).not.toBeDefined();
     });
+    it('popupDialogTemplate should be defined', () => {
+      expect(component['popupDialogTemplate']).toBeDefined();
+      expect(component['popupDialogTemplate']).toEqual({ ...dialogTemplate });
+    });
+
+    it('actualUser should be undefined', () => {
+      expect(component['actualUser']).not.toBeDefined();
+    });
+    it('loaded should be undefined', () => {
+      expect(component['loaded']).toBeFalse();
+    });
   });
 
   describe('Basics', () => {
@@ -139,6 +177,8 @@ fdescribe('ForumElementInfoComponent', () => {
         of({ ...userTemplate })
       );
       popupServiceMock.getTemplateDialog.and.returnValue({ ...dialogTemplate });
+
+      
     });
 
     it('should create', () => {
@@ -166,8 +206,54 @@ fdescribe('ForumElementInfoComponent', () => {
 
     it('actualForumElement should be defined', async () => {
       await component.ngOnInit();
-      console.log(component['actualForumElement'])
+      console.log(component['actualForumElement']);
       expect(component['actualForumElement']).toBeDefined();
     });
+    it('actualUser should be defined', async () => {
+      await component.ngOnInit();
+      expect(component['actualUser']).toBeDefined();
+    });
+
+    it('loaded should be defined', async () => {
+      await component.ngOnInit();
+      expect(component['loaded']).toBeTrue();
+    });
   });
+
+  describe('Functions:',()=>{
+
+    beforeEach(()=>{
+      arrayServiceMock.elementInArray.and.callFake((element, array) => array.includes(element));
+
+    })   
+    
+    describe('isDarkmode',()=>{
+      it('should return false from isDarkmode if theme is not dark',()=>{
+        spyOn(localStorage,'getItem').and.returnValue('light')
+        expect(component.isDarkmode()).toBeFalse()
+      })
+      it('should return false from isDarkmode if theme is not dark (empty theme)',()=>{
+        spyOn(localStorage,'getItem').and.returnValue('')
+        expect(component.isDarkmode()).toBeFalse()
+      })
+  
+      it('should return true from isDarkmode if theme is dark',()=>{
+        spyOn(localStorage,'getItem').and.returnValue('dark-something')
+        expect(component.isDarkmode()).toBeTrue()
+      })
+    })
+
+
+    describe('didYouInteractWithThis',()=>{
+
+
+      it('should return true from didYouInteractWithThis if userId in likeArray',()=>{
+        component['actualForumElement']={...forumTemplate2}
+        spyOn(localStorage,'getItem').and.returnValue('UserId')
+        expect(component.didYouInteractWithThis('likeArray')).toBeTrue()
+      })
+
+    })
+   
+  })
 });

@@ -46,7 +46,7 @@ export class ForumElementInfoComponent implements OnInit, OnDestroy {
   private popupDialogTemplate: Dialog;
   private actualUser?: user;
   public loaded = false;
-  private commentSub?: Subscription;
+//  private commentSub?: Subscription;
 
   constructor(
     private actRout: ActivatedRoute,
@@ -96,7 +96,7 @@ export class ForumElementInfoComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.httpSub?.unsubscribe();
     this.forumSub?.unsubscribe();
-    this.commentSub?.unsubscribe();
+   // this.commentSub?.unsubscribe();
     this.userSub?.unsubscribe();
     this.popupSub?.unsubscribe();
     this.dialogSub?.unsubscribe();
