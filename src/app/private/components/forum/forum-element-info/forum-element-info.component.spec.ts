@@ -84,7 +84,12 @@ fdescribe('ForumElementInfoComponent', () => {
       'getUserInfoByUserId',
     ]);
 
-    arrayServiceMock = jasmine.createSpyObj('arrayService', ['elementInArray']);
+    arrayServiceMock = jasmine.createSpyObj('arrayService', [
+      'elementInArray',
+      'deleteElementFromArray',
+      'addElementToArray',
+      'getIndex',
+    ]);
 
     await TestBed.configureTestingModule({
       imports: [ForumElementInfoComponent, CommonModule],
@@ -332,20 +337,95 @@ fdescribe('ForumElementInfoComponent', () => {
 
       it('should return true when both forum IDs are the same', () => {
         component['actualForumElement'] = { ...forumTemplate2 };
-        console.log(component['actualForumElement']);
+        //console.log(component['actualForumElement']);
         expect(component.isMyForumElement()).toBeTrue();
       });
 
       it('should return false when both forum IDs are different', () => {
         forumTemplate2.userId = '2';
         component['actualForumElement'] = { ...forumTemplate2 };
-        console.log(component['actualForumElement']);
+        //console.log(component['actualForumElement']);
         expect(component.isMyForumElement()).toBeFalse();
       });
 
       it('should return false when actualForumElement is undefined', () => {
-        console.log(component['actualForumElement']);
+        //console.log(component['actualForumElement']);
         expect(component.isMyForumElement()).toBeFalse();
+      });
+    });
+
+    describe('arrayAction', () => {
+      let forumTemplate2: forum;
+      beforeEach(() => {
+        forumTemplate2 = { ...forumTemplate };
+        spyOn(localStorage, 'getItem').and.returnValue('userId');
+        arrayServiceMock.elementInArray.and.returnValue(true);
+        arrayServiceMock.getIndex.and.returnValue(0);
+        arrayServiceMock.deleteElementFromArray.and.stub();
+        arrayServiceMock.addElementToArray.and.stub();
+        /*
+        arrayServiceMock.deleteElementFromArray.and.callFake(
+          (element, array) => {
+            array.splice(array.indexOf(element), 1);
+            return array;
+          }
+        );
+
+        arrayServiceMock.addElementToArray.and.callFake((element, array) => {
+          array.push(element);
+          return array;
+        });
+        */
+      });
+
+      it('should delete id from likeArray if already interacted', () => {
+        forumTemplate2.likeArray = ['userId'];
+        component['actualForumElement'] = { ...forumTemplate2 };
+        component.arrayAction('likeArray');
+        expect(arrayServiceMock.deleteElementFromArray).toHaveBeenCalledWith(
+          'userId',
+          forumTemplate2.likeArray
+        );
+      });
+
+      it('should delete id from dislikeArray if already interacted', () => {
+        forumTemplate2.dislikeArray = ['userId'];
+        component['actualForumElement'] = { ...forumTemplate2 };
+        component.arrayAction('dislikeArray');
+        expect(arrayServiceMock.deleteElementFromArray).toHaveBeenCalledWith(
+          'userId',
+          forumTemplate2.dislikeArray
+        );
+      });
+
+      it('should add id to dislikeArray if not interacted yet', () => {
+        arrayServiceMock.elementInArray.and.returnValue(false);
+        component['actualForumElement'] = { ...forumTemplate2 };
+        component.arrayAction('dislikeArray');
+        expect(arrayServiceMock.addElementToArray).toHaveBeenCalledWith(
+          'userId',
+          forumTemplate2.dislikeArray
+        );
+      });
+
+      it('should add id to likeArray if not interacted yet', () => {
+        arrayServiceMock.elementInArray.and.returnValue(false);
+        component['actualForumElement'] = { ...forumTemplate2 };
+        component.arrayAction('likeArray');
+        expect(arrayServiceMock.addElementToArray).toHaveBeenCalledWith(
+          'userId',
+          forumTemplate2.likeArray
+        );
+
+        console.log(component['actualForumElement']);
+      });
+    });
+
+    describe('Interact', () => {
+      let forumTemplate2: forum;
+
+      beforeEach(() => {
+        forumTemplate2 = { ...forumTemplate };
       });
     });
   });
