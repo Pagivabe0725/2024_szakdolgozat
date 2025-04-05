@@ -175,9 +175,9 @@ export class ForumElementInfoComponent implements OnInit, OnDestroy {
           this.actualForumElement!
         )
         .then(() => {
-          console.log('sikeres');
+          //console.log('sikeres');
         })
-        .catch((err) => console.error(err));
+        .catch((err) => {});
     }
   }
 

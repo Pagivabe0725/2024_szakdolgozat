@@ -426,6 +426,51 @@ fdescribe('ForumElementInfoComponent', () => {
 
       beforeEach(() => {
         forumTemplate2 = { ...forumTemplate };
+        spyOn(component, 'isMyForumElement').and.returnValue(false);
+        spyOn(component, 'arrayAction');
+      });
+
+      it('should add userId to likeArray when not yet interacted', () => {
+        component['actualForumElement'] = { ...forumTemplate2 };
+        spyOn(component, 'didYouInteractWithThis').and.returnValue(false);
+        collectionServiceMock.updateDatas.and.returnValue(Promise.resolve());
+
+        component.Interact('likeArray');
+
+        expect(component.arrayAction).toHaveBeenCalledWith('likeArray');
+      });
+
+      it('should remove userId from dislikeArray when switching to likeArray', () => {
+        component['actualForumElement'] = { ...forumTemplate2 };
+        spyOn(component, 'didYouInteractWithThis').and.returnValue(true);
+
+        collectionServiceMock.updateDatas.and.returnValue(Promise.resolve());
+        component.Interact('likeArray');
+        expect(component.arrayAction).toHaveBeenCalledWith('likeArray');
+        expect(component.arrayAction).toHaveBeenCalledWith('dislikeArray');
+      });
+
+      it('should do nothing if user interacts with their own post', () => {
+        component['actualForumElement'] = { ...forumTemplate2 };
+        ///így kellene fellülírni egy korábban elspy-olt cuccost
+        (component.isMyForumElement as jasmine.Spy).and.returnValue(true);
+        component.Interact('likeArray');
+        expect(component.arrayAction).not.toHaveBeenCalled();
+      });
+
+      it('should remove like if user dislikes and already liked', () => {
+        component['actualForumElement'] = { ...forumTemplate2 };
+
+        (component.isMyForumElement as jasmine.Spy).and.returnValue(false);
+        spyOn(component, 'didYouInteractWithThis')
+          .withArgs('likeArray')
+          .and.returnValue(true);
+        collectionServiceMock.updateDatas.and.returnValue(Promise.resolve());
+
+        component.Interact('dislikeArray');
+
+        expect(component.arrayAction).toHaveBeenCalledWith('dislikeArray');
+        expect(component.arrayAction).toHaveBeenCalledWith('likeArray');
       });
     });
   });
