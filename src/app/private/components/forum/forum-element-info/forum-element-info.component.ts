@@ -257,6 +257,17 @@ export class ForumElementInfoComponent implements OnInit, OnDestroy {
     } as forumComment;
   }
 
+   loadComments(): void {
+    const commentObservables = this.actualForumElement!.commentsIdArray.map((commentId) =>
+      this.collectionService.getCollectionByCollectionAndDoc('ForumComments', commentId).pipe(take(1))
+    );
+  
+    forkJoin(commentObservables).subscribe((comments) => {
+      this.commentsOfActualForumElementArray = comments as forumComment[];
+      this.loaded = true;
+    });
+  }
+
   deleteComment(index: number) {
     const commentIdToDelete: string =
       this.actualForumElement!.commentsIdArray[index];
@@ -284,7 +295,9 @@ export class ForumElementInfoComponent implements OnInit, OnDestroy {
                   this.actualForumElement
                 )
                 .then(() => {
-                  window.location.reload();
+                  //window.location.reload();
+                  //this.loaded=true
+                  this.loadComments();
                 })
                 .catch((err) => {
                   console.error(err);

@@ -488,6 +488,8 @@ fdescribe('ForumElementInfoComponent', () => {
     describe('deleteForumElement', () => {
       let dialogRef;
       let forumTemplate2: forum;
+
+     
       beforeEach(() => {
         dialogRef = { afterClosed: () => of(true) } as Partial<
           MatDialogRef<PopupComponent>
@@ -500,17 +502,21 @@ fdescribe('ForumElementInfoComponent', () => {
       it('popup should contain the correct content', async () => {
         dialogRef = { afterClosed: () => of(null) };
         collectionServiceMock.deleteDatas.and.returnValue(Promise.resolve());
+        collectionServiceMock.updateDatas.and.returnValue(Promise.resolve());
         forumTemplate2.commentsIdArray.push(commentTemplate.id);
         component['actualForumElement'] = forumTemplate2;
-      
-        await component.deleteComment(0);
-      console.log(component['popupDialogTemplate'])
-        expect(component['popupDialogTemplate'].title).toBe('Biztosan?');
-        expect(component['popupDialogTemplate'].content).toBe(
-          'Biztosan törölni szeretnéd a kommentet?'
-        );
-        expect(component['popupDialogTemplate'].action).toBeTrue();
-        expect(component['popupDialogTemplate'].hasInput).toBeFalse();
+
+        await component.deleteForumElement();
+        console.log(component['popupDialogTemplate']);
+        expect(popupServiceMock.displayPopUp).toHaveBeenCalledWith({
+          title: 'Biztosan',
+          content: 'Biztosan törölni szeretné ezt a bejegyzést?',
+          hasInput: false,
+          action: true,
+          width: '70%',
+          height: '70%',
+          hostComponent: 'ForumElementInfoComponent',
+        } as Dialog);
       });
     });
   });
