@@ -196,7 +196,7 @@ export class ForumElementInfoComponent implements OnInit, OnDestroy {
             this.collectionService
               .deleteDatas('ForumComments', iterator)
               .then(() => {
-                console.log('delete forum element');
+                //console.log('delete forum element');
               })
               .catch((err) => console.error(err));
           }
@@ -206,7 +206,6 @@ export class ForumElementInfoComponent implements OnInit, OnDestroy {
               this.navigationService.navigate(true, 'forum');
             })
             .catch((err) => console.error(err));
-        } else {
         }
       });
   }
@@ -235,9 +234,11 @@ export class ForumElementInfoComponent implements OnInit, OnDestroy {
                   this.actualForumElement
                 )
                 .then(() => {
-                  console.log('comment action');
+                  //console.log('comment action');
                 })
-                .catch((err) => console.error(err));
+                .catch((err) => {
+                  /*console.error(err)*/
+                });
             })
             .catch((err) => {
               console.error(err);

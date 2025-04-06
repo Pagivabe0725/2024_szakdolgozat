@@ -13,6 +13,9 @@ import { forum } from '../../../../shared/interfaces/forum';
 import { Timestamp } from '@angular/fire/firestore';
 import { user } from '../../../../shared/interfaces/user';
 import { ArrayService } from '../../../services/array.service';
+import { MatDialogRef } from '@angular/material/dialog';
+import { PopupComponent } from '../../../../shared/components/popup/popup.component';
+import { forumComment } from '../../../../shared/interfaces/forumComment';
 
 const dialogTemplate: Dialog = {
   width: '70%',
@@ -46,6 +49,14 @@ const userTemplate: user = {
   city: undefined,
   telNumber: '06905777170',
   dateOfRegistration: Timestamp.now(),
+};
+
+const commentTemplate: forumComment = {
+  content: 'something',
+  id: '1',
+  userid: '1',
+  author: 'Tester',
+  date: Timestamp.now(),
 };
 
 fdescribe('ForumElementInfoComponent', () => {
@@ -471,6 +482,35 @@ fdescribe('ForumElementInfoComponent', () => {
 
         expect(component.arrayAction).toHaveBeenCalledWith('dislikeArray');
         expect(component.arrayAction).toHaveBeenCalledWith('likeArray');
+      });
+    });
+
+    describe('deleteForumElement', () => {
+      let dialogRef;
+      let forumTemplate2: forum;
+      beforeEach(() => {
+        dialogRef = { afterClosed: () => of(true) } as Partial<
+          MatDialogRef<PopupComponent>
+        > as MatDialogRef<PopupComponent>;
+
+        popupServiceMock.displayPopUp.and.returnValue(dialogRef as any);
+        forumTemplate2 = { ...forumTemplate };
+      });
+
+      it('popup should contain the correct content', async () => {
+        dialogRef = { afterClosed: () => of(null) };
+        collectionServiceMock.deleteDatas.and.returnValue(Promise.resolve());
+        forumTemplate2.commentsIdArray.push(commentTemplate.id);
+        component['actualForumElement'] = forumTemplate2;
+      
+        await component.deleteComment(0);
+      console.log(component['popupDialogTemplate'])
+        expect(component['popupDialogTemplate'].title).toBe('Biztosan?');
+        expect(component['popupDialogTemplate'].content).toBe(
+          'Biztosan törölni szeretnéd a kommentet?'
+        );
+        expect(component['popupDialogTemplate'].action).toBeTrue();
+        expect(component['popupDialogTemplate'].hasInput).toBeFalse();
       });
     });
   });
