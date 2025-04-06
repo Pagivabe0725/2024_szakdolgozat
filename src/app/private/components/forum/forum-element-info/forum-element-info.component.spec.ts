@@ -566,9 +566,82 @@ fdescribe('ForumElementInfoComponent', () => {
       });
     });
 
+    describe('commentAction', () => {
+      let forumTemplate2: forum;
+      let comment: forumComment;
+      let dialogRef: MatDialogRef<PopupComponent>;
 
-    describe('commentAction',()=>{
-      
-    })
+      beforeEach(() => {
+        forumTemplate2 = { ...forumTemplate, commentsIdArray: [] };
+        comment = { ...commentTemplate };
+
+        component['actualForumElement'] = forumTemplate2;
+        component['actualUser'] = { ...userTemplate };
+
+        spyOn(component, 'createComment').and.returnValue(comment);
+
+        dialogRef = { afterClosed: () => of('Ez egy komment szöveg') } as any;
+        popupServiceMock.displayPopUp.and.returnValue(dialogRef);
+        collectionServiceMock.createCollectionDoc.and.returnValue(
+          Promise.resolve()
+        );
+        collectionServiceMock.updateDatas.and.returnValue(Promise.resolve());
+      });
+
+      it('should open popup and add comment when user submits', async () => {
+        await component.commentAction();
+
+        expect(popupServiceMock.displayPopUp).toHaveBeenCalled();
+        expect(component.createComment).toHaveBeenCalledWith(
+          'Ez egy komment szöveg'
+        );
+        expect(collectionServiceMock.createCollectionDoc).toHaveBeenCalledWith(
+          'ForumComments',
+          comment.id,
+          comment
+        );
+        expect(collectionServiceMock.updateDatas).toHaveBeenCalledWith(
+          'Forums',
+          forumTemplate2.id,
+          forumTemplate2
+        );
+        expect(forumTemplate2.commentsIdArray).toContain(comment.id);
+        expect(component['commentsOfActualForumElementArray']).toContain(
+          comment
+        );
+      });
+
+      it('should not add comment if popup is cancelled', async () => {
+        dialogRef = { afterClosed: () => of(null) } as any;
+        popupServiceMock.displayPopUp.and.returnValue(dialogRef);
+        await component.commentAction();
+        expect(
+          collectionServiceMock.createCollectionDoc
+        ).not.toHaveBeenCalled();
+        expect(collectionServiceMock.updateDatas).not.toHaveBeenCalled();
+      });
+
+      it('should invite updateDatas function catch part', async () => {
+        dialogRef = { afterClosed: () => of('something') } as any;
+        popupServiceMock.displayPopUp.and.returnValue(dialogRef);
+        collectionServiceMock.updateDatas.and.returnValue(
+          Promise.reject('error')
+        );
+        await component.commentAction();
+        expect(collectionServiceMock.createCollectionDoc).toHaveBeenCalled();
+        expect(collectionServiceMock.updateDatas).toHaveBeenCalled();
+      });
+
+      it('should invite createCollectionDoc function catch part', async () => {
+        dialogRef = { afterClosed: () => of('something') } as any;
+        popupServiceMock.displayPopUp.and.returnValue(dialogRef);
+        collectionServiceMock.createCollectionDoc.and.returnValue(
+          Promise.reject('error')
+        );
+        await component.commentAction();
+        expect(collectionServiceMock.createCollectionDoc).toHaveBeenCalled();
+        expect(collectionServiceMock.updateDatas).not.toHaveBeenCalled();
+      });
+    });
   });
 });
