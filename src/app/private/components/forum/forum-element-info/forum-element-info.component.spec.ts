@@ -489,18 +489,15 @@ fdescribe('ForumElementInfoComponent', () => {
       let dialogRef;
       let forumTemplate2: forum;
 
-     
       beforeEach(() => {
-        dialogRef = { afterClosed: () => of(true) } as Partial<
-          MatDialogRef<PopupComponent>
-        > as MatDialogRef<PopupComponent>;
-
-        popupServiceMock.displayPopUp.and.returnValue(dialogRef as any);
         forumTemplate2 = { ...forumTemplate };
       });
 
       it('popup should contain the correct content', async () => {
-        dialogRef = { afterClosed: () => of(null) };
+        dialogRef = { afterClosed: () => of(true) } as Partial<
+          MatDialogRef<PopupComponent>
+        > as MatDialogRef<PopupComponent>;
+        popupServiceMock.displayPopUp.and.returnValue(dialogRef);
         collectionServiceMock.deleteDatas.and.returnValue(Promise.resolve());
         collectionServiceMock.updateDatas.and.returnValue(Promise.resolve());
         forumTemplate2.commentsIdArray.push(commentTemplate.id);
@@ -518,6 +515,60 @@ fdescribe('ForumElementInfoComponent', () => {
           hostComponent: 'ForumElementInfoComponent',
         } as Dialog);
       });
+
+      it('should invite deleteDatas function with correct arguments', async () => {
+        dialogRef = { afterClosed: () => of(true) } as Partial<
+          MatDialogRef<PopupComponent>
+        > as MatDialogRef<PopupComponent>;
+        popupServiceMock.displayPopUp.and.returnValue(dialogRef);
+        collectionServiceMock.deleteDatas.and.returnValue(Promise.resolve());
+        forumTemplate2.commentsIdArray.push(commentTemplate.id);
+        component['actualForumElement'] = forumTemplate2;
+
+        await component.deleteForumElement();
+        expect(collectionServiceMock.deleteDatas).toHaveBeenCalled();
+      });
+
+      it('should not invite deleteDatas function with correct arguments', async () => {
+        dialogRef = { afterClosed: () => of(false) } as Partial<
+          MatDialogRef<PopupComponent>
+        > as MatDialogRef<PopupComponent>;
+        popupServiceMock.displayPopUp.and.returnValue(dialogRef);
+        collectionServiceMock.deleteDatas.and.returnValue(Promise.resolve());
+        forumTemplate2.commentsIdArray.push(commentTemplate.id);
+        component['actualForumElement'] = forumTemplate2;
+        await component.deleteForumElement();
+        expect(collectionServiceMock.deleteDatas).not.toHaveBeenCalled();
+      });
+
+      it('should not invite deleteDatas function with correct arguments', async () => {
+        dialogRef = { afterClosed: () => of(false) } as Partial<
+          MatDialogRef<PopupComponent>
+        > as MatDialogRef<PopupComponent>;
+        popupServiceMock.displayPopUp.and.returnValue(dialogRef);
+        collectionServiceMock.deleteDatas.and.returnValue(Promise.resolve());
+        forumTemplate2.commentsIdArray.push(commentTemplate.id);
+        component['actualForumElement'] = forumTemplate2;
+        await component.deleteForumElement();
+        expect(collectionServiceMock.deleteDatas).not.toHaveBeenCalled();
+      });
+
+      it('should invite deleteDatas function catch part', async () => {
+        dialogRef = { afterClosed: () => of(true) } as Partial<
+          MatDialogRef<PopupComponent>
+        > as MatDialogRef<PopupComponent>;
+        popupServiceMock.displayPopUp.and.returnValue(dialogRef);
+        collectionServiceMock.deleteDatas.and.returnValue(Promise.reject());
+        forumTemplate2.commentsIdArray.push(commentTemplate.id);
+        component['actualForumElement'] = forumTemplate2;
+        await component.deleteForumElement();
+        expect(collectionServiceMock.deleteDatas).toHaveBeenCalled();
+      });
     });
+
+
+    describe('commentAction',()=>{
+      
+    })
   });
 });
