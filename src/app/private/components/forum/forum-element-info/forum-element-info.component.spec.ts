@@ -483,6 +483,22 @@ fdescribe('ForumElementInfoComponent', () => {
         expect(component.arrayAction).toHaveBeenCalledWith('dislikeArray');
         expect(component.arrayAction).toHaveBeenCalledWith('likeArray');
       });
+
+
+      it('shouldexecute catch par', () => {
+        component['actualForumElement'] = { ...forumTemplate2 };
+
+        (component.isMyForumElement as jasmine.Spy).and.returnValue(false);
+        spyOn(component, 'didYouInteractWithThis')
+          .withArgs('likeArray')
+          .and.returnValue(true);
+        collectionServiceMock.updateDatas.and.returnValue(Promise.reject());
+
+        component.Interact('dislikeArray');
+
+        expect(component.arrayAction).toHaveBeenCalledWith('dislikeArray');
+        expect(component.arrayAction).toHaveBeenCalledWith('likeArray');
+      });
     });
 
     describe('deleteForumElement', () => {
@@ -643,5 +659,223 @@ fdescribe('ForumElementInfoComponent', () => {
         expect(collectionServiceMock.updateDatas).not.toHaveBeenCalled();
       });
     });
+
+    describe('createComment', () => {
+      beforeEach(() => {
+        component['actualUser'] = {
+          firstName: 'Elek',
+          lastName: 'Teszt',
+        } as user;
+
+        spyOn(localStorage, 'getItem').and.returnValue('testUserId');
+      });
+
+      it('should return a forumComment object with correct values', () => {
+        const content = 'Ez egy teszt komment.';
+        const comment = component.createComment(content);
+
+        expect(comment).toBeDefined();
+        expect(comment.id).toBeTruthy();
+        expect(comment.date).toBeInstanceOf(Timestamp); ////nézd még át
+        expect(comment.author).toBe('Teszt Elek');
+        expect(comment.userid).toBe('testUserId');
+        expect(comment.content).toBe(content);
+      });
+    });
+    describe('loadComments', () => {
+      const commentIds = ['c1', 'c2', 'c3'];
+      const mockComments: forumComment[] = [
+        {
+          id: 'c1',
+          content: 'Comment 1',
+          author: 'Test',
+          date: Timestamp.now(),
+          userid: 'u1',
+        },
+        {
+          id: 'c2',
+          content: 'Comment 2',
+          author: 'Test',
+          date: Timestamp.now(),
+          userid: 'u1',
+        },
+        {
+          id: 'c3',
+          content: 'Comment 3',
+          author: 'Test',
+          date: Timestamp.now(),
+          userid: 'u1',
+        },
+      ];
+
+      beforeEach(() => {
+        component['actualForumElement'] = {
+          ...forumTemplate,
+          commentsIdArray: [...commentIds],
+        };
+
+        collectionServiceMock.getCollectionByCollectionAndDoc.and.callFake(
+          (colName: string, id: string) => {
+            const comment = mockComments.find((c) => c.id === id);
+            return of(comment);
+          }
+        );
+      });
+
+      it('should load comments and set loaded to true', async () => {
+        component.loadComments();
+
+        expect(
+          collectionServiceMock.getCollectionByCollectionAndDoc
+        ).toHaveBeenCalledTimes(commentIds.length);
+        commentIds.forEach((id) => {
+          expect(
+            collectionServiceMock.getCollectionByCollectionAndDoc
+          ).toHaveBeenCalledWith('ForumComments', id);
+        });
+
+        await fixture.whenStable();
+
+        expect(component['commentsOfActualForumElementArray']).toEqual(
+          mockComments
+        );
+        expect(component.loaded).toBeTrue();
+      });
+    });
+
+    describe('deleteComment', () => {
+      let dialogRef;
+      let forumTemplate2: forum;
+
+      beforeEach(() => {
+        spyOn(component, 'loadComments');
+
+        forumTemplate2 = {
+          ...forumTemplate,
+          commentsIdArray: [commentTemplate.id],
+        };
+
+        component['actualForumElement'] = { ...forumTemplate2 };
+
+        dialogRef = {
+          afterClosed: () => of(true),
+        } as unknown as MatDialogRef<PopupComponent>;
+
+        popupServiceMock.displayPopUp.and.returnValue(dialogRef);
+        collectionServiceMock.deleteDatas.and.returnValue(Promise.resolve());
+        collectionServiceMock.updateDatas.and.returnValue(Promise.resolve());
+      });
+
+      it('should delete comment, update forum, and reload comments when confirmed', async () => {
+        await component.deleteComment(0);
+        await fixture.whenStable();
+
+        expect(popupServiceMock.displayPopUp).toHaveBeenCalledWith({
+          title: 'Biztosan?',
+          content: 'Biztosan törölni szeretnéd a kommentet?',
+          hasInput: false,
+          action: true,
+          width: '70%',
+          height: '70%',
+          hostComponent: 'ForumElementInfoComponent',
+        });
+
+        expect(collectionServiceMock.deleteDatas).toHaveBeenCalledWith(
+          'ForumComments',
+          commentTemplate.id
+        );
+        expect(collectionServiceMock.updateDatas).toHaveBeenCalledWith(
+          'Forums',
+          forumTemplate.id,
+          jasmine.objectContaining({
+            commentsIdArray: [],
+          })
+        );
+
+        expect(component.loadComments).toHaveBeenCalled();
+      });
+
+      it('should do nothing if user cancels the popup', async () => {
+        dialogRef = {
+          afterClosed: () => of(false),
+        } as unknown as MatDialogRef<PopupComponent>;
+        popupServiceMock.displayPopUp.and.returnValue(dialogRef);
+
+        await component.deleteComment(0);
+
+        expect(collectionServiceMock.deleteDatas).not.toHaveBeenCalled();
+        expect(collectionServiceMock.updateDatas).not.toHaveBeenCalled();
+        expect(component.loadComments).not.toHaveBeenCalled();
+      });
+
+      it('should execute updateDatas function catch part', async () => {
+        const forumTemplate2 = {
+          ...forumTemplate,
+          commentsIdArray: [commentTemplate.id],
+        };
+  
+        component['actualForumElement'] = forumTemplate2;
+  
+        const dialogRef = {
+          afterClosed: () => of(true),
+        } as unknown as MatDialogRef<PopupComponent>;
+  
+        popupServiceMock.displayPopUp.and.returnValue(dialogRef);
+        collectionServiceMock.deleteDatas.and.returnValue(Promise.resolve());
+        collectionServiceMock.updateDatas.and.returnValue(
+          Promise.reject('update failed')
+        );
+  
+        await component.deleteComment(0);
+        await fixture.whenStable();
+  
+        expect(collectionServiceMock.updateDatas).toHaveBeenCalled();
+      });
+  
+      it('should execute deleteDatas function catch part', async () => {
+        const forumTemplate2 = {
+          ...forumTemplate,
+          commentsIdArray: [commentTemplate.id],
+        };
+  
+        component['actualForumElement'] = forumTemplate2;
+  
+        const dialogRef = {
+          afterClosed: () => of(true),
+        } as unknown as MatDialogRef<PopupComponent>;
+  
+        popupServiceMock.displayPopUp.and.returnValue(dialogRef);
+        collectionServiceMock.deleteDatas.and.returnValue(
+          Promise.reject('delete failed')
+        );
+        collectionServiceMock.updateDatas.and.returnValue(Promise.resolve());
+  
+        await component.deleteComment(0);
+        await fixture.whenStable();
+  
+        expect(collectionServiceMock.deleteDatas).toHaveBeenCalledWith(
+          'ForumComments',
+          commentTemplate.id
+        );
+      });
+    });
+
+    describe('isMyComment', () => {
+      it('should return true if userId matches the comment author', () => {
+        spyOn(localStorage, 'getItem').and.returnValue('123');
+        expect(component.isMyComment('123')).toBeTrue();
+      });
+    
+      it('should return false if userId does not match the comment author', () => {
+        spyOn(localStorage, 'getItem').and.returnValue('123');
+        expect(component.isMyComment('456')).toBeFalse();
+      });
+    
+      it('should return false if localStorage returns null', () => {
+        spyOn(localStorage, 'getItem').and.returnValue(null);
+        expect(component.isMyComment('456')).toBeFalse();
+      });
+    });
+    
   });
 });
