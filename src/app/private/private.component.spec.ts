@@ -51,7 +51,7 @@ const routes: Routes = [
 let router: Router;
 let location: Location;
 
-fdescribe('PrivateComponent', () => {
+describe('PrivateComponent', () => {
   let component: PrivateComponent;
   let fixture: ComponentFixture<PrivateComponent>;
   let compiled: HTMLElement;

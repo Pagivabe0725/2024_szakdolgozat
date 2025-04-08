@@ -22,7 +22,7 @@ function randomActualInfoBoard(): infoboxInMain_component {
   return actualInfoBoard;
 }
 
-describe('InfoboardInMainComponent', () => {
+fdescribe('InfoboardInMainComponent', () => {
   let component: InfoboardInMainComponent;
   let fixture: ComponentFixture<InfoboardInMainComponent>;
 
@@ -95,5 +95,42 @@ describe('InfoboardInMainComponent', () => {
     localStorage.setItem('Theme', 'light-valami');
 
     expect(component.getTheme()).toBeFalse();
+  });
+
+  it('should apply the correct background color to the infoboard-in-main component', async () => {
+    await fixture.detectChanges();
+
+    const html: HTMLElement = fixture.nativeElement;
+    console.log(html);
+    //let page = html.querySelector('.page-component') as HTMLElement;
+    let mat_card: HTMLElement = html.querySelector('mat-card')!;
+
+    const colors = [
+      { color: '', class: '' },
+      { color: 'primary', class: 'own-primary-background' },
+      { color: 'highlight', class: 'own-primary-highlight-background' },
+      { color: 'accent', class: 'own-accent-background' },
+    ];
+
+    for (const { color, class: expectedClass } of colors) {
+      component.actualInfoBoard = {
+        title: 'soething',
+        text: 'text',
+        color: color as 'primary' | 'accent' | 'highlight' | 'none',
+        icon: 'sunny',
+      };
+      await fixture.detectChanges();
+      mat_card = fixture.nativeElement.querySelector('mat-card') as HTMLElement;
+
+      expect(mat_card.classList.contains('own-primary-background')).toBe(
+        expectedClass === 'own-primary-background'
+      );
+      expect(
+        mat_card.classList.contains('own-primary-highlight-background')
+      ).toBe(expectedClass === 'own-primary-highlight-background');
+      expect(mat_card.classList.contains('own-accent-background')).toBe(
+        expectedClass === 'own-accent-background'
+      );
+    }
   });
 });
