@@ -177,7 +177,7 @@ export class ForumElementInfoComponent implements OnInit, OnDestroy {
         .then(() => {
           //console.log('sikeres');
         })
-        .catch((err) => {});
+        .catch((err) => {console.log(err)});
     }
   }
 
@@ -237,7 +237,7 @@ export class ForumElementInfoComponent implements OnInit, OnDestroy {
                   //console.log('comment action');
                 })
                 .catch((err) => {
-                  /*console.error(err)*/
+                  console.error(err)
                 });
             })
             .catch((err) => {

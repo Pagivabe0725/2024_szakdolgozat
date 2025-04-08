@@ -100,7 +100,7 @@ export class AddforumComponent implements OnInit, OnDestroy {
       this.popupDialogTemplate.content =
         'Biztosan szeretnéd hozzáadni a bejegyzésedet?';
       this.popupDialogTemplate.action = true;
-      const popupSub: Subscription = this.popupService
+       this.popupService
         .displayPopUp(this.popupDialogTemplate)
         .afterClosed()
         .pipe(take(1))

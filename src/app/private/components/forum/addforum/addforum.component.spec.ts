@@ -12,7 +12,7 @@ import { Timestamp } from '@angular/fire/firestore';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogRef } from '@angular/material/dialog';
 import { PopupComponent } from '../../../../shared/components/popup/popup.component';
-import { forum } from '../../../../shared/interfaces/forum';
+
 
 const dialogTemplate: Dialog = {
   width: '70%',

@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ForumComponent } from './forum.component';
 import { CollectionService } from '../../../shared/services/collection.service';
-import { Observable, firstValueFrom, of, throwError } from 'rxjs';
+import { firstValueFrom, of } from 'rxjs';
 import { Timestamp } from '@angular/fire/firestore';
 import { forum } from '../../../shared/interfaces/forum';
 
@@ -13,7 +13,6 @@ const mockCategoryResponse = {
 const mockForumResponse = {
   someKey: { docs: [{ id: 'forum1' }, { id: 'forum2' }] },
 };
-const mockForumDetails = { forumName: 'Test Forum' };
 
 const forumTemplate: forum = {
   title: 'first',
