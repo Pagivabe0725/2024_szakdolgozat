@@ -11,7 +11,7 @@ const infoBoxTemplate: infoboxInMain_component = {
   color: 'primary',
 };
 
-fdescribe('PageComponent', () => {
+describe('PageComponent', () => {
   let component: PageComponent;
   let fixture: ComponentFixture<PageComponent>;
 
@@ -50,7 +50,6 @@ fdescribe('PageComponent', () => {
     expect(
       html.querySelector('.own-page_component-grid-display-2column')
     ).toBeTruthy();
-    console.log(html);
   });
 
   it('should display the correct number of columns (3)', async () => {
@@ -66,7 +65,6 @@ fdescribe('PageComponent', () => {
     expect(
       html.querySelector('.own-page_component-grid-display-3column')
     ).toBeTruthy();
-    console.log(html);
   });
 
   it('page component should contain the correct number of "app-infoboard-in-main"', async () => {
@@ -132,5 +130,12 @@ fdescribe('PageComponent', () => {
         expectedClass === 'own-accent-background'
       );
     }
+  });
+
+  it('should not render any cards if input is null', async () => {
+    component.actualInfoBoardArray = null as any;
+    await fixture.detectChanges();
+    const html: HTMLElement = fixture.nativeElement;
+    expect(html.querySelectorAll('app-infoboard-in-main').length).toBe(0);
   });
 });
