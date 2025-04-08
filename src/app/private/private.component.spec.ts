@@ -17,7 +17,19 @@ import { Component } from '@angular/core';
 class DummyForumComponent {}
 
 @Component({
-  template: '<p>Dummy component</p>',
+  template: '<p>Workshop component</p>',
+  standalone: true,
+})
+class DummyWorkshopComponent {}
+
+@Component({
+  template: '<p>Own component</p>',
+  standalone: true,
+})
+class DummyOwnComponent {}
+
+@Component({
+  template: '<p>Main component</p>',
   standalone: true,
 })
 class DummyMainComponent {}
@@ -25,6 +37,15 @@ class DummyMainComponent {}
 const routes: Routes = [
   { path: 'main', component: DummyMainComponent },
   { path: 'forum', component: DummyForumComponent },
+  {
+    path: 'workshop',
+    component: DummyWorkshopComponent,
+  },
+
+  {
+    path: 'own',
+    component: DummyOwnComponent,
+  },
 ];
 
 let router: Router;
@@ -86,7 +107,37 @@ fdescribe('PrivateComponent', () => {
     const html: HTMLElement = fixture.nativeElement;
     const dummy: HTMLElement = html.querySelector('ng-component')!;
     expect(dummy.querySelector('p')!.textContent).toContain('Forum component');
+  });
 
-    console.log(dummy);
+  it('should load DummyForumComponent on navigating to /main', async () => {
+    router.navigate(['/main']);
+
+    await fixture.detectChanges();
+
+    const html: HTMLElement = fixture.nativeElement;
+    const dummy: HTMLElement = html.querySelector('ng-component')!;
+    expect(dummy.querySelector('p')!.textContent).toContain('Main component');
+  });
+
+  it('should load DummyForumComponent on navigating to /workshop', async () => {
+    router.navigate(['/workshop']);
+
+    await fixture.detectChanges();
+
+    const html: HTMLElement = fixture.nativeElement;
+    const dummy: HTMLElement = html.querySelector('ng-component')!;
+    expect(dummy.querySelector('p')!.textContent).toContain(
+      'Workshop component'
+    );
+  });
+
+  it('should load DummyForumComponent on navigating to /own', async () => {
+    router.navigate(['/own']);
+
+    await fixture.detectChanges();
+
+    const html: HTMLElement = fixture.nativeElement;
+    const dummy: HTMLElement = html.querySelector('ng-component')!;
+    expect(dummy.querySelector('p')!.textContent).toContain('Own component');
   });
 });
