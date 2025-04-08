@@ -140,11 +140,13 @@ fdescribe('MenuComponent', () => {
   });
 
   describe('Functions', () => {
-    it('should switch from light to dark theme correctly for each theme', async () => {
+    beforeEach(() => {
       spyOn(component, 'removeAllCollor').and.callFake(() => {
         document.body.className = '';
       });
+    });
 
+    it('changeDarkness function should switch from light to dark theme correctly for each theme', async () => {
       for (const color of component.colorArray) {
         if (color.includes('light')) {
           document.body.className = '';
@@ -160,9 +162,41 @@ fdescribe('MenuComponent', () => {
           expect(component.mode).toBe('dark');
           expect(component.actualColor).toBe(expectedTheme);
           expect(document.body.classList.contains(expectedTheme)).toBeTrue();
-          console.log();
         }
       }
+    });
+
+    it('should switch actualColor and apply theme class correctly', async () => {
+      for (const fullTheme of component.colorArray) {
+        const [baseColor, mode] = fullTheme.split('-');
+
+        component.actualColor = fullTheme;
+        component.mode = mode as 'light' | 'dark';
+
+        const otherColor = component.colorArray
+          .map((c) => c.split('-')[0])
+          .filter((c) => c !== baseColor)[0];
+
+        const expectedTheme = `${otherColor}-${mode}`;
+
+        await component.changeColor(otherColor);
+        fixture.detectChanges();
+
+        expect(component.actualColor).toBe(expectedTheme);
+        expect(component.mode).toBe(mode);
+        expect(document.body.classList.contains(expectedTheme)).toBeTrue();
+        expect(localStorage.getItem('theme')).toBe(expectedTheme);
+      }
+    });
+
+    it('removeAllCollor should work', async () => {
+      component.actualColor = 'test-theme';
+      document.body.classList.add('test-theme');
+
+      await component.removeAllCollor();
+      fixture.detectChanges();
+
+      expect(document.body.classList.contains('test-theme')).toBeFalse();
     });
   });
 });
