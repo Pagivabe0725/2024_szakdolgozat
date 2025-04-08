@@ -7,8 +7,25 @@ import { Location } from '@angular/common';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { MainComponent } from './components/main/main.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ForumComponent } from './components/forum/forum.component';
+import { Component } from '@angular/core';
 
-const routes: Routes = [{ path: 'main', component: MainComponent }];
+@Component({
+  template: '<p>Forum component</p>',
+  standalone: true,
+})
+class DummyForumComponent {}
+
+@Component({
+  template: '<p>Dummy component</p>',
+  standalone: true,
+})
+class DummyMainComponent {}
+
+const routes: Routes = [
+  { path: 'main', component: DummyMainComponent },
+  { path: 'forum', component: DummyForumComponent },
+];
 
 let router: Router;
 let location: Location;
@@ -19,7 +36,11 @@ fdescribe('PrivateComponent', () => {
   let compiled: HTMLElement;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PrivateComponent, RouterTestingModule.withRoutes(routes),BrowserAnimationsModule],
+      imports: [
+        PrivateComponent,
+        RouterTestingModule.withRoutes(routes),
+        BrowserAnimationsModule,
+      ],
     }).compileComponents();
 
     router = TestBed.inject(Router);
@@ -57,15 +78,15 @@ fdescribe('PrivateComponent', () => {
     expect(outlet).toBeTruthy();
   });
 
-  it('should load MainComponent on navigating to /main', fakeAsync(() => {
-    router.navigate(['/main']);
-    tick();
-    fixture.detectChanges();
-  
-    const html = fixture.nativeElement as HTMLElement;
-    expect(html.querySelector('app-main')).toBeTruthy();
-    console.log(html)
-  }));
+  it('should load DummyForumComponent on navigating to /forum', async () => {
+    router.navigate(['/forum']);
 
+    await fixture.detectChanges();
 
+    const html: HTMLElement = fixture.nativeElement;
+    const dummy: HTMLElement = html.querySelector('ng-component')!;
+    expect(dummy.querySelector('p')!.textContent).toContain('Forum component');
+
+    console.log(dummy);
+  });
 });
