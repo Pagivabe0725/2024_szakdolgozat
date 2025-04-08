@@ -133,4 +133,26 @@ fdescribe('InfoboardInMainComponent', () => {
       );
     }
   });
+
+  it('should display title and text and icon if collectionDisplay is true', async () => {
+    component.actualInfoBoard = {
+      title: 'TestTitle',
+      text: 'TestText',
+      icon: 'star',
+      color: 'primary',
+    };
+    component['collectionDisplay'] = true;
+    fixture.detectChanges();
+  
+    const html:HTMLElement = fixture.nativeElement ;
+    const title = html.querySelector('h1');
+    const text = html.querySelector('p');
+    const icon = html.querySelector('mat-icon')
+
+    expect(title?.textContent).toEqual('TestTitle');
+    expect(text?.textContent).toEqual('TestText');
+    expect(icon?.textContent).toEqual('star');
+
+    console.log(html)
+  });
 });
