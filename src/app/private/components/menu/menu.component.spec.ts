@@ -66,7 +66,7 @@ fdescribe('MenuComponent', () => {
         spyOn(localStorage, 'getItem').and.returnValue(randomColor);
         await component.ngOnInit();
         expect(component.actualColor).toEqual(randomColor);
-        console.log(randomColor);
+        // console.log(randomColor);
       });
     });
 
@@ -88,7 +88,7 @@ fdescribe('MenuComponent', () => {
         spyOn(localStorage, 'getItem').and.returnValue(randomColor);
         await component.ngOnInit();
         expect(component.mode).toEqual('dark');
-        console.log(randomColor);
+        //console.log(randomColor);
       });
 
       it('should set mode if localStorage contains a light theme', async () => {
@@ -102,11 +102,31 @@ fdescribe('MenuComponent', () => {
         spyOn(localStorage, 'getItem').and.returnValue(randomColor);
         await component.ngOnInit();
         expect(component.mode).toEqual('light');
-        console.log(randomColor);
+        // console.log(randomColor);
       });
     });
   });
 
-  describe('HTML structure and DOM rendering', () => {})
+  describe('HTML structure and DOM rendering', () => {
+    let html: HTMLElement;
 
+    beforeEach(() => {
+      html = fixture.nativeElement;
+    });
+
+    it('should collect correct background colors for each theme', async () => {
+      let colorCodeArray: { [color: string]: string }[] = [];
+      let spy = spyOn(localStorage, 'getItem');
+      for (const theme of component.colorArray) {
+        document.body.className = theme; // apply theme
+        fixture.detectChanges();
+
+        const element = fixture.nativeElement.querySelector('mat-toolbar')!;
+        const bg = getComputedStyle(element).backgroundColor;
+        colorCodeArray.push({ [theme]: bg });
+      }
+
+      console.table(colorCodeArray)
+    });
+  });
 });
