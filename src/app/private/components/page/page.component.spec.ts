@@ -103,45 +103,34 @@ fdescribe('PageComponent', () => {
       { ...infoBoxTemplate },
     ];
     await fixture.detectChanges();
-    let html: HTMLElement = fixture.nativeElement;
-    let page: HTMLElement = html.querySelectorAll(
-      '.page-component'
-    )[0] as HTMLElement;
-    console.log(page);
-    expect(page.classList.contains('own-primary-background')).toBeFalsy();
-    expect(
-      page.classList.contains('own-primary-highlight-background')
-    ).toBeFalsy();
-    expect(page.classList.contains('own-accent-background')).toBeFalsy();
 
-    component.color = 'primary';
-    await fixture.detectChanges();
-    html = fixture.nativeElement;
-    page = html.querySelectorAll('.page-component')[0] as HTMLElement;
-    expect(page.classList.contains('own-primary-background')).toBeTruthy();
-    expect(
-      page.classList.contains('own-primary-highlight-background')
-    ).toBeFalsy();
-    expect(page.classList.contains('own-accent-background')).toBeFalsy();
+    const html: HTMLElement = fixture.nativeElement;
+    let page = html.querySelector('.page-component') as HTMLElement;
 
-    component.color = 'highlight';
-    await fixture.detectChanges();
-    html = fixture.nativeElement;
-    page = html.querySelectorAll('.page-component')[0] as HTMLElement;
-    expect(page.classList.contains('own-primary-background')).toBeFalsy();
-    expect(
-      page.classList.contains('own-primary-highlight-background')
-    ).toBeTruthy();
-    expect(page.classList.contains('own-accent-background')).toBeFalsy();
+    const colors = [
+      { color: '', class: '' },
+      { color: 'primary', class: 'own-primary-background' },
+      { color: 'highlight', class: 'own-primary-highlight-background' },
+      { color: 'accent', class: 'own-accent-background' },
+    ];
 
-    component.color = 'accent';
-    await fixture.detectChanges();
-    html = fixture.nativeElement;
-    page = html.querySelectorAll('.page-component')[0] as HTMLElement;
-    expect(page.classList.contains('own-primary-background')).toBeFalsy();
-    expect(
-      page.classList.contains('own-primary-highlight-background')
-    ).toBeFalsy();
-    expect(page.classList.contains('own-accent-background')).toBeTruthy();
+    for (const { color, class: expectedClass } of colors) {
+      component.color = color as 'primary' | 'accent' | 'highlight' | 'none';
+      await fixture.detectChanges();
+
+      page = fixture.nativeElement.querySelector(
+        '.page-component'
+      ) as HTMLElement;
+
+      expect(page.classList.contains('own-primary-background')).toBe(
+        expectedClass === 'own-primary-background'
+      );
+      expect(page.classList.contains('own-primary-highlight-background')).toBe(
+        expectedClass === 'own-primary-highlight-background'
+      );
+      expect(page.classList.contains('own-accent-background')).toBe(
+        expectedClass === 'own-accent-background'
+      );
+    }
   });
 });
