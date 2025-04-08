@@ -51,24 +51,62 @@ fdescribe('MenuComponent', () => {
       console.log(fixture.nativeElement);
     });
 
-    it('should set actualColor if localstorage is empty', async () => {
-      spyOn(localStorage, 'getItem').and.returnValue(null);
-      await component.ngOnInit();
-      expect(component.actualColor).toEqual('basic-light');
+    describe('actualColor', () => {
+      it('should set actualColor if localstorage is empty', async () => {
+        spyOn(localStorage, 'getItem').and.returnValue(null);
+        await component.ngOnInit();
+        expect(component.actualColor).toEqual('basic-light');
+      });
+
+      it('should set actualColor if localstorage is not empty', async () => {
+        const randomColor =
+          component.colorArray[
+            Math.floor(Math.random() * component.colorArray.length)
+          ];
+        spyOn(localStorage, 'getItem').and.returnValue(randomColor);
+        await component.ngOnInit();
+        expect(component.actualColor).toEqual(randomColor);
+        console.log(randomColor);
+      });
     });
 
-    it('should set actualColor if localstorage is not empty', async () => {
-      const randomColor = component.colorArray[Math.floor(Math.random()*component.colorArray.length)]
-      spyOn(localStorage, 'getItem').and.returnValue(randomColor);
-      await component.ngOnInit();
-      expect(component.actualColor).toEqual(randomColor);
-      console.log(randomColor)
-    });
+    describe('mode', () => {
+      it('should set mode if localstorage is empty', async () => {
+        spyOn(localStorage, 'getItem').and.returnValue(null);
+        await component.ngOnInit();
+        expect(component.mode).toEqual('light');
+      });
 
-    it('hould set mode if localstorage is empty',async()=>{
-      spyOn(localStorage, 'getItem').and.returnValue(null);
-      await component.ngOnInit();
-      expect(component.mode).toEqual('light');
-    })
+      it('should set mode if localStorage contains a dark theme', async () => {
+        let randomColor = 'light';
+        while (!randomColor.includes('dark')) {
+          randomColor =
+            component.colorArray[
+              Math.floor(Math.random() * component.colorArray.length)
+            ];
+        }
+        spyOn(localStorage, 'getItem').and.returnValue(randomColor);
+        await component.ngOnInit();
+        expect(component.mode).toEqual('dark');
+        console.log(randomColor);
+      });
+
+      it('should set mode if localStorage contains a light theme', async () => {
+        let randomColor = 'dark';
+        while (!randomColor.includes('light')) {
+          randomColor =
+            component.colorArray[
+              Math.floor(Math.random() * component.colorArray.length)
+            ];
+        }
+        spyOn(localStorage, 'getItem').and.returnValue(randomColor);
+        await component.ngOnInit();
+        expect(component.mode).toEqual('light');
+        console.log(randomColor);
+      });
+    });
   });
+
+  describe('HTML structure and DOM rendering', () => {})
+
 });
