@@ -17,7 +17,7 @@ fdescribe('PageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PageComponent,BrowserAnimationsModule],
+      imports: [PageComponent, BrowserAnimationsModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PageComponent);
@@ -31,7 +31,6 @@ fdescribe('PageComponent', () => {
   });
 
   it('should display the default number of columns when input data is missing from parent', () => {
-   
     const html: HTMLElement = fixture.nativeElement;
     expect(
       html.querySelector('.own-page_component-grid-display-2column')
@@ -39,8 +38,7 @@ fdescribe('PageComponent', () => {
     console.log(html);
   });
 
-
-  it('should display the correct number of columns (2)', async() => {
+  it('should display the correct number of columns (2)', async () => {
     component.color = 'none';
     component.columns = 2;
     component.actualInfoBoardArray = [
@@ -48,7 +46,7 @@ fdescribe('PageComponent', () => {
       { ...infoBoxTemplate },
       { ...infoBoxTemplate },
     ];
-    await fixture.detectChanges()
+    await fixture.detectChanges();
     const html: HTMLElement = fixture.nativeElement;
     expect(
       html.querySelector('.own-page_component-grid-display-2column')
@@ -56,8 +54,7 @@ fdescribe('PageComponent', () => {
     console.log(html);
   });
 
-
-  it('should display the correct number of columns (3)', async() => {
+  it('should display the correct number of columns (3)', async () => {
     component.color = 'none';
     component.columns = 3;
     component.actualInfoBoardArray = [
@@ -65,7 +62,7 @@ fdescribe('PageComponent', () => {
       { ...infoBoxTemplate },
       { ...infoBoxTemplate },
     ];
-    await fixture.detectChanges()
+    await fixture.detectChanges();
     const html: HTMLElement = fixture.nativeElement;
     expect(
       html.querySelector('.own-page_component-grid-display-3column')
@@ -73,6 +70,34 @@ fdescribe('PageComponent', () => {
     console.log(html);
   });
 
+  it('page component should contain the correct number of "app-infoboard-in-main"', async () => {
+    component.color = 'none';
+    component.columns = 3;
+    component.actualInfoBoardArray = [
+      { ...infoBoxTemplate },
+      { ...infoBoxTemplate },
+      { ...infoBoxTemplate },
+    ];
 
-  
+    await fixture.detectChanges();
+    const html: HTMLElement = fixture.nativeElement;
+    expect(html.querySelectorAll('app-infoboard-in-main').length).toEqual(
+      component.actualInfoBoardArray.length
+    );
+
+    console.log(component.actualInfoBoardArray.length);
+
+    component.columns = 2;
+    component.actualInfoBoardArray = [
+      { ...infoBoxTemplate },
+      { ...infoBoxTemplate },
+    ];
+
+    await fixture.detectChanges();
+    expect(html.querySelectorAll('app-infoboard-in-main').length).toEqual(
+      component.actualInfoBoardArray.length
+    );
+
+    console.log(component.actualInfoBoardArray.length);
+  });
 });
