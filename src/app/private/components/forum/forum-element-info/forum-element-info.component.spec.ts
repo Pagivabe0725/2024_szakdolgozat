@@ -59,7 +59,7 @@ const commentTemplate: forumComment = {
   date: Timestamp.now(),
 };
 
-fdescribe('ForumElementInfoComponent', () => {
+describe('ForumElementInfoComponent', () => {
   let component: ForumElementInfoComponent;
   let fixture: ComponentFixture<ForumElementInfoComponent>;
   let collectionServiceMock: jasmine.SpyObj<CollectionService>;
