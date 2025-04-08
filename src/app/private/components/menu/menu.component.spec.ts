@@ -198,5 +198,24 @@ fdescribe('MenuComponent', () => {
 
       expect(document.body.classList.contains('test-theme')).toBeFalse();
     });
+
+    it('sameColor should work', () => {
+      const helperArray = [
+        'basic-light',
+        'basic-dark',
+        'azure-light',
+        'azure-dark',
+        'magenta-light',
+        'magenta-dark',
+        'cyan-light',
+        'cyan-dark',
+      ];
+
+      for (const i of helperArray) {
+        component.actualColor = i;
+        fixture.detectChanges()
+        expect(component.sameColor(i)).toBeTrue();
+      }
+    });
   });
 });
