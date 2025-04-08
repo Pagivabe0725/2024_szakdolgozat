@@ -138,4 +138,31 @@ fdescribe('MenuComponent', () => {
       console.table(colorCodeArray);
     });
   });
+
+  describe('Functions', () => {
+    it('should switch from light to dark theme correctly for each theme', async () => {
+      spyOn(component, 'removeAllCollor').and.callFake(() => {
+        document.body.className = '';
+      });
+
+      for (const color of component.colorArray) {
+        if (color.includes('light')) {
+          document.body.className = '';
+
+          const expectedTheme = color.split('-')[0] + `-dark`;
+
+          component.mode = 'light';
+          component.actualColor = color;
+
+          await component.changeDarkness();
+          fixture.detectChanges();
+
+          expect(component.mode).toBe('dark');
+          expect(component.actualColor).toBe(expectedTheme);
+          expect(document.body.classList.contains(expectedTheme)).toBeTrue();
+          console.log();
+        }
+      }
+    });
+  });
 });
