@@ -6,12 +6,12 @@ import { infoboxInMain_component } from '../../../shared/interfaces/info_board';
 @Component({
   selector: 'app-page',
   standalone: true,
-  imports: [CommonModule,InfoboardInMainComponent],
+  imports: [CommonModule, InfoboardInMainComponent],
   templateUrl: './page.component.html',
   styleUrl: './page.component.scss',
 })
 export class PageComponent {
   @Input() columns = 2;
-  @Input() color!: 'primary' | 'accent' | 'highlight' | 'none' ;
-  @Input() actualInfoBoardArray!:infoboxInMain_component[]
+  @Input() color: 'primary' | 'accent' | 'highlight' | 'none' = 'none';
+  @Input() actualInfoBoardArray!: infoboxInMain_component[];
 }

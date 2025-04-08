@@ -35,7 +35,6 @@ fdescribe('PageComponent', () => {
     expect(
       html.querySelector('.own-page_component-grid-display-2column')
     ).toBeTruthy();
-    console.log(html);
   });
 
   it('should display the correct number of columns (2)', async () => {
@@ -80,12 +79,10 @@ fdescribe('PageComponent', () => {
     ];
 
     await fixture.detectChanges();
-    const html: HTMLElement = fixture.nativeElement;
+    let html: HTMLElement = fixture.nativeElement;
     expect(html.querySelectorAll('app-infoboard-in-main').length).toEqual(
       component.actualInfoBoardArray.length
     );
-
-    console.log(component.actualInfoBoardArray.length);
 
     component.columns = 2;
     component.actualInfoBoardArray = [
@@ -94,10 +91,57 @@ fdescribe('PageComponent', () => {
     ];
 
     await fixture.detectChanges();
+    html = fixture.nativeElement;
     expect(html.querySelectorAll('app-infoboard-in-main').length).toEqual(
       component.actualInfoBoardArray.length
     );
+  });
 
-    console.log(component.actualInfoBoardArray.length);
+  it('should apply the correct background color to the page component', async () => {
+    component.actualInfoBoardArray = [
+      { ...infoBoxTemplate },
+      { ...infoBoxTemplate },
+    ];
+    await fixture.detectChanges();
+    let html: HTMLElement = fixture.nativeElement;
+    let page: HTMLElement = html.querySelectorAll(
+      '.page-component'
+    )[0] as HTMLElement;
+    console.log(page);
+    expect(page.classList.contains('own-primary-background')).toBeFalsy();
+    expect(
+      page.classList.contains('own-primary-highlight-background')
+    ).toBeFalsy();
+    expect(page.classList.contains('own-accent-background')).toBeFalsy();
+
+    component.color = 'primary';
+    await fixture.detectChanges();
+    html = fixture.nativeElement;
+    page = html.querySelectorAll('.page-component')[0] as HTMLElement;
+    expect(page.classList.contains('own-primary-background')).toBeTruthy();
+    expect(
+      page.classList.contains('own-primary-highlight-background')
+    ).toBeFalsy();
+    expect(page.classList.contains('own-accent-background')).toBeFalsy();
+
+    component.color = 'highlight';
+    await fixture.detectChanges();
+    html = fixture.nativeElement;
+    page = html.querySelectorAll('.page-component')[0] as HTMLElement;
+    expect(page.classList.contains('own-primary-background')).toBeFalsy();
+    expect(
+      page.classList.contains('own-primary-highlight-background')
+    ).toBeTruthy();
+    expect(page.classList.contains('own-accent-background')).toBeFalsy();
+
+    component.color = 'accent';
+    await fixture.detectChanges();
+    html = fixture.nativeElement;
+    page = html.querySelectorAll('.page-component')[0] as HTMLElement;
+    expect(page.classList.contains('own-primary-background')).toBeFalsy();
+    expect(
+      page.classList.contains('own-primary-highlight-background')
+    ).toBeFalsy();
+    expect(page.classList.contains('own-accent-background')).toBeTruthy();
   });
 });
