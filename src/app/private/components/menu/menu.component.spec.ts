@@ -6,13 +6,16 @@ import { NavigateAndurlinfoService } from '../../../shared/services/navigate-and
 fdescribe('MenuComponent', () => {
   let component: MenuComponent;
   let fixture: ComponentFixture<MenuComponent>;
-  let navigateMock:jasmine.SpyObj<NavigateAndurlinfoService>
+  let navigateMock: jasmine.SpyObj<NavigateAndurlinfoService>;
   beforeEach(async () => {
-
-    navigateMock = jasmine.createSpyObj(NavigateAndurlinfoService,['navigate'])
+    navigateMock = jasmine.createSpyObj(NavigateAndurlinfoService, [
+      'navigate',
+    ]);
     await TestBed.configureTestingModule({
       imports: [MenuComponent],
-      providers:[{provide: NavigateAndurlinfoService, useValue:navigateMock}]
+      providers: [
+        { provide: NavigateAndurlinfoService, useValue: navigateMock },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(MenuComponent);
@@ -42,13 +45,30 @@ fdescribe('MenuComponent', () => {
     });
   });
 
-
-  describe('Basic tests',()=>{
-
+  describe('Basic tests', () => {
     it('should create', () => {
       expect(component).toBeTruthy();
       console.log(fixture.nativeElement);
     });
-  })
-  
+
+    it('should set actualColor if localstorage is empty', async () => {
+      spyOn(localStorage, 'getItem').and.returnValue(null);
+      await component.ngOnInit();
+      expect(component.actualColor).toEqual('basic-light');
+    });
+
+    it('should set actualColor if localstorage is not empty', async () => {
+      const randomColor = component.colorArray[Math.floor(Math.random()*component.colorArray.length)]
+      spyOn(localStorage, 'getItem').and.returnValue(randomColor);
+      await component.ngOnInit();
+      expect(component.actualColor).toEqual(randomColor);
+      console.log(randomColor)
+    });
+
+    it('hould set mode if localstorage is empty',async()=>{
+      spyOn(localStorage, 'getItem').and.returnValue(null);
+      await component.ngOnInit();
+      expect(component.mode).toEqual('light');
+    })
+  });
 });
