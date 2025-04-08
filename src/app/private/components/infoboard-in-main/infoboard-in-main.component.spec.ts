@@ -22,7 +22,7 @@ function randomActualInfoBoard(): infoboxInMain_component {
   return actualInfoBoard;
 }
 
-fdescribe('InfoboardInMainComponent', () => {
+describe('InfoboardInMainComponent', () => {
   let component: InfoboardInMainComponent;
   let fixture: ComponentFixture<InfoboardInMainComponent>;
 
