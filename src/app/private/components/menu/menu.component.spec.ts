@@ -116,17 +116,26 @@ fdescribe('MenuComponent', () => {
 
     it('should collect correct background colors for each theme', async () => {
       let colorCodeArray: { [color: string]: string }[] = [];
-      let spy = spyOn(localStorage, 'getItem');
       for (const theme of component.colorArray) {
         document.body.className = theme; // apply theme
-        fixture.detectChanges();
+        await fixture.detectChanges();
 
         const element = fixture.nativeElement.querySelector('mat-toolbar')!;
         const bg = getComputedStyle(element).backgroundColor;
         colorCodeArray.push({ [theme]: bg });
       }
 
-      console.table(colorCodeArray)
+      const randomNumber = Math.floor(
+        Math.random() * component.colorArray.length
+      );
+      const randomColor: string = component.colorArray[randomNumber];
+
+      document.body.className = randomColor;
+      await fixture.detectChanges();
+      const element = fixture.nativeElement.querySelector('mat-toolbar')!;
+      const bg = getComputedStyle(element).backgroundColor;
+      expect(bg).toEqual(Object.values(colorCodeArray[randomNumber])[0]);
+      console.table(colorCodeArray);
     });
   });
 });
