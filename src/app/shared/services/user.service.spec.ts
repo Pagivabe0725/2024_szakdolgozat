@@ -4,6 +4,18 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { of } from 'rxjs';
 import { user } from '../interfaces/user';
+import { Timestamp } from '@angular/fire/firestore';
+
+const userTemplate: user = {
+  id: 'UserId',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  lastLogin: Timestamp.now(),
+  email: 'test@gmail.com',
+  city: undefined,
+  telNumber: '06905777170',
+  dateOfRegistration: Timestamp.now(),
+};
 
 fdescribe('UserService', () => {
   let service: UserService;
@@ -53,5 +65,40 @@ fdescribe('UserService', () => {
   it('services should be exist', () => {
     expect(service['angularFireAuth']).toBeDefined();
     expect(service['angularFirestore']).toBeDefined();
+  });
+
+  describe('Functions', () => {
+    it('createNewUser should work', async () => {
+      await service.createNewUser({ ...userTemplate });
+
+      const collectionSpy = firestoreMock.collection;
+      const docSpy = collectionSpy.calls.mostRecent().returnValue.doc;
+      const setSpy = docSpy.calls.mostRecent().returnValue.set;
+
+      expect(collectionSpy).toHaveBeenCalledWith('Users');
+      expect(docSpy).toHaveBeenCalledWith(userTemplate.id);
+      expect(setSpy).toHaveBeenCalledWith(userTemplate);
+    });
+
+    it('updateUser should work', async () => {
+      await service.updateUser({ ...userTemplate });
+
+      const collectionSpy = firestoreMock.collection;
+      const docSpy = collectionSpy.calls.mostRecent().returnValue.doc;
+      const setSpy = docSpy.calls.mostRecent().returnValue.set;
+
+      expect(collectionSpy).toHaveBeenCalledWith('Users');
+      expect(docSpy).toHaveBeenCalledWith(userTemplate.id);
+      expect(setSpy).toHaveBeenCalledWith(userTemplate);
+    });
+
+    it('userRegistration should work', async () => {
+      await service.userRegistration(userTemplate.email, '123456');
+
+      const auth = authMock.createUserWithEmailAndPassword;
+      const result = auth.calls.mostRecent().returnValue.__zone_symbol__value;
+      console.log(result.__zone_symbol__value);
+      expect(result).toEqual({ user: { uid: '123' } });
+    });
   });
 });
