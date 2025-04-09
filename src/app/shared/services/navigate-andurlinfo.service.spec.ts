@@ -7,9 +7,13 @@ fdescribe('NavigateAndurlinfoService', () => {
   let service: NavigateAndurlinfoService;
   let routerMock: jasmine.SpyObj<Router>;
   beforeEach(() => {
-    routerMock = jasmine.createSpyObj('Router', ['url', 'navigate'], {
-      url: 'somewhere/someone',
-    });
+    routerMock = jasmine.createSpyObj(
+      'Router',
+      ['url', 'navigate', 'navigateByUrl'],
+      {
+        url: 'somewhere/someone',
+      }
+    );
 
     TestBed.configureTestingModule({
       providers: [{ provide: Router, useValue: routerMock }],
@@ -30,5 +34,21 @@ fdescribe('NavigateAndurlinfoService', () => {
       const result = service.actualUrl();
       expect(result).toBe('somewhere/someone');
     });
+
+    describe('navigate', () => {
+      it('should navigate to private route if basicSide is true and path is in navigations', () => {
+        service.navigate(true, 'main');
+        expect(routerMock.navigateByUrl).toHaveBeenCalledWith('private/main');
+      });
+
+      it('should navigate to nested route if basicSide is false', () => {
+        service.navigate(false, 'child');
+        expect(routerMock.navigateByUrl).toHaveBeenCalledWith(
+          'somewhere/someone/child'
+        );
+      });
+    });
+
+    
   });
 });
