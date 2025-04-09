@@ -25,9 +25,23 @@ fdescribe('RouterPlusService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('service should be exist',()=>{
+  it('service should be exist', () => {
+    expect(service['router']).toBeDefined();
+  });
 
-    expect(service['router']).toBeDefined()
+  describe('Functions:', () => {
+    it('getURLEndPoint should work', () => {
+      expect(service.getURLEndPoint()).toEqual('someone');
+    });
 
-  })
+    it('getURLElementsInArray should work', () => {
+      expect(service.getURLElementsInArray()).toEqual(['somewhere','someone']);
+    });
+
+    it('getURLElementsInString should work', () => {
+      
+      console.log(service.getURLElementsInString(0))
+      //expect(service.getURLElementsInString()).toEqual(['somewhere','someone']);
+    });
+  });
 });
