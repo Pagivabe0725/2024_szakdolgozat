@@ -49,5 +49,12 @@ fdescribe('RouterPlusService', () => {
         'somewhere/TestPage'
       );
     });
+
+    it('navigateToNewPage should work', () => {
+      service.navigateToChildPage('TestPage');
+      expect(routerMock.navigateByUrl).toHaveBeenCalledWith(
+        'somewhere/someone/TestPage'
+      );
+    });
   });
 });

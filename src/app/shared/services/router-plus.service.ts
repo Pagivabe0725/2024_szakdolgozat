@@ -29,6 +29,6 @@ export class RouterPlusService {
   }
 
   navigateToChildPage(page: string): void {
-    this.router.navigateByUrl(this.getURLElementsInString(1) + page);
+    this.router.navigateByUrl(this.getURLElementsInString(0) + page);
   }
 }
