@@ -163,6 +163,31 @@ fdescribe('MenuComponent', () => {
       }
     });
 
+    it('changeDarkness should switch from dark to light theme correctly', async () => {
+      spyOn(component, 'removeAllCollor').and.callFake(() => {
+        document.body.className = '';
+      });
+
+      for (const color of component.colorArray) {
+        if (color.includes('dark')) {
+          document.body.className = '';
+
+          component.actualColor = color;
+          component.mode = 'dark';
+
+          const expectedTheme = color.split('-')[0] + '-light';
+
+          component.changeDarkness();
+          fixture.detectChanges();
+
+          expect(component.mode).toBe('light');
+          expect(component.actualColor).toBe(expectedTheme);
+          expect(document.body.classList.contains(expectedTheme)).toBeTrue();
+          expect(localStorage.getItem('theme')).toBe(expectedTheme);
+        }
+      }
+    });
+
     it('should switch actualColor and apply theme class correctly', async () => {
       spyOn(component, 'removeAllCollor').and.callFake(() => {
         document.body.className = '';
@@ -204,8 +229,7 @@ fdescribe('MenuComponent', () => {
       });
     });
 
-    it('menuNavigation', async () => {
-      
+    it('menuNavigation should work', async () => {
       const endpoints = ['main', 'forum', 'workshop', 'own'];
 
       for (let index = 0; index < 4; index++) {
@@ -214,7 +238,10 @@ fdescribe('MenuComponent', () => {
           `#own-${endpoints[index]}-navigate-button`
         );
         actualButton?.dispatchEvent(new Event('click'));
-        expect(navigateMock.navigate).toHaveBeenCalledWith(true,endpoints[index]);
+        expect(navigateMock.navigate).toHaveBeenCalledWith(
+          true,
+          endpoints[index]
+        );
       }
     });
   });
