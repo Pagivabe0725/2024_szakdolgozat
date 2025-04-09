@@ -49,4 +49,9 @@ fdescribe('UserService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+  it('services should be exist', () => {
+    expect(service['angularFireAuth']).toBeDefined();
+    expect(service['angularFirestore']).toBeDefined();
+  });
 });
