@@ -35,12 +35,19 @@ fdescribe('RouterPlusService', () => {
     });
 
     it('getURLElementsInArray should work', () => {
-      expect(service.getURLElementsInArray()).toEqual(['somewhere','someone']);
+      expect(service.getURLElementsInArray()).toEqual(['somewhere', 'someone']);
     });
 
     it('getURLElementsInString should work', () => {
       expect(service.getURLElementsInString(0)).toEqual('somewhere/someone/');
       expect(service.getURLElementsInString(1)).toEqual('somewhere/');
+    });
+
+    it('navigateToNewPage should work', () => {
+      service.navigateToNewPage('TestPage');
+      expect(routerMock.navigateByUrl).toHaveBeenCalledWith(
+        'somewhere/TestPage'
+      );
     });
   });
 });
