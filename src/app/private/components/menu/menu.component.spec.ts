@@ -140,13 +140,10 @@ fdescribe('MenuComponent', () => {
   });
 
   describe('Functions', () => {
-    beforeEach(() => {
+    it('changeDarkness function should switch from light to dark theme correctly for each theme', async () => {
       spyOn(component, 'removeAllCollor').and.callFake(() => {
         document.body.className = '';
       });
-    });
-
-    it('changeDarkness function should switch from light to dark theme correctly for each theme', async () => {
       for (const color of component.colorArray) {
         if (color.includes('light')) {
           document.body.className = '';
@@ -167,6 +164,9 @@ fdescribe('MenuComponent', () => {
     });
 
     it('should switch actualColor and apply theme class correctly', async () => {
+      spyOn(component, 'removeAllCollor').and.callFake(() => {
+        document.body.className = '';
+      });
       for (const fullTheme of component.colorArray) {
         const [baseColor, mode] = fullTheme.split('-');
 
@@ -189,36 +189,24 @@ fdescribe('MenuComponent', () => {
       }
     });
 
-
     /// valamiért nem jelzi a lefedetségnél
     it('removeAllCollor should work', async () => {
       component.actualColor = 'test-theme';
       document.body.classList.add('test-theme');
-
       component.removeAllCollor();
-
       expect(document.body.classList.contains('test-theme')).toBeFalse();
     });
 
     it('sameColor should work', async () => {
-      const helperArray = [
-        'basic-light',
-        'basic-dark',
-        'azure-light',
-        'azure-dark',
-        'magenta-light',
-        'magenta-dark',
-        'cyan-light',
-        'cyan-dark',
-      ];
-
-      for (const i of helperArray) {
-        component.actualColor = i;
-        await fixture.detectChanges();
-        await fixture.whenStable();
-        console.log(component.sameColor(i));
-        expect(component.sameColor(i.split('-')[0])).toBeTrue();
+      ///test
+      for (let i = 0; i < 1000; i++) {
+        component.colorArray.forEach((i) => {
+          component.actualColor = i;
+          expect(component.sameColor(i.split('-')[0])).toBeTrue();
+        });
+        
       }
+    
     });
   });
 });

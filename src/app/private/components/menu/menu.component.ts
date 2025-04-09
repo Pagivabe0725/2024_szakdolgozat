@@ -67,7 +67,7 @@ export class MenuComponent implements OnInit {
   }
 
   sameColor(color: string): boolean {
-    return this.actualColor.startsWith(color + '-');
+    return this.actualColor.startsWith(color);
   }
   
 
