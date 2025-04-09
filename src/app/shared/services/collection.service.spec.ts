@@ -3,7 +3,7 @@ import { CollectionService } from './collection.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { of } from 'rxjs';
 
-fdescribe('CollectionService', () => {
+describe('CollectionService', () => {
   let service: CollectionService;
 
   let valueChangesSpy: jasmine.Spy;
