@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MenuComponent } from './menu.component';
 import { NavigateAndurlinfoService } from '../../../shared/services/navigate-andurlinfo.service';
 
-fdescribe('MenuComponent', () => {
+describe('MenuComponent', () => {
   let component: MenuComponent;
   let fixture: ComponentFixture<MenuComponent>;
   let navigateMock: jasmine.SpyObj<NavigateAndurlinfoService>;
@@ -48,7 +48,6 @@ fdescribe('MenuComponent', () => {
   describe('Basic tests', () => {
     it('should create', () => {
       expect(component).toBeTruthy();
-      console.log(fixture.nativeElement);
     });
 
     describe('actualColor', () => {
@@ -66,7 +65,6 @@ fdescribe('MenuComponent', () => {
         spyOn(localStorage, 'getItem').and.returnValue(randomColor);
         await component.ngOnInit();
         expect(component.actualColor).toEqual(randomColor);
-        // console.log(randomColor);
       });
     });
 
@@ -88,7 +86,6 @@ fdescribe('MenuComponent', () => {
         spyOn(localStorage, 'getItem').and.returnValue(randomColor);
         await component.ngOnInit();
         expect(component.mode).toEqual('dark');
-        //console.log(randomColor);
       });
 
       it('should set mode if localStorage contains a light theme', async () => {
@@ -102,7 +99,6 @@ fdescribe('MenuComponent', () => {
         spyOn(localStorage, 'getItem').and.returnValue(randomColor);
         await component.ngOnInit();
         expect(component.mode).toEqual('light');
-        // console.log(randomColor);
       });
     });
   });
@@ -135,7 +131,7 @@ fdescribe('MenuComponent', () => {
       const element = fixture.nativeElement.querySelector('mat-toolbar')!;
       const bg = getComputedStyle(element).backgroundColor;
       expect(bg).toEqual(Object.values(colorCodeArray[randomNumber])[0]);
-      console.table(colorCodeArray);
+
     });
   });
 
@@ -214,7 +210,7 @@ fdescribe('MenuComponent', () => {
       }
     });
 
-    /// valamiért nem jelzi a lefedetségnél
+    
     it('removeAllCollor should work', async () => {
       component.actualColor = 'test-theme';
       document.body.classList.add('test-theme');
