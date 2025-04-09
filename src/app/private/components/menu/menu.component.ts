@@ -67,8 +67,9 @@ export class MenuComponent implements OnInit {
   }
 
   sameColor(color: string): boolean {
-    return this.actualColor.includes(color);
+    return this.actualColor.startsWith(color + '-');
   }
+  
 
   menuNavigation(path: string): void {
     this.navigateAndUrlinfo.navigate(true, path);

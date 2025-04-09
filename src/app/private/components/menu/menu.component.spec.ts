@@ -189,17 +189,18 @@ fdescribe('MenuComponent', () => {
       }
     });
 
+
+    /// valamiért nem jelzi a lefedetségnél
     it('removeAllCollor should work', async () => {
       component.actualColor = 'test-theme';
       document.body.classList.add('test-theme');
 
-      await component.removeAllCollor();
-      fixture.detectChanges();
+      component.removeAllCollor();
 
       expect(document.body.classList.contains('test-theme')).toBeFalse();
     });
 
-    it('sameColor should work', () => {
+    it('sameColor should work', async () => {
       const helperArray = [
         'basic-light',
         'basic-dark',
@@ -213,8 +214,10 @@ fdescribe('MenuComponent', () => {
 
       for (const i of helperArray) {
         component.actualColor = i;
-        fixture.detectChanges()
-        expect(component.sameColor(i)).toBeTrue();
+        await fixture.detectChanges();
+        await fixture.whenStable();
+        console.log(component.sameColor(i));
+        expect(component.sameColor(i.split('-')[0])).toBeTrue();
       }
     });
   });
