@@ -39,9 +39,8 @@ fdescribe('RouterPlusService', () => {
     });
 
     it('getURLElementsInString should work', () => {
-      
-      console.log(service.getURLElementsInString(0))
-      //expect(service.getURLElementsInString()).toEqual(['somewhere','someone']);
+      expect(service.getURLElementsInString(0)).toEqual('somewhere/someone/');
+      expect(service.getURLElementsInString(1)).toEqual('somewhere/');
     });
   });
 });
