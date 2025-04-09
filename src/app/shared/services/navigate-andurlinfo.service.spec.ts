@@ -54,5 +54,9 @@ fdescribe('NavigateAndurlinfoService', () => {
       service.basicNavigate('public')
       expect(routerMock.navigateByUrl).toHaveBeenCalledWith('public')
     })
+
+    it('endpoint should work',()=>{
+      expect(service.endpoint()).toEqual('someone')
+    })
   });
 });
