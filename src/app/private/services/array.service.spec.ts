@@ -25,9 +25,7 @@ fdescribe('ArrayService', () => {
     expect(service).toBeTruthy();
   });
 
-
-  describe('getIndex',()=>{
-
+  describe('getIndex', () => {
     it('getIndex should return index if element in array', () => {
       const localRandomNum = randomNumber(randomNum);
       testArray[localRandomNum] = 'find me';
@@ -35,12 +33,23 @@ fdescribe('ArrayService', () => {
       console.log(result);
       expect(localRandomNum).toBe(result);
     });
-  
+
     it('getIndex should return 0 if element not in array', () => {
-      console.log(testArray)
       const result = service.getIndex('find me', testArray);
       expect(result).toBe(testArray.length);
     });
-  })
- 
+  });
+
+  describe('elementInArray', () => {
+    it('in', () => {
+      const localRandomNum = randomNumber(randomNum);
+      testArray[localRandomNum] = 'find me';
+      expect(service.elementInArray('find me', testArray)).toBeTrue();
+    });
+
+    it('not in', () => {
+      const localRandomNum = randomNumber(randomNum);
+      expect(service.elementInArray('find me', testArray)).toBeFalse();
+    });
+  });
 });
