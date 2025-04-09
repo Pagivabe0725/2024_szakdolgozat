@@ -49,6 +49,10 @@ fdescribe('NavigateAndurlinfoService', () => {
       });
     });
 
-    
+    it('basicNavigate should work',()=>{
+
+      service.basicNavigate('public')
+      expect(routerMock.navigateByUrl).toHaveBeenCalledWith('public')
+    })
   });
 });
