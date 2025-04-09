@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { NavigateAndurlinfoService } from './navigate-andurlinfo.service';
 import { Router } from '@angular/router';
 
-fdescribe('NavigateAndurlinfoService', () => {
+describe('NavigateAndurlinfoService', () => {
   let service: NavigateAndurlinfoService;
   let routerMock: jasmine.SpyObj<Router>;
   beforeEach(() => {
