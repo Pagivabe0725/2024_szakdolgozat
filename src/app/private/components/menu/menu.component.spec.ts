@@ -198,15 +198,24 @@ fdescribe('MenuComponent', () => {
     });
 
     it('sameColor should work', async () => {
-      ///test
-      for (let i = 0; i < 1000; i++) {
-        component.colorArray.forEach((i) => {
-          component.actualColor = i;
-          expect(component.sameColor(i.split('-')[0])).toBeTrue();
-        });
-        
+      component.colorArray.forEach((i) => {
+        component.actualColor = i;
+        expect(component.sameColor(i.split('-')[0])).toBeTrue();
+      });
+    });
+
+    it('menuNavigation', async () => {
+      
+      const endpoints = ['main', 'forum', 'workshop', 'own'];
+
+      for (let index = 0; index < 4; index++) {
+        const html: HTMLElement = fixture.nativeElement;
+        const actualButton = html.querySelector(
+          `#own-${endpoints[index]}-navigate-button`
+        );
+        actualButton?.dispatchEvent(new Event('click'));
+        expect(navigateMock.navigate).toHaveBeenCalledWith(true,endpoints[index]);
       }
-    
     });
   });
 });
