@@ -6,7 +6,7 @@ function randomNumber(num: number): number {
   return Math.floor(Math.random() * num);
 }
 
-fdescribe('ArrayService', () => {
+describe('ArrayService', () => {
   let service: ArrayService;
   let testArray: string[];
   let randomNum: number;
