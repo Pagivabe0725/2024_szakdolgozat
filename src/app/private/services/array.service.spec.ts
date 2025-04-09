@@ -52,23 +52,28 @@ fdescribe('ArrayService', () => {
   });
 
   describe('deleteElementFromArray', () => {
-
-    it('should delete the element',()=>{
-      console.log(testArray)
+    it('should delete the element', () => {
+      console.log(testArray);
       const localRandomNum = randomNumber(randomNum);
       testArray[localRandomNum] = 'delete me';
-      const basicLength= testArray.length
+      const basicLength = testArray.length;
       service.deleteElementFromArray('delete me', testArray);
       console.log(testArray);
       expect(testArray.includes('delete me')).toBeFalse();
       expect(testArray.length).toBeLessThan(basicLength);
-    })
+    });
 
-    it('should not delete the element',()=>{
-      const basicLength= testArray.length
+    it('should not delete the element', () => {
+      const basicLength = testArray.length;
       service.deleteElementFromArray('delete me', testArray);
       expect(testArray.length).toEqual(basicLength);
-    })
-    
+    });
+  });
+
+  describe('addElementToArray', () => {
+    it('addElementToArray should work', () => {
+      service.addElementToArray('added', testArray);
+      expect(testArray[testArray.length - 1]).toEqual('added');
+    });
   });
 });
