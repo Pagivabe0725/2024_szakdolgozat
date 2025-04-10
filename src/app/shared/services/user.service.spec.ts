@@ -100,5 +100,15 @@ fdescribe('UserService', () => {
       console.log(result.__zone_symbol__value);
       expect(result).toEqual({ user: { uid: '123' } });
     });
+
+    it('login should work', async () => {
+      const result = await service.login(userTemplate.email, '123456');
+    console.log(result)
+      expect(authMock.signInWithEmailAndPassword).toHaveBeenCalledWith(
+        userTemplate.email,
+        '123456'
+      );
+      expect(result).toEqual({ user: { uid: '123' } });
+    });
   });
 });
