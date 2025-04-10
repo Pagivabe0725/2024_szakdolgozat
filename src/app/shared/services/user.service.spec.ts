@@ -117,21 +117,24 @@ fdescribe('UserService', () => {
     it('getUserInfoByUserId should work', (done) => {
       service.getUserInfoByUserId('1234').subscribe((result) => {
         expect(result).toEqual({ name: 'mockedUser' });
-
         expect(firestoreMock.collection).toHaveBeenCalledWith('Users');
-
         const docSpy =
           firestoreMock.collection.calls.mostRecent().returnValue.doc;
-        console.log('docSpy');
-        console.log(docSpy);
         expect(docSpy).toHaveBeenCalledWith('1234');
-
         const valueChangesSpy =
           docSpy.calls.mostRecent().returnValue.valueChanges;
-        console.log('valueChangesSpy');
-        console.log(valueChangesSpy);
         expect(valueChangesSpy).toHaveBeenCalled();
+        done();
+      });
+    });
 
+    it('getUsers should work', (done) => {
+      service.getUsers().subscribe((result) => {
+        expect(result).toEqual([{ name: 'user1' }, { name: 'user2' }]);
+        expect(firestoreMock.collection).toHaveBeenCalledWith('Users');
+        const valueChangesSpy =
+          firestoreMock.collection.calls.mostRecent().returnValue.valueChanges;
+        expect(valueChangesSpy).toHaveBeenCalled();
         done();
       });
     });
