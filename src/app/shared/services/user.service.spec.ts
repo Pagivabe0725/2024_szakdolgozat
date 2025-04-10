@@ -97,13 +97,11 @@ fdescribe('UserService', () => {
 
       const auth = authMock.createUserWithEmailAndPassword;
       const result = auth.calls.mostRecent().returnValue.__zone_symbol__value;
-      console.log(result.__zone_symbol__value);
       expect(result).toEqual({ user: { uid: '123' } });
     });
 
     it('login should work', async () => {
       const result = await service.login(userTemplate.email, '123456');
-      console.log(result);
       expect(authMock.signInWithEmailAndPassword).toHaveBeenCalledWith(
         userTemplate.email,
         '123456'
@@ -114,6 +112,28 @@ fdescribe('UserService', () => {
     it('logout should work', async () => {
       await service.logout();
       expect(authMock.signOut).toHaveBeenCalled();
+    });
+
+    it('getUserInfoByUserId should work', (done) => {
+      service.getUserInfoByUserId('1234').subscribe((result) => {
+        expect(result).toEqual({ name: 'mockedUser' });
+
+        expect(firestoreMock.collection).toHaveBeenCalledWith('Users');
+
+        const docSpy =
+          firestoreMock.collection.calls.mostRecent().returnValue.doc;
+        console.log('docSpy');
+        console.log(docSpy);
+        expect(docSpy).toHaveBeenCalledWith('1234');
+
+        const valueChangesSpy =
+          docSpy.calls.mostRecent().returnValue.valueChanges;
+        console.log('valueChangesSpy');
+        console.log(valueChangesSpy);
+        expect(valueChangesSpy).toHaveBeenCalled();
+
+        done();
+      });
     });
   });
 });
