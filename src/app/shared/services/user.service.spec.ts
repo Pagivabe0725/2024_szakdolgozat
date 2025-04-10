@@ -103,12 +103,17 @@ fdescribe('UserService', () => {
 
     it('login should work', async () => {
       const result = await service.login(userTemplate.email, '123456');
-    console.log(result)
+      console.log(result);
       expect(authMock.signInWithEmailAndPassword).toHaveBeenCalledWith(
         userTemplate.email,
         '123456'
       );
       expect(result).toEqual({ user: { uid: '123' } });
+    });
+
+    it('logout should work', async () => {
+      await service.logout();
+      expect(authMock.signOut).toHaveBeenCalled();
     });
   });
 });
