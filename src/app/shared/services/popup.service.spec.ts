@@ -4,7 +4,7 @@ import { PopupService } from './popup.service';
 import { Dialog } from '../interfaces/dialog';
 import { PopupComponent } from '../components/popup/popup.component';
 
-describe('PopupService', () => {
+fdescribe('PopupService', () => {
   let service: PopupService;
   const dialogTemplate: Dialog = {
     width: '70%',

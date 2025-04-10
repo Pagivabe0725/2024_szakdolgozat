@@ -3,7 +3,7 @@ import { CollectionService } from './collection.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { of } from 'rxjs';
 
-describe('CollectionService', () => {
+fdescribe('CollectionService', () => {
   let service: CollectionService;
 
   let valueChangesSpy: jasmine.Spy;
@@ -14,28 +14,32 @@ describe('CollectionService', () => {
   let collectionSpy: jasmine.Spy;
 
   beforeEach(() => {
-    valueChangesSpy = jasmine.createSpy().and.returnValue(of({ data: 'mockData' }));
+    valueChangesSpy = jasmine
+      .createSpy()
+      .and.returnValue(of({ data: 'mockData' }));
     setSpy = jasmine.createSpy().and.returnValue(Promise.resolve('setDone'));
-    deleteSpy = jasmine.createSpy().and.returnValue(Promise.resolve('deleteDone'));
-    getSpy = jasmine.createSpy().and.returnValue(of([{ id: 'doc1' }, { id: 'doc2' }]));
+    deleteSpy = jasmine
+      .createSpy()
+      .and.returnValue(Promise.resolve('deleteDone'));
+    getSpy = jasmine
+      .createSpy()
+      .and.returnValue(of([{ id: 'doc1' }, { id: 'doc2' }]));
     docSpy = jasmine.createSpy().and.returnValue({
       valueChanges: valueChangesSpy,
       set: setSpy,
-      delete: deleteSpy
+      delete: deleteSpy,
     });
     collectionSpy = jasmine.createSpy().and.returnValue({
       doc: docSpy,
-      get: getSpy
+      get: getSpy,
     });
 
     const firestoreMock = {
-      collection: collectionSpy
+      collection: collectionSpy,
     };
 
     TestBed.configureTestingModule({
-      providers: [
-        { provide: AngularFirestore, useValue: firestoreMock }
-      ]
+      providers: [{ provide: AngularFirestore, useValue: firestoreMock }],
     });
 
     service = TestBed.inject(CollectionService);
@@ -46,13 +50,15 @@ describe('CollectionService', () => {
   });
 
   it('should return valueChanges observable from getCollectionByCollectionAndDoc', (done) => {
-    service.getCollectionByCollectionAndDoc('testCollection', 'testDoc').subscribe((data) => {
-      expect(data).toEqual({ data: 'mockData' });
-      expect(collectionSpy).toHaveBeenCalledWith('testCollection');
-      expect(docSpy).toHaveBeenCalledWith('testDoc');
-      expect(valueChangesSpy).toHaveBeenCalled();
-      done();
-    });
+    service
+      .getCollectionByCollectionAndDoc('testCollection', 'testDoc')
+      .subscribe((data) => {
+        expect(data).toEqual({ data: 'mockData' });
+        expect(collectionSpy).toHaveBeenCalledWith('testCollection');
+        expect(docSpy).toHaveBeenCalledWith('testDoc');
+        expect(valueChangesSpy).toHaveBeenCalled();
+        done();
+      });
   });
 
   it('should return documents from getAllDocByCollectionName', (done) => {

@@ -8,16 +8,16 @@ export class RouterPlusService {
   constructor(private router: Router) {}
 
   getURLEndPoint(): string {
-    const urlElementsArray: Array<string> = this.getURLElementsInArray();
+    const urlElementsArray: string[] = this.getURLElementsInArray();
     return urlElementsArray[urlElementsArray.length - 1];
   }
 
-  getURLElementsInArray(): Array<string> {
+  getURLElementsInArray(): string[] {
     return this.router.url.split('/');
   }
 
   getURLElementsInString(subtracted: number): string {
-    let path: string = '';
+    let path = '';
     for (let i = 0; i < this.getURLElementsInArray().length - subtracted; i++) {
       path += this.getURLElementsInArray()[i] + '/';
     }

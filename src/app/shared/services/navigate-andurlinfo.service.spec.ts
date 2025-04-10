@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { NavigateAndurlinfoService } from './navigate-andurlinfo.service';
 import { Router } from '@angular/router';
 
-describe('NavigateAndurlinfoService', () => {
+fdescribe('NavigateAndurlinfoService', () => {
   let service: NavigateAndurlinfoService;
   let routerMock: jasmine.SpyObj<Router>;
   beforeEach(() => {
@@ -26,9 +26,7 @@ describe('NavigateAndurlinfoService', () => {
   });
 
   describe('functions', () => {
-    beforeEach(() => {
-      routerMock.navigateByUrl;
-    });
+   
 
     it('actualUrl should work', () => {
       const result = service.actualUrl();

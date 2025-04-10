@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-const navigations: Array<string> = [
+const navigations: string[] = [
   'main',
   'own',
   'forum',
