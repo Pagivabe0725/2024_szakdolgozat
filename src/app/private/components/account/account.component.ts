@@ -9,6 +9,7 @@ import { OwnDateFormaterPipe } from '../../../shared/pipes/own-date-formater.pip
 import { Timestamp } from '@angular/fire/firestore';
 import { SpinnerComponent } from '../../../shared/components/spinner/spinner.component';
 import { CollectionService } from '../../../shared/services/collection.service';
+import { work } from '../../../shared/interfaces/work';
 
 @Component({
   selector: 'app-account',
@@ -46,12 +47,22 @@ export class AccountComponent implements OnInit {
     await this.getActualUser();
     const docs = await this.getDocsObj();
     const keyArray: string[] = (docs as any).docs.map((doc: any) => doc.id);
-    console.log(docs as any);
-    console.log(keyArray);
+    for (const key of keyArray) {
+      const work :work = await this.getWorks(key) as work
+      console.log(work)
+    }
+
+    await new Promise((resolve)=>setTimeout(resolve,5000))
     this.loaded = true;
   }
 
- async getWorks(){}
+  async getWorks(path: string) {
+    return firstValueFrom(
+      this.collectionService
+        .getCollectionByCollectionAndDoc('Works', path)
+        .pipe(take(1))
+    );
+  }
 
   async getActualUser(): Promise<void> {
     const user = await firstValueFrom(
@@ -70,8 +81,6 @@ export class AccountComponent implements OnInit {
       this.collectionService.getAllDocByCollectionName('Works').pipe(take(1))
     );
   }
-
-  
 
   isDarkmode(): boolean {
     const theme = localStorage.getItem('theme');
