@@ -10,18 +10,27 @@
             : { 'border-color': 'black' }
         "
       >
-        <div id="own-img-container-div"  [ngStyle]="
-        isDarkmode()
-          ? { 'border-right': '1px solid white' }
-          : { 'border-right': ' 1px solid black' }
-      ">
+        <div
+          id="own-img-container-div"
+          [ngStyle]="
+            isDarkmode()
+              ? { 'border-right': '1px solid white' }
+              : { 'border-right': ' 1px solid black' }
+          "
+        >
           <img src="/woman.png" class="own-img-div-1" alt="profilePicture" />
         </div>
-        <mat-card-header>Adataim</mat-card-header>
+        <div>
+          <mat-card-header [ngStyle]="isDarkmode() ? { color: 'white' } : {}"
+            >Adataim</mat-card-header
+          >
+          <mat-card-content></mat-card-content>
+        </div>
       </mat-card>
     </div>
   </mat-tab>
-  <mat-tab label="Munkaadatok">
+  <mat-tab label="Munkaadatok"
+    >Í
     <div class="own-mat-tab-div">körte</div>
   </mat-tab>
   <mat-tab label="Módosítások">

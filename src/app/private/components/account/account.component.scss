@@ -31,6 +31,14 @@ grid-template-columns: 30% 1fr;
 }
 
 
+mat-card-header{
+  font-size: 2vw;
+  padding: 1vh 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .own-img-div-1{
  
   width: 95%;
