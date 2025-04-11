@@ -4,19 +4,28 @@ import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
 import { UserService } from '../../../shared/services/user.service';
 import { user } from '../../../shared/interfaces/user';
-import { take } from 'rxjs';
+import { firstValueFrom, take } from 'rxjs';
 import { OwnDateFormaterPipe } from '../../../shared/pipes/own-date-formater.pipe';
 import { Timestamp } from '@angular/fire/firestore';
+import { SpinnerComponent } from '../../../shared/components/spinner/spinner.component';
+import { CollectionService } from '../../../shared/services/collection.service';
 
 @Component({
   selector: 'app-account',
   standalone: true,
-  imports: [MatTabsModule, MatCardModule, CommonModule, OwnDateFormaterPipe],
+  imports: [
+    MatTabsModule,
+    MatCardModule,
+    CommonModule,
+    OwnDateFormaterPipe,
+    SpinnerComponent,
+  ],
   templateUrl: './account.component.html',
   styleUrl: './account.component.scss',
 })
 export class AccountComponent implements OnInit {
   private _actualUser!: user;
+  public loaded = false;
   public keyTransleater: { [key: string]: string } = {
     firstName: 'Keresztnév',
     lastName: 'Vezetéknév',
@@ -30,19 +39,39 @@ export class AccountComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-
+    private collectionService: CollectionService
   ) {}
 
-  ngOnInit(): void {
-    this.userService
-      .getUserInfoByUserId(localStorage.getItem('userId')!)
-      .pipe(take(1))
-      .subscribe((user) => {
-        this._actualUser = user as user;
-        this.keyArray = Object.keys(this.actualUser) as Array<keyof user>;
-        this.keyArray.splice(this.keyArray.indexOf('id'),1)
-      });
+  async ngOnInit() {
+    await this.getActualUser();
+    const docs = await this.getDocsObj();
+    const keyArray: string[] = (docs as any).docs.map((doc: any) => doc.id);
+    console.log(docs as any);
+    console.log(keyArray);
+    this.loaded = true;
   }
+
+ async getWorks(){}
+
+  async getActualUser(): Promise<void> {
+    const user = await firstValueFrom(
+      this.userService
+        .getUserInfoByUserId(localStorage.getItem('userId')!)
+        .pipe(take(1))
+    );
+
+    this._actualUser = user as user;
+    this.keyArray = Object.keys(this.actualUser) as Array<keyof user>;
+    this.keyArray.splice(this.keyArray.indexOf('id'), 1);
+  }
+
+  getDocsObj() {
+    return firstValueFrom(
+      this.collectionService.getAllDocByCollectionName('Works').pipe(take(1))
+    );
+  }
+
+  
 
   isDarkmode(): boolean {
     const theme = localStorage.getItem('theme');

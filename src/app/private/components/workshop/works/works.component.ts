@@ -20,7 +20,7 @@ export class WorksComponent implements OnInit {
     const collectionSub: Subscription = this.collectionService
       .getAllDocByCollectionName('Works')
       .subscribe((data: any) => {
-        console.log(data)
+        //console.log(data)
         const workArray: Array<any> = Object.values(data);
         let keyArray: Array<string> = [];
         Array.from(data['docs']).forEach(e =>{
