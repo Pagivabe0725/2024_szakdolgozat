@@ -1,0 +1,30 @@
+<mat-tab-group>
+  <mat-tab label="Felhasználói adatok">
+    <div class="own-mat-tab-div">
+      <mat-card
+        id="own-user-matcard"
+        class="own-account-info-div"
+        [ngStyle]="
+          isDarkmode()
+            ? { 'border-color': 'white' }
+            : { 'border-color': 'black' }
+        "
+      >
+        <div id="own-img-container-div"  [ngStyle]="
+        isDarkmode()
+          ? { 'border-right': '1px solid white' }
+          : { 'border-right': ' 1px solid black' }
+      ">
+          <img src="/woman.png" class="own-img-div-1" alt="profilePicture" />
+        </div>
+        <mat-card-header>Adataim</mat-card-header>
+      </mat-card>
+    </div>
+  </mat-tab>
+  <mat-tab label="Munkaadatok">
+    <div class="own-mat-tab-div">körte</div>
+  </mat-tab>
+  <mat-tab label="Módosítások">
+    <div class="own-mat-tab-div">szilva</div>
+  </mat-tab>
+</mat-tab-group>
