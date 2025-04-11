@@ -48,11 +48,11 @@ export class AccountComponent implements OnInit {
     const docs = await this.getDocsObj();
     const keyArray: string[] = (docs as any).docs.map((doc: any) => doc.id);
     for (const key of keyArray) {
-      const work :work = await this.getWorks(key) as work
-      console.log(work)
+      const work: work = (await this.getWorks(key)) as work;
+      console.log(work);
     }
 
-    await new Promise((resolve)=>setTimeout(resolve,5000))
+    await new Promise((resolve) => setTimeout(resolve, 5000));
     this.loaded = true;
   }
 
