@@ -25,12 +25,14 @@
             >Adataim</mat-card-header
           >
           <mat-card-content id="own-user-conten-card">
-
             @for (key of keyArray; track $index) {
-                <div>{{keyTransleater[key]}}</div>
-                <div>{{actualUser[key]}}</div>
-            }
 
+            <div>{{ keyTransleater[key] }}</div>
+            @if (isTimestamp(actualUser[key])) {
+            <div>{{ actualUser[key] | ownDateFormater }}</div>
+            } @else {
+            <div>{{ actualUser[key] }}</div>
+            } }
           </mat-card-content>
         </div>
       </mat-card>
