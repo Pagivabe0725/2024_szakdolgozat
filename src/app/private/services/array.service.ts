@@ -4,8 +4,6 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class ArrayService {
-
-
   getIndex(element: string, array: string[]): number {
     let i = 0;
     for (const iterator of array) {

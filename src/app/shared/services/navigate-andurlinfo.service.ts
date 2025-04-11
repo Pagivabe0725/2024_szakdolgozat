@@ -7,6 +7,7 @@ const navigations: string[] = [
   'forum',
   'workshop',
   'addForum',
+  'my-account',
 ];
 
 @Injectable({

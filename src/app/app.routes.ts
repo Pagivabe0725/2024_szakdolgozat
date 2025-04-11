@@ -13,6 +13,7 @@ import { WorksComponent } from './private/components/workshop/works/works.compon
 import { TimelineComponent } from './private/components/workshop/timeline/timeline.component';
 import { WorkCreatorComponent } from './private/components/workshop/work-creator/work-creator.component';
 import { MessageCommentComponent } from './private/components/workshop/message-comment/message-comment.component';
+import { AccountComponent } from './private/components/account/account.component';
 
 export const routes: Routes = [
   {
@@ -81,6 +82,12 @@ export const routes: Routes = [
         path: 'message-comment/:workId',
         component: MessageCommentComponent,
         title: 'message-comment',
+      },
+
+      {
+        path: 'my-account',
+        component: AccountComponent,
+        title: 'my-account',
       },
       {
         path: 'workshop',
