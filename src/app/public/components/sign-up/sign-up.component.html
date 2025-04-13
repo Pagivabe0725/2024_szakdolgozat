@@ -26,6 +26,18 @@
     <mat-error>A formátum nem megfelelő</mat-error>
     }
   </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Nem</mat-label>
+    <mat-select #select formControlName="gender">
+      <mat-option value="Férfi">Férfi</mat-option>
+      <mat-option value="Nő">Nő</mat-option>
+    </mat-select>
+    @if (signupForm.get('gender')?.hasError('required')) {
+      <mat-error>Kötelezően kitöltendő mező</mat-error>
+    }
+  </mat-form-field>
+
   <mat-form-field>
     <mat-label>Város:</mat-label>
     <input type="text" matInput formControlName="city" />

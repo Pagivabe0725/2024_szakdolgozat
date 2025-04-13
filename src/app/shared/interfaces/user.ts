@@ -5,6 +5,7 @@ export interface user {
   firstName: string;
   lastName: string;
   email: string;
+  gender: 'Férfi' | 'Nő'
   telNumber: string;
   lastLogin: Timestamp;
   city: string | undefined;

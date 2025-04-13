@@ -49,6 +49,7 @@ const userTemplate: user = {
   city: undefined,
   telNumber: '06905777170',
   dateOfRegistration: Timestamp.now(),
+  gender:'Férfi'
 };
 
 const commentTemplate: forumComment = {

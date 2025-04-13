@@ -24,7 +24,7 @@
               : { 'border-right': ' 1px solid black' }
           "
         >
-          <img src="/woman.png" class="own-img-div-1" alt="profilePicture" />
+          <img [src]="actualUser.gender==='Férfi' ? '/man.png':'women.png' " class="own-img-div-1" alt="profilePicture" />
         </div>
 
         <div class="own-mat-content-container">

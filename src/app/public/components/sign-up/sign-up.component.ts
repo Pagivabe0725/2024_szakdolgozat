@@ -16,6 +16,7 @@ import { user } from '../../../shared/interfaces/user';
 import { Timestamp } from '@angular/fire/firestore';
 import { NavigateAndurlinfoService } from '../../../shared/services/navigate-andurlinfo.service';
 import { SpinnerComponent } from '../../../shared/components/spinner/spinner.component';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-sign-up',
@@ -25,6 +26,7 @@ import { SpinnerComponent } from '../../../shared/components/spinner/spinner.com
     MatButtonModule,
     ReactiveFormsModule,
     SpinnerComponent,
+    MatSelectModule,
   ],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.scss',
@@ -40,6 +42,7 @@ export class SignUpComponent implements OnInit {
     lastName: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),
     telNum: new FormControl('', [Validators.required]),
+    gender: new FormControl('', [Validators.required]),
     city: new FormControl('', []),
     password: new FormControl('', [
       Validators.required,
@@ -135,6 +138,7 @@ export class SignUpComponent implements OnInit {
       email: this.signupForm.get('email')?.value,
       telNumber: this.signupForm.get('telNum')?.value,
       city: this.signupForm.get('city')?.value,
+      gender:this.signupForm.get('gender')?.value,
       lastLogin: Timestamp.now(),
       dateOfRegistration: Timestamp.now(),
     } as user;

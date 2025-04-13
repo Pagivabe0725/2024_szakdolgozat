@@ -32,6 +32,7 @@ export class AccountComponent implements OnInit {
     firstName: 'Keresztnév:',
     lastName: 'Vezetéknév:',
     email: 'Email-címem:',
+    gender:'Nem',
     telNumber: 'Telefonszámom:',
     lastLogin: 'Utolsó bejelentkezésem:',
     city: 'Városom:',
@@ -65,6 +66,7 @@ export class AccountComponent implements OnInit {
     }
 
     await new Promise((resolve) => setTimeout(resolve, 5000));
+    console.log(this.actualUser)
     console.log('this.myWorksArray');
     console.log(this.myWorksArray);
     console.log('this.userInWorks');
@@ -106,7 +108,7 @@ export class AccountComponent implements OnInit {
   }
 
   lastProjeck(): Timestamp | undefined {
-    if (this.myWorksArray) {
+    if (this.myWorksArray.length>0) {
       let last: Timestamp = this.myWorksArray[0].created;
       this.myWorksArray.forEach((i) => {
         last.toMillis() < i.created.toMillis()
@@ -120,7 +122,7 @@ export class AccountComponent implements OnInit {
   }
 
   lastModifiedProjeck(): Timestamp | undefined {
-    if (this.myWorksArray) {
+    if (this.myWorksArray.length>0) {
       let last: Timestamp = this.myWorksArray[0].modified;
       this.myWorksArray.forEach((i) => {
         last.toMillis() < i.modified.toMillis()
@@ -159,6 +161,7 @@ export class AccountComponent implements OnInit {
       'lastName',
       'firstName',
       'email',
+      'gender',
       'telNumber',
       'city',
       'lastLogin',
@@ -188,8 +191,8 @@ export class AccountComponent implements OnInit {
     const object = {
       'Saját munkáim:': this.getWorksNumber(true),
       'Munkák amiben részt veszek:': this.getWorksNumber(false),
-      'Utojára létrehozott munkám:': this.lastProjeck(),
-      'Utojára módosított munkám:': this.lastModifiedProjeck(),
+      'Utojára létrehozott munkám:': this.lastProjeck() || 'Nincs',
+      'Utojára módosított munkám:': this.lastModifiedProjeck() || 'Nincs',
     };
     console.log(Object.entries(object));
     return Object.entries(object);
