@@ -37,6 +37,8 @@ export class AccountComponent implements OnInit {
     dateOfRegistration: 'Regisztráltam',
   };
   public keyArray: Array<keyof user> = [];
+  private myWorksArray: Array<work> = [];
+  private userInWorks: Array<string> = [];
 
   constructor(
     private userService: UserService,
@@ -47,12 +49,25 @@ export class AccountComponent implements OnInit {
     await this.getActualUser();
     const docs = await this.getDocsObj();
     const keyArray: string[] = (docs as any).docs.map((doc: any) => doc.id);
+    console.log(keyArray);
     for (const key of keyArray) {
       const work: work = (await this.getWorks(key)) as work;
-      console.log(work);
+      if (work.userId === localStorage.getItem('userId')) {
+        this.myWorksArray.push(work);
+      }
+      work.members.forEach(user=>{
+        this.userInWorks.push(user.id)
+      })
+      this.userInWorks.push(work.userId)
     }
 
     await new Promise((resolve) => setTimeout(resolve, 5000));
+    console.log('this.myWorksArray');
+    console.log(this.myWorksArray);
+    console.log('this.userInWorks');
+    console.log(this.userInWorks);
+    console.log('utolso időpont')
+    console.log(this.lastProjeck()?.toDate())
     this.loaded = true;
   }
 
@@ -82,6 +97,20 @@ export class AccountComponent implements OnInit {
     );
   }
 
+  lastProjeck():Timestamp | undefined{
+
+    if(this.myWorksArray){
+      let last : Timestamp= this.myWorksArray[0].created;
+      this.myWorksArray.forEach(i=>{
+        last.toMillis() < i.created.toMillis() ? last =i.created : last=last 
+      })
+      return last
+    }
+
+    return undefined
+    
+  }
+
   isDarkmode(): boolean {
     const theme = localStorage.getItem('theme');
     return theme ? theme.includes('dark') : false;
@@ -89,6 +118,12 @@ export class AccountComponent implements OnInit {
 
   isTimestamp(value: any): value is Timestamp {
     return value instanceof Timestamp;
+  }
+
+  orderKeyArray(): void {
+    const copyedArray: Array<string> = [...this.keyArray];
+
+    const order: Array<string> = [''];
   }
 
   get actualUser() {
