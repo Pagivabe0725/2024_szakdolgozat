@@ -30,4 +30,16 @@ export class ArrayService {
     array.push(element);
     return array;
   }
+
+  elementInArrayTimes(element: string, array: string[]): number {
+    let piece = 0;
+
+    array.forEach((i) => {
+      if (i === element) {
+        piece++;
+      }
+    });
+
+    return piece;
+  }
 }

@@ -83,10 +83,44 @@
         "
         [ngClass]="isDarkmode() ? 'own-accent-text-color ' : ''"
       >
-        <mat-card-header>Munkáimról</mat-card-header>
+        <mat-card-header [ngStyle]="isDarkmode() ? { color: 'white' } : {}"
+          >Munkáimról</mat-card-header
+        >
         <mat-card-content id="own-work-content-data">
-          <div>a</div>
-          <div>b</div>
+          @for (array of createWorkMatCardObject(); track $index; let i =
+          $index) {
+          <div
+            [ngStyle]="
+              isDarkmode()
+                ? { 'border-bottom': '1px solid white' }
+                : { 'border-bottom': '1px solid black' }
+            "
+          >
+            {{ array[0] }}
+          </div>
+          @if (isTimestamp(array[1])) {
+          <div
+            style="justify-content: flex-end; padding-right: 1vw"
+            [ngStyle]="
+              isDarkmode()
+                ? { 'border-bottom': '1px solid white' }
+                : { 'border-bottom': '1px solid black' }
+            "
+          >
+            {{ array[1] | ownDateFormater }}
+          </div>
+          } @else {
+          <div
+            style="justify-content: flex-end; padding-right: 1vw"
+            [ngStyle]="
+              isDarkmode()
+                ? { 'border-bottom': '1px solid white' }
+                : { 'border-bottom': '1px solid black' }
+            "
+          >
+            {{ array[1] + " db" }}
+          </div>
+          } }
         </mat-card-content>
       </mat-card>
     </div>

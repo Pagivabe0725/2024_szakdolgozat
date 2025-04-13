@@ -10,6 +10,7 @@ import { Timestamp } from '@angular/fire/firestore';
 import { SpinnerComponent } from '../../../shared/components/spinner/spinner.component';
 import { CollectionService } from '../../../shared/services/collection.service';
 import { work } from '../../../shared/interfaces/work';
+import { ArrayService } from '../../services/array.service';
 
 @Component({
   selector: 'app-account',
@@ -43,7 +44,8 @@ export class AccountComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private collectionService: CollectionService
+    private collectionService: CollectionService,
+    private arrayService: ArrayService
   ) {}
 
   async ngOnInit() {
@@ -72,6 +74,7 @@ export class AccountComponent implements OnInit {
     console.log('utolso módosított időpont');
     console.log(this.lastModifiedProjeck()?.toDate());
     this.loaded = true;
+    this.createWorkMatCardObject();
   }
 
   async getWorks(path: string) {
@@ -135,6 +138,17 @@ export class AccountComponent implements OnInit {
     return theme ? theme.includes('dark') : false;
   }
 
+  getWorksNumber(own: boolean): number {
+    if (own) {
+      return this.myWorksArray.length;
+    }
+
+    return this.arrayService.elementInArrayTimes(
+      localStorage.getItem('userId')!,
+      this.userInWorks
+    );
+  }
+
   isTimestamp(value: any): value is Timestamp {
     return value instanceof Timestamp;
   }
@@ -151,22 +165,35 @@ export class AccountComponent implements OnInit {
       'dateOfRegistration',
     ];
 
-    if ([...copiedArray].sort().every((value, i) => value === [...order].sort()[i])) {
-      this.orderKeyArray(copiedArray,order)
+    if (
+      [...copiedArray]
+        .sort()
+        .every((value, i) => value === [...order].sort()[i])
+    ) {
+      this.orderKeyArray(copiedArray, order);
       this.displayDatas = true;
     }
   }
 
+  orderKeyArray(copiedArray: string[], orderedArray: string[]): void {
+    this.keyArray = [];
 
-  orderKeyArray(copiedArray:string[], orderedArray:string[]):void{
-    this.keyArray=[]
-    
-    orderedArray.forEach(i=>{
-      console.log(i)
-      this.keyArray.push(copiedArray[copiedArray.indexOf(i)] as keyof user)
-    })
+    orderedArray.forEach((i) => {
+      console.log(i);
+      this.keyArray.push(copiedArray[copiedArray.indexOf(i)] as keyof user);
+    });
   }
 
+  createWorkMatCardObject() {
+    const object = {
+      'Saját munkáim:': this.getWorksNumber(true),
+      'Munkák amiben részt veszek:': this.getWorksNumber(false),
+      'Utojára létrehozott munkám:': this.lastProjeck(),
+      'Utojára módosított munkám:': this.lastModifiedProjeck(),
+    };
+    console.log(Object.entries(object));
+    return Object.entries(object);
+  }
 
   get actualUser() {
     return this._actualUser;
