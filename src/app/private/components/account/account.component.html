@@ -1,15 +1,12 @@
-
 @if (!loaded) {
 
 <app-spinner></app-spinner>
-}
-
-@else {
+} @else {
 
 <mat-tab-group>
   <mat-tab label="Felhasználói adatok">
     <div class="own-mat-tab-div">
-      <mat-card
+      <mat-card3
         id="own-user-matcard"
         class="own-account-info-div"
         [ngStyle]="
@@ -17,6 +14,7 @@
             ? { 'border-color': 'white' }
             : { 'border-color': 'black' }
         "
+        [ngClass]="isDarkmode() ? 'own-accent-text-color ' : ''"
       >
         <div
           id="own-img-container-div"
@@ -28,14 +26,18 @@
         >
           <img src="/woman.png" class="own-img-div-1" alt="profilePicture" />
         </div>
-        <div>
+        <div class="own-mat-content-container">
           <mat-card-header [ngStyle]="isDarkmode() ? { color: 'white' } : {}"
             >Adataim</mat-card-header
           >
           <mat-card-content id="own-user-conten-card">
             @for (key of keyArray; track $index) {
 
-            <div>{{ keyTransleater[key] }}</div>
+            <div
+              [ngStyle]="isDarkmode() ? { color: 'white' } : { color: 'black' }"
+            >
+              {{ keyTransleater[key] }}
+            </div>
             @if (isTimestamp(actualUser[key])) {
             <div>{{ actualUser[key] | ownDateFormater }}</div>
             } @else {
@@ -43,7 +45,7 @@
             } }
           </mat-card-content>
         </div>
-      </mat-card>
+      </mat-card3>
     </div>
   </mat-tab>
   <mat-tab label="Munkaadatok"
