@@ -38,18 +38,28 @@
             <div
               [ngStyle]="
                 isDarkmode()
-                  ? { color: 'white', 'padding-left': '1vw' , 'border-color':'#eeeeee' }
+                  ? {
+                      color: 'white',
+                      'padding-left': '1vw',
+                      'border-color': '#eeeeee'
+                    }
                   : { color: 'black', 'padding-left': '1vw' }
               "
             >
               {{ keyTransleater[key] }}
             </div>
             @if (isTimestamp(actualUser[key])) {
-            <div style="justify-content: flex-end; padding-right: 1vw" [ngStyle]="isDarkmode() ? {'border-color':'#eeeeee'}:{}">
+            <div
+              style="justify-content: flex-end; padding-right: 1vw"
+              [ngStyle]="isDarkmode() ? { 'border-color': '#eeeeee' } : {}"
+            >
               {{ actualUser[key] | ownDateFormater }}
             </div>
             } @else {
-            <div style="justify-content: flex-end; padding-right: 1vw" [ngStyle]="isDarkmode() ? {'border-color':'#eeeeee'}:{}">
+            <div
+              style="justify-content: flex-end; padding-right: 1vw"
+              [ngStyle]="isDarkmode() ? { 'border-color': '#eeeeee' } : {}"
+            >
               {{ actualUser[key] }}
             </div>
             } }
@@ -61,9 +71,25 @@
       </mat-card>
     </div>
   </mat-tab>
-  <mat-tab label="Munkaadatok"
-    >Í
-    <div class="own-mat-tab-div">körte</div>
+  <mat-tab label="Munkaadatok">
+    <div class="own-mat-tab-div">
+      <mat-card
+        id="own-work-matcard"
+        class="own-work-info-div"
+        [ngStyle]="
+          isDarkmode()
+            ? { 'border-color': 'white' }
+            : { 'border-color': 'black' }
+        "
+        [ngClass]="isDarkmode() ? 'own-accent-text-color ' : ''"
+      >
+        <mat-card-header>Munkáimról</mat-card-header>
+        <mat-card-content id="own-work-content-data">
+          <div>a</div>
+          <div>b</div>
+        </mat-card-content>
+      </mat-card>
+    </div>
   </mat-tab>
   <mat-tab label="Módosítások">
     <div class="own-mat-tab-div">szilva</div>
