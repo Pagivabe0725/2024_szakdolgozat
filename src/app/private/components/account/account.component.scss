@@ -15,7 +15,6 @@
 #own-user-matcard {
   display: grid;
   grid-template-columns: 30% 1fr;
-
 }
 
 #own-img-container-div {
@@ -46,8 +45,12 @@ mat-card-header {
   font-size: 1.2vw;
 }
 
-.own-mat-content-container{
-
+.own-mat-content-container {
   display: grid;
-  
+}
+
+#own-user-conten-card div {
+  display: flex;
+  align-items: center;
+  border-bottom:1px solid black ;
 }

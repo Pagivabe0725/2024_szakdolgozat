@@ -6,7 +6,7 @@
 <mat-tab-group>
   <mat-tab label="Felhasználói adatok">
     <div class="own-mat-tab-div">
-      <mat-card3
+      <mat-card
         id="own-user-matcard"
         class="own-account-info-div"
         [ngStyle]="
@@ -26,7 +26,9 @@
         >
           <img src="/woman.png" class="own-img-div-1" alt="profilePicture" />
         </div>
+
         <div class="own-mat-content-container">
+          @if (displayDatas) {
           <mat-card-header [ngStyle]="isDarkmode() ? { color: 'white' } : {}"
             >Adataim</mat-card-header
           >
@@ -34,18 +36,29 @@
             @for (key of keyArray; track $index) {
 
             <div
-              [ngStyle]="isDarkmode() ? { color: 'white' } : { color: 'black' }"
+              [ngStyle]="
+                isDarkmode()
+                  ? { color: 'white', 'padding-left': '1vw' , 'border-color':'#eeeeee' }
+                  : { color: 'black', 'padding-left': '1vw' }
+              "
             >
               {{ keyTransleater[key] }}
             </div>
             @if (isTimestamp(actualUser[key])) {
-            <div>{{ actualUser[key] | ownDateFormater }}</div>
+            <div style="justify-content: flex-end; padding-right: 1vw" [ngStyle]="isDarkmode() ? {'border-color':'#eeeeee'}:{}">
+              {{ actualUser[key] | ownDateFormater }}
+            </div>
             } @else {
-            <div>{{ actualUser[key] }}</div>
+            <div style="justify-content: flex-end; padding-right: 1vw" [ngStyle]="isDarkmode() ? {'border-color':'#eeeeee'}:{}">
+              {{ actualUser[key] }}
+            </div>
             } }
           </mat-card-content>
+          } @else {
+          <mat-card-header>Az adatok betöltése sikertelen</mat-card-header>
+          }
         </div>
-      </mat-card3>
+      </mat-card>
     </div>
   </mat-tab>
   <mat-tab label="Munkaadatok"

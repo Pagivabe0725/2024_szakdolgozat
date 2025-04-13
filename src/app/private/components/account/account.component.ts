@@ -28,17 +28,18 @@ export class AccountComponent implements OnInit {
   private _actualUser!: user;
   public loaded = false;
   public keyTransleater: { [key: string]: string } = {
-    firstName: 'Keresztnév',
-    lastName: 'Vezetéknév',
+    firstName: 'Keresztnév:',
+    lastName: 'Vezetéknév:',
     email: 'Email-címem:',
-    telNumber: 'Telefonszámom',
-    lastLogin: 'Utolsó bejelentkezésem',
-    city: 'Városom',
-    dateOfRegistration: 'Regisztráltam',
+    telNumber: 'Telefonszámom:',
+    lastLogin: 'Utolsó bejelentkezésem:',
+    city: 'Városom:',
+    dateOfRegistration: 'Regisztráltam:',
   };
   public keyArray: Array<keyof user> = [];
   private myWorksArray: Array<work> = [];
   private userInWorks: Array<string> = [];
+  public displayDatas = false;
 
   constructor(
     private userService: UserService,
@@ -91,6 +92,8 @@ export class AccountComponent implements OnInit {
     this._actualUser = user as user;
     this.keyArray = Object.keys(this.actualUser) as Array<keyof user>;
     this.keyArray.splice(this.keyArray.indexOf('id'), 1);
+    this.checkKeyArray();
+    console.log(this.keyArray);
   }
 
   getDocsObj() {
@@ -136,11 +139,34 @@ export class AccountComponent implements OnInit {
     return value instanceof Timestamp;
   }
 
-  orderKeyArray(): void {
-    const copyedArray: Array<string> = [...this.keyArray];
+  checkKeyArray(): void {
+    const copiedArray: Array<string> = [...this.keyArray];
+    const order: Array<string> = [
+      'lastName',
+      'firstName',
+      'email',
+      'telNumber',
+      'city',
+      'lastLogin',
+      'dateOfRegistration',
+    ];
 
-    const order: Array<string> = [''];
+    if ([...copiedArray].sort().every((value, i) => value === [...order].sort()[i])) {
+      this.orderKeyArray(copiedArray,order)
+      this.displayDatas = true;
+    }
   }
+
+
+  orderKeyArray(copiedArray:string[], orderedArray:string[]):void{
+    this.keyArray=[]
+    
+    orderedArray.forEach(i=>{
+      console.log(i)
+      this.keyArray.push(copiedArray[copiedArray.indexOf(i)] as keyof user)
+    })
+  }
+
 
   get actualUser() {
     return this._actualUser;
