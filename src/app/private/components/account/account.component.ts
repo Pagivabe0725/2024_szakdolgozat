@@ -55,10 +55,10 @@ export class AccountComponent implements OnInit {
       if (work.userId === localStorage.getItem('userId')) {
         this.myWorksArray.push(work);
       }
-      work.members.forEach(user=>{
-        this.userInWorks.push(user.id)
-      })
-      this.userInWorks.push(work.userId)
+      work.members.forEach((user) => {
+        this.userInWorks.push(user.id);
+      });
+      this.userInWorks.push(work.userId);
     }
 
     await new Promise((resolve) => setTimeout(resolve, 5000));
@@ -66,8 +66,10 @@ export class AccountComponent implements OnInit {
     console.log(this.myWorksArray);
     console.log('this.userInWorks');
     console.log(this.userInWorks);
-    console.log('utolso időpont')
-    console.log(this.lastProjeck()?.toDate())
+    console.log('utolso időpont');
+    console.log(this.lastProjeck()?.toDate());
+    console.log('utolso módosított időpont');
+    console.log(this.lastModifiedProjeck()?.toDate());
     this.loaded = true;
   }
 
@@ -97,18 +99,32 @@ export class AccountComponent implements OnInit {
     );
   }
 
-  lastProjeck():Timestamp | undefined{
-
-    if(this.myWorksArray){
-      let last : Timestamp= this.myWorksArray[0].created;
-      this.myWorksArray.forEach(i=>{
-        last.toMillis() < i.created.toMillis() ? last =i.created : last=last 
-      })
-      return last
+  lastProjeck(): Timestamp | undefined {
+    if (this.myWorksArray) {
+      let last: Timestamp = this.myWorksArray[0].created;
+      this.myWorksArray.forEach((i) => {
+        last.toMillis() < i.created.toMillis()
+          ? (last = i.created)
+          : (last = last);
+      });
+      return last;
     }
 
-    return undefined
-    
+    return undefined;
+  }
+
+  lastModifiedProjeck(): Timestamp | undefined {
+    if (this.myWorksArray) {
+      let last: Timestamp = this.myWorksArray[0].modified;
+      this.myWorksArray.forEach((i) => {
+        last.toMillis() < i.modified.toMillis()
+          ? (last = i.modified)
+          : (last = last);
+      });
+      return last;
+    }
+
+    return undefined;
   }
 
   isDarkmode(): boolean {
