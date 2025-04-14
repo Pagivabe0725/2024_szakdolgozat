@@ -18,6 +18,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-account',
@@ -30,6 +31,7 @@ import {
     SpinnerComponent,
     MatButtonModule,
     ReactiveFormsModule,
+    MatInputModule,
   ],
   templateUrl: './account.component.html',
   styleUrl: './account.component.scss',
@@ -215,11 +217,11 @@ export class AccountComponent implements OnInit {
     return string as keyof user;
   }
 
-  buttonAction(string: string) {
+  buttonAction(string: string): void {
     this.modifyForm = new FormGroup({});
     if (string === 'password') {
       this.modifyForm.addControl(
-        'oldPassword',
+        'password',
         new FormControl('', [Validators.required])
       );
       this.modifyForm.addControl(
@@ -230,12 +232,52 @@ export class AccountComponent implements OnInit {
         'newPasswordAgain',
         new FormControl('', [Validators.required])
       );
-    } else {
+      this.displayForm = true;
+    } else if (string !== 'back') {
       this.modifyForm.addControl(
         string,
         new FormControl('', [Validators.required])
       );
+      this.displayForm = true;
+    } else {
+      this.displayForm = false;
     }
+  }
 
+  stringInActualFormcontrolKeys(value: string) {
+    return Object.keys(this.modifyForm.controls).includes(value);
+  }
+
+  getElementsFromFormcontrol(): Array<string> {
+    return Object.keys(this.modifyForm.controls);
+  }
+
+  labelForMatFormField(element: string): string {
+    const helperArray: Array<string> = this.getElementsFromFormcontrol();
+
+    switch (element) {
+      case 'firstName':
+        return 'Új keresztnév';
+      case 'lastName':
+        return 'Új vezetéknév';
+
+      case 'telNumber':
+        return 'Új telefonszám';
+      case 'gender':
+        return 'Nem';
+      case 'city':
+        return 'Új város';
+
+      case 'password':
+        return 'Régi jelszó';
+
+      case 'newPassword':
+        return 'Új jelszó';
+
+      case 'newPasswordAgain':
+        return 'Új jelszó Újra';
+      default:
+        return '';
+    }
   }
 }

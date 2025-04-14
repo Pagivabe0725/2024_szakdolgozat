@@ -96,3 +96,15 @@ mat-card-header {
   align-items: center;
   grid-template-columns: 1fr 1fr;
 }
+
+#own-form-div{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#own-form-div button, mat-form-field{
+
+  width: 50%;
+}
