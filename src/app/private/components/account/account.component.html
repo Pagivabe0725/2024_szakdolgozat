@@ -185,7 +185,7 @@
               matInput
               [formControlName]="control"
             /> 
-            @if (modifyForm.get(control)?.hasError('required') && modifyForm.get(control)?.touched) {
+            @if (modifyForm.get(control)?.hasError('required')) {
               <mat-error>Kötelezően kitöltendő mező</mat-error>
             }
             </mat-form-field
@@ -196,13 +196,13 @@
               <mat-option value="Férfi" >Férfi</mat-option>
               <mat-option value="Nő">Nő</mat-option>
             </mat-select>
-            @if (modifyForm.get(control)?.hasError('required') && modifyForm.get(control)?.touched) {
+            @if (modifyForm.get(control)?.hasError('required') ) {
               <mat-error>Kötelezően kitöltendő mező</mat-error>
             }
           </mat-form-field>
 
           } }
-          <button mat-flat-button class="own-primary-highlight-background">Módosít</button>
+          <button mat-flat-button class="own-primary-highlight-background" (click)="modify()">Módosít</button>
           }
         </form>
       </mat-card>

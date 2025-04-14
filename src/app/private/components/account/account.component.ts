@@ -20,6 +20,8 @@ import {
 } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { PopupService } from '../../../shared/services/popup.service';
+import { Dialog } from '../../../shared/interfaces/dialog';
 
 @Component({
   selector: 'app-account',
@@ -33,7 +35,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatButtonModule,
     ReactiveFormsModule,
     MatInputModule,
-    MatSelectModule
+    MatSelectModule,
   ],
   templateUrl: './account.component.html',
   styleUrl: './account.component.scss',
@@ -69,7 +71,8 @@ export class AccountComponent implements OnInit {
   constructor(
     private userService: UserService,
     private collectionService: CollectionService,
-    private arrayService: ArrayService
+    private arrayService: ArrayService,
+    private popupService: PopupService
   ) {}
 
   async ngOnInit() {
@@ -219,34 +222,35 @@ export class AccountComponent implements OnInit {
     return string as keyof user;
   }
 
-  buttonAction(string: string): void {
-    this.modifyForm = new FormGroup({});
-    this.modifyForm.setErrors(null)
-   
-    if (string === 'password') {
-      this.modifyForm.addControl(
-        'password',
-        new FormControl('', [Validators.required])
-      );
-      this.modifyForm.addControl(
-        'newPassword',
-        new FormControl('', [Validators.required])
-      );
-      this.modifyForm.addControl(
-        'newPasswordAgain',
-        new FormControl('', [Validators.required])
-      );
-      this.displayForm = true;
-    } else if (string !== 'back') {
-      this.modifyForm.addControl(
-        string,
-        new FormControl('', [Validators.required])
-      );
-      this.displayForm = true;
-    } else {
-      
-      this.displayForm = false;
-    }
+  buttonAction(key: string): void {
+    this.displayForm = false;
+
+    setTimeout(() => {
+      // 3. Új üres form létrehozása
+      this.modifyForm = new FormGroup({});
+
+      if (key === 'password') {
+        this.modifyForm.addControl(
+          'password',
+          new FormControl('', Validators.required)
+        );
+        this.modifyForm.addControl(
+          'newPassword',
+          new FormControl('', Validators.required)
+        );
+        this.modifyForm.addControl(
+          'newPasswordAgain',
+          new FormControl('', Validators.required)
+        );
+      } else if (key !== 'back') {
+        this.modifyForm.addControl(
+          key,
+          new FormControl('', Validators.required)
+        );
+      }
+
+      this.displayForm = key !== 'back';
+    }, 10);
   }
 
   stringInActualFormcontrolKeys(value: string) {
@@ -283,6 +287,30 @@ export class AccountComponent implements OnInit {
         return 'Új jelszó Újra';
       default:
         return '';
+    }
+  }
+
+  checkForm(): boolean {
+    return this.modifyForm.valid;
+  }
+
+  modify(): void {
+    if (this.checkForm()) {
+      const dialogTemplate: Dialog = {
+        width: '70%',
+        height: '70%',
+        hostComponent: 'AccountComponent',
+        title: 'Módosítás',
+        content: 'Biztosan módosítani szeretnéd?',
+        action: true,
+        hasInput: false,
+      };
+
+      this.popupService.displayPopUp(dialogTemplate).afterClosed().pipe(take(1)).subscribe(
+        (result)=>{
+          console.log(result)
+        }
+      )
     }
   }
 }
