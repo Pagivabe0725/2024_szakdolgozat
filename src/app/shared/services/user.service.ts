@@ -49,4 +49,9 @@ export class UserService {
   getUsers(){
     return this.angularFirestore.collection('Users').valueChanges()
   }
+
+
+  currentUser(){
+  return this.angularFireAuth.currentUser
+  }
 }

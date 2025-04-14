@@ -77,6 +77,10 @@ export class AccountComponent implements OnInit {
     }
     this.loaded = true;
     this.createWorkMatCardObject();
+    await this.userService.currentUser().then((user)=>{
+      console.log('itt a user')
+      console.log(user)
+    })
   }
 
   async getWorks(path: string) {
