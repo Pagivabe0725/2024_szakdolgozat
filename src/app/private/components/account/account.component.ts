@@ -232,15 +232,15 @@ export class AccountComponent implements OnInit {
       if (key === 'password') {
         this.modifyForm.addControl(
           'password',
-          new FormControl('', Validators.required)
+          new FormControl('', [Validators.required, Validators.minLength(6)])
         );
         this.modifyForm.addControl(
           'newPassword',
-          new FormControl('', Validators.required)
+          new FormControl('', [Validators.required, Validators.minLength(6)])
         );
         this.modifyForm.addControl(
           'newPasswordAgain',
-          new FormControl('', Validators.required)
+          new FormControl('', [Validators.required, Validators.minLength(6)])
         );
       } else if (key !== 'back') {
         this.modifyForm.addControl(
@@ -294,6 +294,25 @@ export class AccountComponent implements OnInit {
     return this.modifyForm.valid;
   }
 
+  handlePageStates(): void {
+    this.modifyForm = new FormGroup({});
+    this.displayForm = false;
+    this.displayDatas = false;
+    this.loaded = true;
+    this.displayDatas = true;
+  }
+  createModifyErrorDialog(content:string):Dialog{
+    let errorDialog: Dialog =
+    this.popupService.getTemplateDialog();
+  errorDialog.title = 'hiba!';
+  errorDialog.content = content;
+  errorDialog.hostComponent = 'AccountComponent';
+  errorDialog.action = false;
+
+  return errorDialog
+
+  }
+
   modify(): void {
     if (this.checkForm()) {
       const dialogTemplate: Dialog = {
@@ -327,24 +346,10 @@ export class AccountComponent implements OnInit {
                   this.actualUser
                 )
                 .then((_) => {
-                  console.log('sikeres');
-                  this.modifyForm = new FormGroup({});
-                  this.displayForm = false;
-                  this.displayDatas = false;
-                  this.loaded = true;
-                  this.displayDatas = true;
+                  this.handlePageStates();
                 })
                 .catch((_) => {
-                  let errorDialog: Dialog =
-                    this.popupService.getTemplateDialog();
-                  errorDialog.title = 'hiba!';
-                  (errorDialog.content = 'Hiba történt a művelet során'),
-                    (errorDialog.hostComponent = 'AccountComponent'),
-                    (errorDialog.action = false);
-                  this.modifyForm = new FormGroup({});
-                  this.displayForm = false;
-                  this.loaded = true;
-                  this.displayDatas = true;
+                  let errorDialog = this.createModifyErrorDialog('Hiba történt a művelet során')
                   this.popupService.displayPopUp(errorDialog);
                 });
             } else {
@@ -352,21 +357,17 @@ export class AccountComponent implements OnInit {
                 .isOldPasswordCorrect(this.modifyForm.get('password')!.value)
                 .then((result) => {
                   this.loaded = false;
-                  let errorDialog: Dialog =
-                    this.popupService.getTemplateDialog();
-                  errorDialog.title = 'hiba!';
-                  errorDialog.content = 'Az jelenlegi jelszó nem helyes';
-                  errorDialog.hostComponent = 'AccountComponent';
-                  errorDialog.action = false;
+                  let errorDialog = this.createModifyErrorDialog('A jelenlegi jelszó nem helyes')
                   if (!result) {
                     this.popupService.displayPopUp(errorDialog);
+                    this.loaded = true;
                   } else {
                     if (
                       this.modifyForm.get('newPassword')?.value !==
                       this.modifyForm.get('newPasswordAgain')?.value
                     ) {
                       errorDialog.content = 'Az új jelszavak nem egyeznek meg';
-                      this.loaded = true
+                      this.loaded = true;
                       this.popupService.displayPopUp(errorDialog);
                     } else {
                       this.loaded = false;
@@ -378,10 +379,10 @@ export class AccountComponent implements OnInit {
                               this.modifyForm.get('newPassword')?.value!
                             )
                             .then((_) => {
-                              this.loaded = true;
+                              this.handlePageStates();
                             })
                             .catch((_) => {
-                              this.loaded = true;
+                              this.handlePageStates();
                             });
                         })
                         .catch((err) => {

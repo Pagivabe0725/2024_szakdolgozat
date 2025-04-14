@@ -8,7 +8,7 @@
 
 .own-account-info-div {
   width: 60vw;
-  height: 60vh;
+  height: 70vh;
   border: 1px black solid;
 }
 
@@ -62,7 +62,7 @@ mat-card-header {
 
 .own-work-info-div {
   width: 60vw;
-  height: 60vh;
+  height: 70vh;
   border: 1px black solid;
 }
 
@@ -81,7 +81,7 @@ mat-card-header {
 
 #own-modify-matcard {
   display: grid;
-  grid-template-columns: 40% 1fr;
+  grid-template-columns: 60% 1fr;
 }
 
 #own-mat-modify-options-div {
@@ -95,16 +95,25 @@ mat-card-header {
   margin: 0 auto;
   align-items: center;
   grid-template-columns: 1fr 1fr;
+
 }
 
-#own-form-div{
+#own-form-div {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 2vh;
 }
 
-#own-form-div button, mat-form-field{
-
-  width: 50%;
+#own-form-div 
+mat-form-field {
+  width: 90%;
 }
+
+
+#own-form-div button{
+  width: 40%;
+  min-width: 100px;
+}
+

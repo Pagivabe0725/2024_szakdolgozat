@@ -148,8 +148,18 @@
               : { 'border-right': '1px solid black' }
           "
         >
-          @for (key of getObjectInArray(modifyKeyValueObj) ; track $index) {
-          <div class="own-modify-div-element">
+          @for (key of getObjectInArray(modifyKeyValueObj) ; track $index; let i
+          = $index) {
+          <div
+            class="own-modify-div-element"
+            [ngStyle]="
+              i !== getObjectInArray(modifyKeyValueObj).length - 1
+                ? isDarkmode()
+                  ? { 'border-bottom': '1px solid white' }
+                  : { 'border-bottom': '1px solid black' }
+                : {}
+            "
+          >
             <div>
               <span
                 [ngStyle]="
@@ -181,28 +191,38 @@
           <mat-form-field>
             <mat-label>{{ labelForMatFormField(control) }}</mat-label>
             <input
-              type="text"
+              [type]="
+                getElementsFromFormcontrol().length > 1 ? 'password' : 'text'
+              "
               matInput
               [formControlName]="control"
-            /> 
+            />
             @if (modifyForm.get(control)?.hasError('required')) {
-              <mat-error>Kötelezően kitöltendő mező</mat-error>
-            }
-            </mat-form-field
+            <mat-error>Kötelezően kitöltendő mező</mat-error>
+            } @else if (modifyForm.get(control)?.hasError('minlength') ) {
+            <mat-error>Túl rövid (6)</mat-error>
+            }</mat-form-field
           >} @else {
 
-          <mat-form-field >
+          <mat-form-field>
+            <mat-label>Nem</mat-label>
             <mat-select formControlName="gender">
-              <mat-option value="Férfi" >Férfi</mat-option>
+              <mat-option value="Férfi">Férfi</mat-option>
               <mat-option value="Nő">Nő</mat-option>
             </mat-select>
             @if (modifyForm.get(control)?.hasError('required') ) {
-              <mat-error>Kötelezően kitöltendő mező</mat-error>
+            <mat-error>Kötelezően kitöltendő mező</mat-error>
             }
           </mat-form-field>
 
           } }
-          <button mat-flat-button class="own-primary-highlight-background" (click)="modify()">Módosít</button>
+          <button
+            mat-flat-button
+            class="own-primary-highlight-background"
+            (click)="modify()"
+          >
+            Módosít
+          </button>
           }
         </form>
       </mat-card>
