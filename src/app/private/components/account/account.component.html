@@ -148,15 +148,20 @@
               : { 'border-right': '1px solid black' }
           "
         >
-      
-        @for (key of getObjectInArray(modifyKeyValueObj) ; track $index) {
+          @for (key of getObjectInArray(modifyKeyValueObj) ; track $index) {
           <div class="own-modify-div-element">
-            <div>{{ key[0] }}: {{ actualUser[transformStringToKey(key[1])] }}</div>
-            <div style="display: flex; justify-content: flex-end;"><button mat-flat-button>Módosítom</button></div>
+            <div>
+              <span [ngStyle]="isDarkmode() ? { 'color': 'white' } : {'color':'black'}">{{ key[0] }}</span
+              >: <span [ngClass]="isDarkmode() ?'own-accent-text-color':'' ">{{ actualUser[transformStringToKey(key[1])] }}</span>
+            </div>
+            <div style="display: flex; justify-content: flex-end">
+              <button mat-flat-button (click)="buttonAction(key[1])">
+                Módosítom
+              </button>
+            </div>
           </div>
-        }
-      
-      </div>
+          }
+        </div>
         <div></div>
       </mat-card>
     </div>

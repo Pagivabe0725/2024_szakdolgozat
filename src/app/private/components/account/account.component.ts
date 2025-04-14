@@ -12,6 +12,12 @@ import { CollectionService } from '../../../shared/services/collection.service';
 import { work } from '../../../shared/interfaces/work';
 import { ArrayService } from '../../services/array.service';
 import { MatButtonModule } from '@angular/material/button';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-account',
@@ -23,6 +29,7 @@ import { MatButtonModule } from '@angular/material/button';
     OwnDateFormaterPipe,
     SpinnerComponent,
     MatButtonModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './account.component.html',
   styleUrl: './account.component.scss',
@@ -47,12 +54,13 @@ export class AccountComponent implements OnInit {
   public modifyKeyValueObj = {
     Vezetéknév: 'lastName',
     Keresztnév: 'firstName',
-    'Email-címem': 'email',
     Nem: 'gender',
     Telefonszámom: 'telNumber',
     Városom: 'city',
     Jelszó: 'password',
   };
+  public displayForm = false;
+  public modifyForm = new FormGroup({});
 
   constructor(
     private userService: UserService,
@@ -77,10 +85,6 @@ export class AccountComponent implements OnInit {
     }
     this.loaded = true;
     this.createWorkMatCardObject();
-    await this.userService.currentUser().then((user)=>{
-      console.log('itt a user')
-      console.log(user)
-    })
   }
 
   async getWorks(path: string) {
@@ -209,5 +213,29 @@ export class AccountComponent implements OnInit {
 
   transformStringToKey(string: string) {
     return string as keyof user;
+  }
+
+  buttonAction(string: string) {
+    this.modifyForm = new FormGroup({});
+    if (string === 'password') {
+      this.modifyForm.addControl(
+        'oldPassword',
+        new FormControl('', [Validators.required])
+      );
+      this.modifyForm.addControl(
+        'newPassword',
+        new FormControl('', [Validators.required])
+      );
+      this.modifyForm.addControl(
+        'newPasswordAgain',
+        new FormControl('', [Validators.required])
+      );
+    } else {
+      this.modifyForm.addControl(
+        string,
+        new FormControl('', [Validators.required])
+      );
+    }
+
   }
 }

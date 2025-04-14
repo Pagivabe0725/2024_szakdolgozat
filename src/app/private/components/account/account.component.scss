@@ -66,9 +66,7 @@ mat-card-header {
   border: 1px black solid;
 }
 
-#own-work-content-data{
-
-
+#own-work-content-data {
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
@@ -76,29 +74,22 @@ mat-card-header {
   font-size: 1.5vw;
 }
 
-#own-work-content-data div{
-  
+#own-work-content-data div {
   display: flex;
   align-items: center;
-  
 }
 
-#own-modify-matcard{
-
+#own-modify-matcard {
   display: grid;
   grid-template-columns: 40% 1fr;
 }
 
-
-#own-mat-modify-options-div{
-
+#own-mat-modify-options-div {
   display: grid;
-  grid-template-rows: repeat(7,1fr);
- 
-
+  grid-template-rows: repeat(6, 1fr);
 }
 
-.own-modify-div-element{
+.own-modify-div-element {
   width: 90%;
   display: grid;
   margin: 0 auto;
