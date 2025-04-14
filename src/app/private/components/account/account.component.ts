@@ -306,11 +306,44 @@ export class AccountComponent implements OnInit {
         hasInput: false,
       };
 
-      this.popupService.displayPopUp(dialogTemplate).afterClosed().pipe(take(1)).subscribe(
-        (result)=>{
-          console.log(result)
-        }
-      )
+      this.popupService
+        .displayPopUp(dialogTemplate)
+        .afterClosed()
+        .pipe(take(1))
+        .subscribe((result) => {
+          if (result) {
+            const keyArray = this.getElementsFromFormcontrol();
+            if (keyArray.length === 1) {
+              this.loaded = false;
+              console.log(this.actualUser[keyArray[0] as keyof user]);
+              this._actualUser[keyArray[0] as keyof user] = this.modifyForm.get(
+                keyArray[0]
+              )?.value;
+              this.collectionService
+                .updateDatas(
+                  'Users',
+                  localStorage.getItem('userId')!,
+                  this.actualUser
+                )
+                .then((_) => {
+                  console.log('sikeres');
+                  this.modifyForm = new FormGroup({});
+                  this.displayDatas = false;
+                  this.loaded = true;
+                })
+                .catch((err) => {
+                  let errorDialog: Dialog =
+                    this.popupService.getTemplateDialog();
+                  errorDialog.title = 'hiba!';
+                  (errorDialog.content = 'Hiba történt a művelet során'),
+                    (errorDialog.hostComponent = 'AccountComponent'),
+                    (errorDialog.action = false);
+                    this.loaded= true
+                  this.popupService.displayPopUp(errorDialog);
+                });
+            }
+          }
+        });
     }
   }
 }
