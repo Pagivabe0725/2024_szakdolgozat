@@ -11,6 +11,7 @@ import { SpinnerComponent } from '../../../shared/components/spinner/spinner.com
 import { CollectionService } from '../../../shared/services/collection.service';
 import { work } from '../../../shared/interfaces/work';
 import { ArrayService } from '../../services/array.service';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-account',
@@ -21,6 +22,7 @@ import { ArrayService } from '../../services/array.service';
     CommonModule,
     OwnDateFormaterPipe,
     SpinnerComponent,
+    MatButtonModule,
   ],
   templateUrl: './account.component.html',
   styleUrl: './account.component.scss',
@@ -32,7 +34,7 @@ export class AccountComponent implements OnInit {
     firstName: 'Keresztnév:',
     lastName: 'Vezetéknév:',
     email: 'Email-címem:',
-    gender:'Nem',
+    gender: 'Nem',
     telNumber: 'Telefonszámom:',
     lastLogin: 'Utolsó bejelentkezésem:',
     city: 'Városom:',
@@ -42,6 +44,15 @@ export class AccountComponent implements OnInit {
   private myWorksArray: Array<work> = [];
   private userInWorks: Array<string> = [];
   public displayDatas = false;
+  public modifyKeyValueObj = {
+    Vezetéknév: 'lastName',
+    Keresztnév: 'firstName',
+    'Email-címem': 'email',
+    Nem: 'gender',
+    Telefonszámom: 'telNumber',
+    Városom: 'city',
+    Jelszó: 'password',
+  };
 
   constructor(
     private userService: UserService,
@@ -53,7 +64,7 @@ export class AccountComponent implements OnInit {
     await this.getActualUser();
     const docs = await this.getDocsObj();
     const keyArray: string[] = (docs as any).docs.map((doc: any) => doc.id);
-    console.log(keyArray);
+
     for (const key of keyArray) {
       const work: work = (await this.getWorks(key)) as work;
       if (work.userId === localStorage.getItem('userId')) {
@@ -64,17 +75,6 @@ export class AccountComponent implements OnInit {
       });
       this.userInWorks.push(work.userId);
     }
-
-    await new Promise((resolve) => setTimeout(resolve, 5000));
-    console.log(this.actualUser)
-    console.log('this.myWorksArray');
-    console.log(this.myWorksArray);
-    console.log('this.userInWorks');
-    console.log(this.userInWorks);
-    console.log('utolso időpont');
-    console.log(this.lastProjeck()?.toDate());
-    console.log('utolso módosított időpont');
-    console.log(this.lastModifiedProjeck()?.toDate());
     this.loaded = true;
     this.createWorkMatCardObject();
   }
@@ -98,7 +98,6 @@ export class AccountComponent implements OnInit {
     this.keyArray = Object.keys(this.actualUser) as Array<keyof user>;
     this.keyArray.splice(this.keyArray.indexOf('id'), 1);
     this.checkKeyArray();
-    console.log(this.keyArray);
   }
 
   getDocsObj() {
@@ -108,7 +107,7 @@ export class AccountComponent implements OnInit {
   }
 
   lastProjeck(): Timestamp | undefined {
-    if (this.myWorksArray.length>0) {
+    if (this.myWorksArray.length > 0) {
       let last: Timestamp = this.myWorksArray[0].created;
       this.myWorksArray.forEach((i) => {
         last.toMillis() < i.created.toMillis()
@@ -122,7 +121,7 @@ export class AccountComponent implements OnInit {
   }
 
   lastModifiedProjeck(): Timestamp | undefined {
-    if (this.myWorksArray.length>0) {
+    if (this.myWorksArray.length > 0) {
       let last: Timestamp = this.myWorksArray[0].modified;
       this.myWorksArray.forEach((i) => {
         last.toMillis() < i.modified.toMillis()
@@ -178,11 +177,14 @@ export class AccountComponent implements OnInit {
     }
   }
 
+  getObjectInArray(obj: object) {
+    return Object.entries(obj);
+  }
+
   orderKeyArray(copiedArray: string[], orderedArray: string[]): void {
     this.keyArray = [];
 
     orderedArray.forEach((i) => {
-      console.log(i);
       this.keyArray.push(copiedArray[copiedArray.indexOf(i)] as keyof user);
     });
   }
@@ -194,11 +196,14 @@ export class AccountComponent implements OnInit {
       'Utojára létrehozott munkám:': this.lastProjeck() || 'Nincs',
       'Utojára módosított munkám:': this.lastModifiedProjeck() || 'Nincs',
     };
-    console.log(Object.entries(object));
-    return Object.entries(object);
+    return this.getObjectInArray(object);
   }
 
   get actualUser() {
     return this._actualUser;
+  }
+
+  transformStringToKey(string: string) {
+    return string as keyof user;
   }
 }

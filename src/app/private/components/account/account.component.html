@@ -24,7 +24,11 @@
               : { 'border-right': ' 1px solid black' }
           "
         >
-          <img [src]="actualUser.gender==='Férfi' ? '/man.png':'women.png' " class="own-img-div-1" alt="profilePicture" />
+          <img
+            [src]="actualUser.gender === 'Férfi' ? '/man.png' : '/woman.png'"
+            class="own-img-div-1"
+            alt="profilePicture"
+          />
         </div>
 
         <div class="own-mat-content-container">
@@ -126,7 +130,36 @@
     </div>
   </mat-tab>
   <mat-tab label="Módosítások">
-    <div class="own-mat-tab-div">szilva</div>
+    <div class="own-mat-tab-div">
+      <mat-card
+        id="own-modify-matcard"
+        class="own-work-info-div"
+        [ngStyle]="
+          isDarkmode()
+            ? { border: '1px solid white' }
+            : { border: '1px solid black' }
+        "
+      >
+        <div
+          id="own-mat-modify-options-div"
+          [ngStyle]="
+            isDarkmode()
+              ? { 'border-right': '1px solid white' }
+              : { 'border-right': '1px solid black' }
+          "
+        >
+      
+        @for (key of getObjectInArray(modifyKeyValueObj) ; track $index) {
+          <div class="own-modify-div-element">
+            <div>{{ key[0] }}: {{ actualUser[transformStringToKey(key[1])] }}</div>
+            <div style="display: flex; justify-content: flex-end;"><button mat-flat-button>Módosítom</button></div>
+          </div>
+        }
+      
+      </div>
+        <div></div>
+      </mat-card>
+    </div>
   </mat-tab>
 </mat-tab-group>
 
