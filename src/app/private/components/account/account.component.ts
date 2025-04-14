@@ -351,8 +351,46 @@ export class AccountComponent implements OnInit {
               this.userService
                 .isOldPasswordCorrect(this.modifyForm.get('password')!.value)
                 .then((result) => {
-                  console.log(result);
-                });
+                  this.loaded = false;
+                  let errorDialog: Dialog =
+                    this.popupService.getTemplateDialog();
+                  errorDialog.title = 'hiba!';
+                  errorDialog.content = 'Az jelenlegi jelszó nem helyes';
+                  errorDialog.hostComponent = 'AccountComponent';
+                  errorDialog.action = false;
+                  if (!result) {
+                    this.popupService.displayPopUp(errorDialog);
+                  } else {
+                    if (
+                      this.modifyForm.get('newPassword')?.value !==
+                      this.modifyForm.get('newPasswordAgain')?.value
+                    ) {
+                      errorDialog.content = 'Az új jelszavak nem egyeznek meg';
+                      this.loaded = true
+                      this.popupService.displayPopUp(errorDialog);
+                    } else {
+                      this.loaded = false;
+                      this.userService
+                        .currentUser()
+                        .then((user) => {
+                          user
+                            ?.updatePassword(
+                              this.modifyForm.get('newPassword')?.value!
+                            )
+                            .then((_) => {
+                              this.loaded = true;
+                            })
+                            .catch((_) => {
+                              this.loaded = true;
+                            });
+                        })
+                        .catch((err) => {
+                          console.error(err);
+                        });
+                    }
+                  }
+                })
+                .catch((_) => (this.loaded = true));
             }
           }
         });
