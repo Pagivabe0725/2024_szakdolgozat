@@ -19,6 +19,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-account',
@@ -32,6 +33,7 @@ import { MatInputModule } from '@angular/material/input';
     MatButtonModule,
     ReactiveFormsModule,
     MatInputModule,
+    MatSelectModule
   ],
   templateUrl: './account.component.html',
   styleUrl: './account.component.scss',
@@ -219,6 +221,8 @@ export class AccountComponent implements OnInit {
 
   buttonAction(string: string): void {
     this.modifyForm = new FormGroup({});
+    this.modifyForm.setErrors(null)
+   
     if (string === 'password') {
       this.modifyForm.addControl(
         'password',
@@ -240,6 +244,7 @@ export class AccountComponent implements OnInit {
       );
       this.displayForm = true;
     } else {
+      
       this.displayForm = false;
     }
   }

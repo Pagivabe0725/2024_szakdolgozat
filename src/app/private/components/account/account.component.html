@@ -162,31 +162,49 @@
               }}</span>
             </div>
             <div style="display: flex; justify-content: flex-end">
-              
               @if (!stringInActualFormcontrolKeys(key[1])) {
               <button mat-flat-button (click)="buttonAction(key[1])">
                 Módosítom
               </button>
-            }@else {
+              }@else {
               <button mat-flat-button (click)="buttonAction('back')">
                 Mégsem
               </button>
-            }
+              }
             </div>
           </div>
           }
         </div>
-        <div [formGroup]="modifyForm" id="own-form-div">
-          @if (displayForm) {
-            @for (control of getElementsFromFormcontrol(); track $index) {
-              <mat-form-field>
-                <mat-label>{{labelForMatFormField(control)}}</mat-label>
-                <input type="text" matInput [formControlName]="control">
-              </mat-form-field>
+        <form [formGroup]="modifyForm" id="own-form-div">
+          @if (displayForm) { @for (control of getElementsFromFormcontrol();
+          track $index) { @if (control!== 'gender') {
+          <mat-form-field>
+            <mat-label>{{ labelForMatFormField(control) }}</mat-label>
+            <input
+              type="text"
+              matInput
+              [formControlName]="control"
+            /> 
+            @if (modifyForm.get(control)?.hasError('required') && modifyForm.get(control)?.touched) {
+              <mat-error>Kötelezően kitöltendő mező</mat-error>
             }
-            <button>Módosít</button>
+            </mat-form-field
+          >} @else {
+
+          <mat-form-field >
+            <mat-select formControlName="gender">
+              <mat-option value="Férfi" >Férfi</mat-option>
+              <mat-option value="Nő">Nő</mat-option>
+            </mat-select>
+            @if (modifyForm.get(control)?.hasError('required') && modifyForm.get(control)?.touched) {
+              <mat-error>Kötelezően kitöltendő mező</mat-error>
+            }
+          </mat-form-field>
+
+          } }
+          <button mat-flat-button class="own-primary-highlight-background">Módosít</button>
           }
-        </div>
+        </form>
       </mat-card>
     </div>
   </mat-tab>
