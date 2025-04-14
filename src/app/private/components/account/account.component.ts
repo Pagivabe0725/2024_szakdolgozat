@@ -314,6 +314,7 @@ export class AccountComponent implements OnInit {
           if (result) {
             const keyArray = this.getElementsFromFormcontrol();
             if (keyArray.length === 1) {
+              this.displayDatas = false;
               this.loaded = false;
               console.log(this.actualUser[keyArray[0] as keyof user]);
               this._actualUser[keyArray[0] as keyof user] = this.modifyForm.get(
@@ -328,18 +329,29 @@ export class AccountComponent implements OnInit {
                 .then((_) => {
                   console.log('sikeres');
                   this.modifyForm = new FormGroup({});
+                  this.displayForm = false;
                   this.displayDatas = false;
                   this.loaded = true;
+                  this.displayDatas = true;
                 })
-                .catch((err) => {
+                .catch((_) => {
                   let errorDialog: Dialog =
                     this.popupService.getTemplateDialog();
                   errorDialog.title = 'hiba!';
                   (errorDialog.content = 'Hiba történt a művelet során'),
                     (errorDialog.hostComponent = 'AccountComponent'),
                     (errorDialog.action = false);
-                    this.loaded= true
+                  this.modifyForm = new FormGroup({});
+                  this.displayForm = false;
+                  this.loaded = true;
+                  this.displayDatas = true;
                   this.popupService.displayPopUp(errorDialog);
+                });
+            } else {
+              this.userService
+                .isOldPasswordCorrect(this.modifyForm.get('password')!.value)
+                .then((result) => {
+                  console.log(result);
                 });
             }
           }

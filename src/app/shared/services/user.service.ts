@@ -3,6 +3,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { user } from '../interfaces/user';
 import { Observable } from 'rxjs';
+import firebase from 'firebase/compat/app';
 
 @Injectable({
   providedIn: 'root',
@@ -46,12 +47,33 @@ export class UserService {
       .valueChanges();
   }
 
-  getUsers(){
-    return this.angularFirestore.collection('Users').valueChanges()
+  getUsers() {
+    return this.angularFirestore.collection('Users').valueChanges();
   }
 
+  currentUser() {
+    return this.angularFireAuth.currentUser;
+  }
 
-  currentUser(){
-  return this.angularFireAuth.currentUser
+  async isOldPasswordCorrect(oldPassword: string): Promise<boolean> {
+    const user = await this.currentUser();
+
+    if (!user || !user.email) {
+      console.error('Nincs bejelentkezett felhasználó vagy nincs email.');
+      return false;
+    }
+
+    const credential = firebase.auth.EmailAuthProvider.credential(
+      user.email,
+      oldPassword
+    );
+
+    try {
+      await user.reauthenticateWithCredential(credential);
+      return true; // ha nem dob hibát, akkor helyes a jelszó
+    } catch (error: any) {
+      console.warn('Hibás jelszó vagy újrahitelesítési hiba:', error);
+      return false;
+    }
   }
 }
