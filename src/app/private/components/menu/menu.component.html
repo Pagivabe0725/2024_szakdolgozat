@@ -79,6 +79,6 @@
     <button mat-icon-button (click)="changeDarkness()">
       <mat-icon>@if(mode==='light'){brightness_2} @else {sunny}</mat-icon>
     </button>
-    <button mat-icon-button><mat-icon>sensor_door</mat-icon></button>
+    <button mat-icon-button (click)="logout()"><mat-icon>sensor_door</mat-icon></button>
   </div>
 </mat-toolbar>
