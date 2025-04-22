@@ -28,7 +28,6 @@ export class LeftSideControllerComponent implements OnInit, OnDestroy {
       if (event instanceof NavigationEnd) {
         const endPoint = event.urlAfterRedirects.split('/').pop() || 'works';
         this.endPoint = endPoint;
-
       }
     });
   }
