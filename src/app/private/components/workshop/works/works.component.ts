@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { WorkcardComponent } from '../workcard/workcard.component';
 import { CollectionService } from '../../../../shared/services/collection.service';
 import { work } from '../../../../shared/interfaces/work';
-import { Subscription, firstValueFrom, take } from 'rxjs';
+import { Subscription, filter, firstValueFrom, take } from 'rxjs';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
 
 @Component({
@@ -14,6 +14,7 @@ import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.
 })
 export class WorksComponent implements OnInit {
   protected worksArray: Array<work> = [];
+  protected chosenWorksArray: Array<work> = [];
   public loaded = false;
   constructor(private collectionService: CollectionService) {}
 
@@ -48,9 +49,9 @@ export class WorksComponent implements OnInit {
   async ngOnInit() {
     const allWork = await this.getAllWorks();
     await this.addOneWorkToArray(allWork);
-    await new Promise((resolve)=>setTimeout(resolve,1000))
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    this.chosenWorksArray = [...this.worksArray];
     this.loaded = true;
-
   }
 
   async getAllWorks(): Promise<unknown> {
@@ -60,12 +61,20 @@ export class WorksComponent implements OnInit {
   }
 
   async addOneWorkToArray(data: any): Promise<void> {
+    const userId = localStorage.getItem('userId');
     return (data as any).forEach((e: any) => {
       this.collectionService
         .getCollectionByCollectionAndDoc('Works', (e as any)['id'])
-        .pipe(take(1))
+        .pipe(
+          take(1),
+          filter(
+            (filtered) =>
+              (filtered as work).userId === userId ||
+              (filtered as work).members.includes(userId!)
+          )
+        )
         .subscribe((element) => {
-          console.log(element)
+          console.log(element);
           this.worksArray.push(element as work);
         });
     });

@@ -79,8 +79,8 @@ export class MenuComponent implements OnInit {
   }
 
   logout(): void {
-    this.userService.logout().then(
-      _=>{this.navigateAndUrlinfo.basicNavigate('public/login')}
-    )
+    this.userService.logout().then((_) => {
+      this.navigateAndUrlinfo.basicNavigate('public/login');
+    });
   }
 }
