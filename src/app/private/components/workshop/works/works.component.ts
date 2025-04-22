@@ -22,34 +22,6 @@ export class WorksComponent implements OnInit {
     private navigateAndURLInfoService: NavigateAndurlinfoService
   ) {}
 
-  /*
-  ngOnInit(): void {
-    const collectionSub: Subscription = this.collectionService
-      .getAllDocByCollectionName('Works')
-      .subscribe((data: any) => {
-        //console.log(data)
-        const workArray: Array<any> = Object.values(data);
-        let keyArray: Array<string> = [];
-        Array.from(data['docs']).forEach((e) => {
-          keyArray.push((e as any)['id']);
-        });
-        //console.log(keyArray);
-        for (let i = 0; i < keyArray.length; i++) {
-          const workSub: Subscription = this.collectionService
-            .getCollectionByCollectionAndDoc('Works', keyArray[i])
-            .subscribe((work) => {
-              //console.log(work);
-              this.works.push(work as work);
-              console.log(this.works);
-              workSub.unsubscribe();
-            });
-        }
-        collectionSub.unsubscribe();
-      });
-  }
-
-  */
-
   async ngOnInit() {
     const endpoint = this.navigateAndURLInfoService.endpoint();
     const allWork = await this.getAllWorks();

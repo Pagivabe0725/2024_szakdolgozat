@@ -5,17 +5,17 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { NavigateAndurlinfoService } from '../../../../shared/services/navigate-andurlinfo.service';
 import { Subscription } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-left-side-controller',
   standalone: true,
-  imports: [MatButtonModule, MatIconModule],
+  imports: [MatButtonModule, MatIconModule, CommonModule],
   templateUrl: './left-side-controller.component.html',
   styleUrl: './left-side-controller.component.scss',
 })
 export class LeftSideControllerComponent implements OnInit, OnDestroy {
-  public direction!: string;
-  private endPoint!: string;
+  protected endPoint!: string;
   constructor(
     private navigateService: NavigateAndurlinfoService,
     private router: Router
@@ -23,13 +23,12 @@ export class LeftSideControllerComponent implements OnInit, OnDestroy {
   private routerSubscription!: Subscription;
 
   ngOnInit(): void {
-    this.direction = sessionStorage.getItem('left-side-controler') || 'basic';
+    this.endPoint = this.navigateService.endpoint();
     this.routerSubscription = this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         const endPoint = event.urlAfterRedirects.split('/').pop() || 'works';
-        this.direction = endPoint === 'works' ? 'basic' : 'specific';
-        sessionStorage.setItem('left-side-controler', this.direction);
         this.endPoint = endPoint;
+
       }
     });
   }
@@ -41,7 +40,7 @@ export class LeftSideControllerComponent implements OnInit, OnDestroy {
 
   back(): void {
     const actualURLEndpoin: string = this.navigateService.endpoint();
-    if (actualURLEndpoin === 'works') {
+    if (actualURLEndpoin === 'all' || actualURLEndpoin === 'my') {
       this.navigateService.navigate(true, 'main');
     } else {
       this.navigateService.navigate(true, 'workshop');
@@ -62,7 +61,16 @@ export class LeftSideControllerComponent implements OnInit, OnDestroy {
     );
   }
 
-  myWorks(): void {
-    this.navigateService.basicNavigate('private/workshop/works/my');
+  switchWorklist(): void {
+    if (this.endPoint === 'all') {
+      this.navigateService.basicNavigate('private/workshop/works/my');
+    } else {
+      this.navigateService.basicNavigate('private/workshop/works/all');
+    }
+  }
+
+  isDarkmode(): boolean {
+    const theme = localStorage.getItem('theme');
+    return theme ? theme.includes('dark') : false;
   }
 }

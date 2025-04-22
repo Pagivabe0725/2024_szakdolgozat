@@ -2,30 +2,39 @@
   class="own-primary-background own-accent-text-color"
   id="own-left-side-controller_component-div"
 >
-  @if (direction==='basic') {
+  @if (endPoint === 'all' || endPoint==='my') {
 
   <div class="own-left-side-controller_component-first-div">
     <div></div>
-    <span>Munkáim</span>
+    <span [ngStyle]="isDarkmode() ? {} : {'color':'black'}">Munkáim</span>
   </div>
   <div class="own-left-side-controller_component-second-div">
-    <button mat-flat-button class="own-accent-background" (click)="createNavigation()">
+    <button
+      mat-flat-button
+      class="own-accent-background"
+      (click)="createNavigation()"
+    >
       Új munkamenet létrehozása
     </button>
     <button mat-flat-button>Munkamenet törlése</button>
-    <button mat-flat-button (click)="myWorks()">Egyéni munkák listázása</button>
+    <button mat-flat-button (click)="switchWorklist()">@if (endPoint==='my') {Összes munka listázása} @else {Általam létrehozott munkák}</button>
   </div>
   <div class="own-left-side-controller_component-thirth-div"></div>
 
-  } @else if (direction==='specific') {
+  }
+   @else if (endPoint!=='all' && endPoint!=='my') {
 
   <div class="own-left-side-controller_component-first-div">
-    <button mat-icon-button (click)="back()"><mat-icon>arrow_back</mat-icon></button>
-    <span>XYMunka</span>
+    <button mat-icon-button (click)="back()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <span [ngStyle]="isDarkmode() ?{} : {'color':'black'}" >XYMunka</span>
   </div>
   <div class="own-left-side-controller_component-second-div">
     <button mat-flat-button>Résztvevő hozzáadása</button>
-    <button mat-flat-button (click)="createMessage()">Bejegyzés hozzáadása</button>
+    <button mat-flat-button (click)="createMessage()">
+      Bejegyzés hozzáadása
+    </button>
     <button mat-flat-button>Komment törlése</button>
   </div>
   <div class="own-left-side-controller_component-thirth-div"></div>
