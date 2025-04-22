@@ -5,6 +5,7 @@ import { work } from '../../../../shared/interfaces/work';
 import { Subscription, filter, firstValueFrom, take } from 'rxjs';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
 import { NavigateAndurlinfoService } from '../../../../shared/services/navigate-andurlinfo.service';
+import { SharedDataService } from '../../../services/shared-data.service';
 
 @Component({
   selector: 'app-works',
@@ -19,7 +20,8 @@ export class WorksComponent implements OnInit {
   public loaded = false;
   constructor(
     private collectionService: CollectionService,
-    private navigateAndURLInfoService: NavigateAndurlinfoService
+    private navigateAndURLInfoService: NavigateAndurlinfoService,
+    private sharedDataService: SharedDataService,
   ) {}
 
   async ngOnInit() {
@@ -31,6 +33,7 @@ export class WorksComponent implements OnInit {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     this.chosenWorksArray = [...this.worksArray];
     this.loaded = true;
+    this.sharedDataService.changeData(this.chosenWorksArray)
   }
 
   getAllWorks(): Promise<unknown> {

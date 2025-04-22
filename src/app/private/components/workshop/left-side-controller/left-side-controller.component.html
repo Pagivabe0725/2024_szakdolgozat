@@ -1,3 +1,4 @@
+@if (endPoint!=='workcreator') {
 <div
   class="own-primary-background own-accent-text-color"
   id="own-left-side-controller_component-div"
@@ -6,7 +7,7 @@
 
   <div class="own-left-side-controller_component-first-div">
     <div></div>
-    <span [ngStyle]="isDarkmode() ? {} : {'color':'black'}">Munkáim</span>
+    <span [ngStyle]="isDarkmode() ? {} : { color: 'black' }">Munkáim</span>
   </div>
   <div class="own-left-side-controller_component-second-div">
     <button
@@ -17,18 +18,20 @@
       Új munkamenet létrehozása
     </button>
     <button mat-flat-button>Munkamenet törlése</button>
-    <button mat-flat-button (click)="switchWorklist()">@if (endPoint==='my') {Összes munka listázása} @else {Általam létrehozott munkák}</button>
+    <button mat-flat-button (click)="switchWorklist()">
+      @if (endPoint==='my') {Összes munka listázása} @else {Általam létrehozott
+      munkák}
+    </button>
   </div>
   <div class="own-left-side-controller_component-thirth-div"></div>
 
-  }
-   @else if (endPoint!=='all' && endPoint!=='my' && endPoint!=='workcreator') {
+  } @else if (endPoint!=='all' && endPoint!=='my' && endPoint!=='workcreator') {
 
   <div class="own-left-side-controller_component-first-div">
     <button mat-icon-button (click)="back()">
       <mat-icon>arrow_back</mat-icon>
     </button>
-    <span [ngStyle]="isDarkmode() ?{} : {'color':'black'}" >XYMunka</span>
+    <span [ngStyle]="isDarkmode() ? {} : { color: 'black' }">XYMunka</span>
   </div>
   <div class="own-left-side-controller_component-second-div">
     <button mat-flat-button>Résztvevő hozzáadása</button>
@@ -41,3 +44,18 @@
 
   }
 </div>
+}@else {
+<div
+  id="own-workcreator-div"
+  class="own-primary-background own-accent-text-color"
+>
+  <div class="own-left-side-controller_component-first-div">
+    <button mat-icon-button (click)="back()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <span [ngStyle]="isDarkmode() ? {} : { color: 'black' }">XYMunka</span>
+  </div>
+  <div><button (click)="test()">teszt</button></div>
+  <div></div>
+</div>
+}

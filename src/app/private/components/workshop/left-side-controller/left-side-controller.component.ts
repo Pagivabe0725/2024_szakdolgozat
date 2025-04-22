@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { NavigateAndurlinfoService } from '../../../../shared/services/navigate-andurlinfo.service';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { SharedDataService } from '../../../services/shared-data.service';
 
 @Component({
   selector: 'app-left-side-controller',
@@ -18,7 +19,8 @@ export class LeftSideControllerComponent implements OnInit, OnDestroy {
   protected endPoint!: string;
   constructor(
     private navigateService: NavigateAndurlinfoService,
-    private router: Router
+    private router: Router,
+    private sharedDataService: SharedDataService
   ) {}
   private routerSubscription!: Subscription;
 
@@ -60,7 +62,12 @@ export class LeftSideControllerComponent implements OnInit, OnDestroy {
     );
   }
 
+test(){
+  this.sharedDataService.changeData(Math.floor(Math.random() * 1000))+'alma';
+}
+
   switchWorklist(): void {
+    
     if (this.endPoint === 'all') {
       this.navigateService.basicNavigate('private/workshop/works/my');
     } else {

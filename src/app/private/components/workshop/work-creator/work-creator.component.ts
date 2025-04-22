@@ -13,6 +13,7 @@ import { Subscription, timestamp } from 'rxjs';
 import { CollectionService } from '../../../../shared/services/collection.service';
 import { work } from '../../../../shared/interfaces/work';
 import { Timestamp } from '@angular/fire/firestore';
+import { SharedDataService } from '../../../services/shared-data.service';
 
 @Component({
   selector: 'app-work-creator',
@@ -33,12 +34,16 @@ export class WorkCreatorComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private collectionService: CollectionService
+    private collectionService: CollectionService,
+    private sharedDataService: SharedDataService
   ) {
     this.addMember();
   }
 
   ngOnInit(): void {
+    this.sharedDataService.currentData.subscribe((data) => {
+      console.log(data);
+    });
     const emails: Subscription = this.userService
       .getUsers()
       .subscribe((users: any) => {
@@ -46,7 +51,6 @@ export class WorkCreatorComponent implements OnInit {
           this.userEmails.push((user as user).email);
           this.users.push(user as user);
         });
-        console.log(users);
         emails.unsubscribe();
       });
   }
@@ -150,10 +154,9 @@ export class WorkCreatorComponent implements OnInit {
       };
       this.collectionService
         .createCollectionDoc('Works', id, actualWork)
-        .then(() => console.log('sikeres'))
+        .then()
         .catch((err) => console.error(err));
     } else {
-      console.error('invalid');
     }
   }
 }
