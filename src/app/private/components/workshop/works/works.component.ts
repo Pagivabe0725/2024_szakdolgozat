@@ -4,6 +4,7 @@ import { CollectionService } from '../../../../shared/services/collection.servic
 import { work } from '../../../../shared/interfaces/work';
 import { Subscription, filter, firstValueFrom, take } from 'rxjs';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
+import { NavigateAndurlinfoService } from '../../../../shared/services/navigate-andurlinfo.service';
 
 @Component({
   selector: 'app-works',
@@ -16,7 +17,10 @@ export class WorksComponent implements OnInit {
   protected worksArray: Array<work> = [];
   protected chosenWorksArray: Array<work> = [];
   public loaded = false;
-  constructor(private collectionService: CollectionService) {}
+  constructor(
+    private collectionService: CollectionService,
+    private navigateAndURLInfoService: NavigateAndurlinfoService
+  ) {}
 
   /*
   ngOnInit(): void {
@@ -47,20 +51,23 @@ export class WorksComponent implements OnInit {
   */
 
   async ngOnInit() {
+    const endpoint = this.navigateAndURLInfoService.endpoint();
     const allWork = await this.getAllWorks();
-    await this.addOneWorkToArray(allWork);
+    (await endpoint) === 'all'
+      ? this.addAllWorkToArray(allWork)
+      : this.addAllOwnWorkToArray(allWork);
     await new Promise((resolve) => setTimeout(resolve, 1000));
     this.chosenWorksArray = [...this.worksArray];
     this.loaded = true;
   }
 
-  async getAllWorks(): Promise<unknown> {
+  getAllWorks(): Promise<unknown> {
     return firstValueFrom(
       this.collectionService.getAllDocByCollectionName('Works').pipe(take(1))
     );
   }
 
-  async addOneWorkToArray(data: any): Promise<void> {
+  addAllWorkToArray(data: any): Promise<void> {
     const userId = localStorage.getItem('userId');
     return (data as any).forEach((e: any) => {
       this.collectionService
@@ -74,7 +81,21 @@ export class WorksComponent implements OnInit {
           )
         )
         .subscribe((element) => {
-          console.log(element);
+          this.worksArray.push(element as work);
+        });
+    });
+  }
+
+  addAllOwnWorkToArray(data: any): Promise<void> {
+    const userId = localStorage.getItem('userId');
+    return (data as any).forEach((e: any) => {
+      this.collectionService
+        .getCollectionByCollectionAndDoc('Works', (e as any)['id'])
+        .pipe(
+          take(1),
+          filter((filtered) => (filtered as work).userId === userId)
+        )
+        .subscribe((element) => {
           this.worksArray.push(element as work);
         });
     });

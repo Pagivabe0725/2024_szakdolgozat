@@ -57,8 +57,12 @@ export class LeftSideControllerComponent implements OnInit, OnDestroy {
   }
 
   createMessageComment(): void {
-    this.navigateService.basicNavigate(`private/message-comment/${this.endPoint}`);
+    this.navigateService.basicNavigate(
+      `private/message-comment/${this.endPoint}`
+    );
   }
-  
-  
+
+  myWorks(): void {
+    this.navigateService.basicNavigate('private/workshop/works/my');
+  }
 }

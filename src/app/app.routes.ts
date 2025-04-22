@@ -101,8 +101,11 @@ export const routes: Routes = [
           },
           {
             path: 'works',
-            component: WorksComponent,
-            title: 'works',
+            children: [
+              { path: '', redirectTo: 'all', pathMatch: 'full' },
+              { path: 'all', title: 'all works', component: WorksComponent },
+              { path: 'my', title: 'my works', component: WorksComponent },
+            ],
           },
           {
             path: 'workcreator',
