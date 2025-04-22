@@ -9,5 +9,5 @@ export interface work {
   created: Timestamp;
   modified: Timestamp;
   finished: boolean;
-  members: Array<user>;
+  members: Array<string>;
 }

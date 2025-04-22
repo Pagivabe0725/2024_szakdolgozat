@@ -86,7 +86,7 @@ export class AccountComponent implements OnInit {
         this.myWorksArray.push(work);
       }
       work.members.forEach((user) => {
-        this.userInWorks.push(user.id);
+        this.userInWorks.push(user);
       });
       this.userInWorks.push(work.userId);
     }

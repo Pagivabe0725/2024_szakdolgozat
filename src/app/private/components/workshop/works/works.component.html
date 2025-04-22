@@ -1,7 +1,7 @@
-@if(!loaded){ 
+@if(!loaded){
 
 <app-spinner></app-spinner>
-} @else { @for (work of worksArray; track $index) {
+} @for (work of worksArray; track $index) {
 
 <app-workcard [work]="work"></app-workcard>
-} }
+}

@@ -48,6 +48,7 @@ export class WorksComponent implements OnInit {
   async ngOnInit() {
     const allWork = await this.getAllWorks();
     await this.addOneWorkToArray(allWork);
+    await new Promise((resolve)=>setTimeout(resolve,1000))
     this.loaded = true;
 
   }

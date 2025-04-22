@@ -96,10 +96,10 @@ export class WorkCreatorComponent implements OnInit {
     }
   }
 
-  getMembersByValidEmails(): Array<user> {
+  getMembersByValidEmails(): Array<string> {
     let helperArray: Array<string> = [];
     let helperArray2: Array<string> = [];
-    let resultArray : Array<user>=[]
+    let resultArray: Array<string> = [];
     for (let i = 0; i < this.memberFormControls.length; i++) {
       helperArray.push(
         this.creatorForm.get(`member${this.memberFormControls[i]}`)!.value
@@ -107,33 +107,29 @@ export class WorkCreatorComponent implements OnInit {
     }
     for (let i = 0; i < helperArray.length; i++) {
       if (!helperArray2.includes(helperArray[i])) {
-        if(this.getUserByEmail(helperArray[i])){
+        if (this.getUserByEmail(helperArray[i])) {
           helperArray2.push(helperArray[i]);
-        resultArray.push(this.getUserByEmail(helperArray[i]) as user);
+          resultArray.push(this.getUserByEmail(helperArray[i]));
         }
       }
     }
     return resultArray;
   }
 
-  getUserByEmail(email: string): user | undefined {
+  getUserByEmail(email: string): string {
     for (let i = 0; i < this.users.length; i++) {
-
-      if(this.users[i].email===email){
-        return this.users[i]
+      if (this.users[i].email === email) {
+        return this.users[i].id;
       }
-      
     }
-    return undefined;
+    return '';
   }
 
   getUserById(id: string): user | undefined {
     for (let i = 0; i < this.users.length; i++) {
-
-      if(this.users[i].id===id){
-        return this.users[i]
+      if (this.users[i].id === id) {
+        return this.users[i];
       }
-      
     }
     return undefined;
   }
