@@ -17,6 +17,7 @@ export class LeftSideComponent implements OnInit {
   ngOnInit(): void {
     this.page =
       this.routerPlus.getURLEndPoint() === 'login' ? 'login' : 'registration';
+
   }
 
   navigate(): void {

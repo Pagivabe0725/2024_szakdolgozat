@@ -49,8 +49,6 @@ export class ForumComponent implements OnInit, OnDestroy {
         }
       });
 
-      
-
     this.forumKeysSub = this.collectionService
       .getAllDocByCollectionName('Forums')
       .subscribe((data: any) => {
@@ -81,7 +79,7 @@ export class ForumComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.collectionSub?.unsubscribe()
-    this.forumKeysSub?.unsubscribe()
+    this.collectionSub?.unsubscribe();
+    this.forumKeysSub?.unsubscribe();
   }
 }

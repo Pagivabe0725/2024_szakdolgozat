@@ -84,7 +84,7 @@ export class SignUpComponent implements OnInit {
     if (actualStatus.valid && !actualStatus.passwords) {
       this.popupDialogTemplate.title = 'Nem megegyező jelszavak!';
       this.popupDialogTemplate.content =
-        'Nézd át a két jelszó mezőt, mert nem egyeznek meg';
+        'Hiba történt a regisztráció során! Kérlek próbáld újra';
       this.popupService.displayPopUp(this.popupDialogTemplate);
     } else if (actualStatus.passwords && actualStatus.valid) {
       this.registration(this.createUserObject());

@@ -301,16 +301,14 @@ export class AccountComponent implements OnInit {
     this.loaded = true;
     this.displayDatas = true;
   }
-  createModifyErrorDialog(content:string):Dialog{
-    let errorDialog: Dialog =
-    this.popupService.getTemplateDialog();
-  errorDialog.title = 'hiba!';
-  errorDialog.content = content;
-  errorDialog.hostComponent = 'AccountComponent';
-  errorDialog.action = false;
+  createModifyErrorDialog(content: string): Dialog {
+    let errorDialog: Dialog = this.popupService.getTemplateDialog();
+    errorDialog.title = 'hiba!';
+    errorDialog.content = content;
+    errorDialog.hostComponent = 'AccountComponent';
+    errorDialog.action = false;
 
-  return errorDialog
-
+    return errorDialog;
   }
 
   modify(): void {
@@ -349,7 +347,9 @@ export class AccountComponent implements OnInit {
                   this.handlePageStates();
                 })
                 .catch((_) => {
-                  let errorDialog = this.createModifyErrorDialog('Hiba történt a művelet során')
+                  let errorDialog = this.createModifyErrorDialog(
+                    'Hiba történt a művelet során'
+                  );
                   this.popupService.displayPopUp(errorDialog);
                 });
             } else {
@@ -357,7 +357,9 @@ export class AccountComponent implements OnInit {
                 .isOldPasswordCorrect(this.modifyForm.get('password')!.value)
                 .then((result) => {
                   this.loaded = false;
-                  let errorDialog = this.createModifyErrorDialog('A jelenlegi jelszó nem helyes')
+                  let errorDialog = this.createModifyErrorDialog(
+                    'A jelenlegi jelszó nem helyes'
+                  );
                   if (!result) {
                     this.popupService.displayPopUp(errorDialog);
                     this.loaded = true;

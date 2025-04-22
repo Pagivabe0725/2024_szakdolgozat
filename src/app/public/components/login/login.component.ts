@@ -58,6 +58,7 @@ export class LoginComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this.popupSercice.getTemplateDialog())
     this.loaded = true;
   }
 
@@ -88,6 +89,7 @@ export class LoginComponent implements OnDestroy, OnInit {
               this.userService
                 .updateUser(actualUser)
                 .then(() => {
+                  console.log(actualUser)
                   localStorage.setItem('userId', actualUser.id);
                   this.navigationService.navigate(true, 'main');
                 })

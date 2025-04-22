@@ -100,7 +100,7 @@ export class AddforumComponent implements OnInit, OnDestroy {
       this.popupDialogTemplate.content =
         'Biztosan szeretnéd hozzáadni a bejegyzésedet?';
       this.popupDialogTemplate.action = true;
-       this.popupService
+      this.popupService
         .displayPopUp(this.popupDialogTemplate)
         .afterClosed()
         .pipe(take(1))
@@ -120,7 +120,6 @@ export class AddforumComponent implements OnInit, OnDestroy {
         this.back();
       })
       .catch((err) => {
-        console.error(err);
         this.popupDialogTemplate.title = 'hiba!';
         this.popupDialogTemplate.content =
           'Valamilyen hibába ütköztünk a rögzítés során. Kérlek próbáld újra!';
@@ -133,6 +132,7 @@ export class AddforumComponent implements OnInit, OnDestroy {
     this.nameSub = this.userService
       .getUserInfoByUserId(localStorage.getItem('userId')!)
       .subscribe((data) => {
+
         const user: user = data as user;
         this.fullName = author(user);
       });
