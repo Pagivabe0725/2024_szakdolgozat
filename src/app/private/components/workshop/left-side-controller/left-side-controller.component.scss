@@ -10,7 +10,7 @@
   align-items: center;
 }
 
-.own-left-side-controller_component-first-div {
+.own-left-side-controller_component-first-div  {
   width: 20vw;
   height: 100%;
   display: grid;
@@ -43,6 +43,25 @@
   position: fixed;
 }
 
-#own-workcreator-div div{
-  border: black 1px solid;
+.own-workcreator-content-div {
+  display: grid;
+  grid-template-rows: 30% 1fr;
+
+  h1 {
+    font-size: 1.5vw;
+    border-bottom: 1px solid black;
+    display: flex;
+    align-items: flex-end;
+    padding-left: 1vw;
+  }
+}
+
+.own-workcreator-operations-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+  justify-content: flex-start;
+  align-items: center;
 }

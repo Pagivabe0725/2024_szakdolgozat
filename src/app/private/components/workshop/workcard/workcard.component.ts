@@ -21,7 +21,11 @@ export class WorkcardComponent implements OnInit {
   ];
   private ownProjects: boolean = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+
+    console.log('ez itt a work')
+    console.log(this.work)
+  }
 
   ngOnInit(): void {
     this.points = [

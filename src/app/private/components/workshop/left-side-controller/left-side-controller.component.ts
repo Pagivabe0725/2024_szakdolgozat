@@ -25,6 +25,8 @@ export class LeftSideControllerComponent implements OnInit, OnDestroy {
   private routerSubscription!: Subscription;
 
   ngOnInit(): void {
+   
+
     this.endPoint = this.navigateService.endpoint();
     this.routerSubscription = this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -32,6 +34,7 @@ export class LeftSideControllerComponent implements OnInit, OnDestroy {
         this.endPoint = endPoint;
       }
     });
+
   }
 
   ngOnDestroy(): void {
@@ -63,7 +66,7 @@ export class LeftSideControllerComponent implements OnInit, OnDestroy {
   }
 
 test(){
-  this.sharedDataService.changeData(Math.floor(Math.random() * 1000))+'alma';
+  this.sharedDataService.changeData(Math.floor(Math.random() * 1000));
 }
 
   switchWorklist(): void {

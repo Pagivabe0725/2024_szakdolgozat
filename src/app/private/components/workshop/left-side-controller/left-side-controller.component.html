@@ -53,9 +53,17 @@
     <button mat-icon-button (click)="back()">
       <mat-icon>arrow_back</mat-icon>
     </button>
-    <span [ngStyle]="isDarkmode() ? {} : { color: 'black' }">XYMunka</span>
+    <span [ngStyle]="isDarkmode() ? {} : { color: 'white' }">XYMunka</span>
   </div>
-  <div><button (click)="test()">teszt</button></div>
-  <div></div>
+  <div class="own-workcreator-content-div">
+    <h1 [ngStyle]="isDarkmode() ? {} : { color: 'white' }">
+      Eddigi csapattagok
+    </h1>
+    <div class="own-workcreator-operations-div"></div>
+  </div>
+  <div class="own-workcreator-content-div">
+    <h1>Eddig használt nevek</h1>
+    <div  class="own-workcreator-operations-div">a</div>
+  </div>
 </div>
 }
