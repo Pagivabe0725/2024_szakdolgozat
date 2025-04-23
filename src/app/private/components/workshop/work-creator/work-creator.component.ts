@@ -156,9 +156,9 @@ export class WorkCreatorComponent implements OnInit {
       };
       this.collectionService
         .createCollectionDoc('Works', id, actualWork)
-        .then((_) =>
-          this.navigateAndURLInfoService.basicNavigate('private/workshop')
-        )
+        .then((_) => {
+          this.navigateAndURLInfoService.basicNavigate('private/workshop');
+        })
         .catch((err) => console.error(err));
     } else {
     }

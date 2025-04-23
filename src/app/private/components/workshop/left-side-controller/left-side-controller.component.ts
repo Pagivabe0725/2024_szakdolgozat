@@ -40,8 +40,6 @@ export class LeftSideControllerComponent implements OnInit, OnDestroy {
       ) as Array<Array<string>>;
     }
 
-    console.log(this.workInfoArray);
-
     this.endPoint = this.navigateService.endpoint();
     sessionStorage.setItem('actualWorks', JSON.stringify(this.workInfoArray));
     this.routerSubscription = this.router.events.subscribe((event) => {
@@ -50,6 +48,8 @@ export class LeftSideControllerComponent implements OnInit, OnDestroy {
         this.endPoint = endPoint;
       }
     });
+
+    console.log(this.workInfoArray);
   }
 
   ngOnDestroy(): void {
