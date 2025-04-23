@@ -7,6 +7,7 @@ import { SharedDataService } from '../../../services/shared-data.service';
 import { filter, firstValueFrom, take } from 'rxjs';
 import { Timestamp } from '@angular/fire/firestore';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
+import { user } from '../../../../shared/interfaces/user';
 
 @Component({
   selector: 'app-works',
@@ -31,6 +32,7 @@ export class WorksComponent implements OnInit {
     const query = await this.getAllWorks();
     const userId = localStorage.getItem('userId');
     await this.addElementsToWorkArray(query);
+   console.log( );
     this.setChoosenArray();
     if (endpoint === 'my') {
       const userId = localStorage.getItem('userId');
@@ -38,7 +40,7 @@ export class WorksComponent implements OnInit {
         (fil) => fil.author.id === userId
       );
     }
-
+    this.sharedDataService.setActualUserWorkInfoArray(await this.createEmailAndNameArray());
     this.loaded = true;
   }
 
@@ -76,5 +78,31 @@ export class WorksComponent implements OnInit {
     this.worksArray.forEach((e) => {
       this.chosenWorksArray.push(e);
     });
+  }
+
+  async createEmailAndNameArray() {
+    let emailArray: Array<string> = [];
+    let nameArray: Array<string> = [];
+
+    for (const work of this.worksArray) {
+      for (const memberId of work.members) {
+        if (memberId !== localStorage.getItem('userId')!) {
+          const userData = await firstValueFrom(
+            this.collectionService
+              .getCollectionByCollectionAndDoc('Users', memberId)
+              .pipe(take(1))
+          );
+          emailArray.push((userData as user).email);
+        }
+      }
+    }
+
+    this.worksArray.forEach(e=>{
+      nameArray.push(e.name)
+    })
+
+    emailArray = Array.from(new Set(emailArray));
+    nameArray = Array.from(new Set(nameArray));
+    return [emailArray,nameArray]
   }
 }

@@ -53,17 +53,25 @@
     <button mat-icon-button (click)="back()">
       <mat-icon>arrow_back</mat-icon>
     </button>
-    <span [ngStyle]="isDarkmode() ? {} : { color: 'white' }">XYMunka</span>
+    <span [ngStyle]="isDarkmode() ? {} : { color: 'black' }">XYMunka</span>
   </div>
   <div class="own-workcreator-content-div">
-    <h1 [ngStyle]="isDarkmode() ? {} : { color: 'white' }">
+    <h1 [ngStyle]="isDarkmode() ? {} : { color: 'black' }">
       Eddigi csapattagok
     </h1>
-    <div class="own-workcreator-operations-div"></div>
+    <div class="own-workcreator-operations-div">
+      @for (email of workInfoArray[0]; track $index) {
+      <button mat-flat-button>{{ email }}</button>
+      }
+    </div>
   </div>
   <div class="own-workcreator-content-div">
-    <h1>Eddig használt nevek</h1>
-    <div  class="own-workcreator-operations-div">a</div>
+    <h1 [ngStyle]="isDarkmode() ? {} : { color: 'black' }">Eddig használt nevek</h1>
+    <div class="own-workcreator-operations-div">
+      @for (name of workInfoArray[1]; track $index) {
+      <button mat-flat-button>{{ name }}</button>
+      }
+    </div>
   </div>
 </div>
 }

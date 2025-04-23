@@ -23,8 +23,6 @@ export class WorkcardComponent implements OnInit {
 
   constructor(private router: Router) {
 
-    console.log('ez itt a work')
-    console.log(this.work)
   }
 
   ngOnInit(): void {

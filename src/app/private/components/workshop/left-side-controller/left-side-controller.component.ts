@@ -4,9 +4,10 @@ import { RouterPlusService } from '../../../../shared/services/router-plus.servi
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { NavigateAndurlinfoService } from '../../../../shared/services/navigate-andurlinfo.service';
-import { Subscription } from 'rxjs';
+import { Subscription, firstValueFrom, take } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { SharedDataService } from '../../../services/shared-data.service';
+import { work } from '../../../../shared/interfaces/work';
 
 @Component({
   selector: 'app-left-side-controller',
@@ -17,6 +18,7 @@ import { SharedDataService } from '../../../services/shared-data.service';
 })
 export class LeftSideControllerComponent implements OnInit, OnDestroy {
   protected endPoint!: string;
+  protected workInfoArray: Array<Array<string>> = [];
   constructor(
     private navigateService: NavigateAndurlinfoService,
     private router: Router,
@@ -24,22 +26,36 @@ export class LeftSideControllerComponent implements OnInit, OnDestroy {
   ) {}
   private routerSubscription!: Subscription;
 
-  ngOnInit(): void {
-   
+  async ngOnInit() {
+    const session = sessionStorage.getItem('actualWorks');
+
+    if (!session) {
+      const result = await firstValueFrom(
+        this.sharedDataService.actualUsersWorkInfoArray.pipe(take(1))
+      );
+      this.workInfoArray = Array.isArray(result) ? result : [];
+    } else {
+      this.workInfoArray = JSON.parse(
+        sessionStorage.getItem('actualWorks')!
+      ) as Array<Array<string>>;
+    }
+
+    console.log(this.workInfoArray);
 
     this.endPoint = this.navigateService.endpoint();
+    sessionStorage.setItem('actualWorks', JSON.stringify(this.workInfoArray));
     this.routerSubscription = this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         const endPoint = event.urlAfterRedirects.split('/').pop() || 'works';
         this.endPoint = endPoint;
       }
     });
-
   }
 
   ngOnDestroy(): void {
     this.routerSubscription.unsubscribe();
     sessionStorage.removeItem('left-side-controler');
+    sessionStorage.removeItem('actualWorks');
   }
 
   back(): void {
@@ -65,12 +81,7 @@ export class LeftSideControllerComponent implements OnInit, OnDestroy {
     );
   }
 
-test(){
-  this.sharedDataService.changeData(Math.floor(Math.random() * 1000));
-}
-
   switchWorklist(): void {
-    
     if (this.endPoint === 'all') {
       this.navigateService.basicNavigate('private/workshop/works/my');
     } else {
