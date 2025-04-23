@@ -32,7 +32,9 @@ export class WorksComponent implements OnInit {
     const query = await this.getAllWorks();
     const userId = localStorage.getItem('userId');
     await this.addElementsToWorkArray(query);
-   console.log( );
+    const infoArray: Array<Array<string>> =
+      await this.createEmailAndNameArray();
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     this.setChoosenArray();
     if (endpoint === 'my') {
       const userId = localStorage.getItem('userId');
@@ -40,7 +42,7 @@ export class WorksComponent implements OnInit {
         (fil) => fil.author.id === userId
       );
     }
-    this.sharedDataService.setActualUserWorkInfoArray(await this.createEmailAndNameArray());
+    this.sharedDataService.setActualUserWorkInfoArray(infoArray);
     this.loaded = true;
   }
 
@@ -97,12 +99,12 @@ export class WorksComponent implements OnInit {
       }
     }
 
-    this.worksArray.forEach(e=>{
-      nameArray.push(e.name)
-    })
+    this.worksArray.forEach((e) => {
+      nameArray.push(e.name);
+    });
 
     emailArray = Array.from(new Set(emailArray));
     nameArray = Array.from(new Set(nameArray));
-    return [emailArray,nameArray]
+    return [emailArray, nameArray];
   }
 }
