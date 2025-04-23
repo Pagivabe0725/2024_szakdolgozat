@@ -4,49 +4,59 @@ import { CollectionService } from '../../../../shared/services/collection.servic
 import { work } from '../../../../shared/interfaces/work';
 import { NavigateAndurlinfoService } from '../../../../shared/services/navigate-andurlinfo.service';
 import { SharedDataService } from '../../../services/shared-data.service';
-import { firstValueFrom, take } from 'rxjs';
+import { filter, firstValueFrom, take } from 'rxjs';
 import { Timestamp } from '@angular/fire/firestore';
+import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
 
 @Component({
   selector: 'app-works',
   standalone: true,
-  imports: [WorkcardComponent],
+  imports: [WorkcardComponent, SpinnerComponent],
   templateUrl: './works.component.html',
   styleUrl: './works.component.scss',
 })
-export class WorksComponent implements OnInit, OnDestroy {
+export class WorksComponent implements OnInit {
   protected worksArray: Array<work> = [];
   protected chosenWorksArray: Array<work> = [];
-
+  protected loaded = false;
   constructor(
     private navigateAndURLInfoService: NavigateAndurlinfoService,
-    private sharedDataService: SharedDataService
+    private sharedDataService: SharedDataService,
+    private collectionService: CollectionService
   ) {}
 
   async ngOnInit() {
-    if (sessionStorage.getItem('actualWorks')) {
-      this.worksArray = JSON.parse(
-        sessionStorage.getItem('actualWorks')!
-      ) as Array<work>;
+    const query = await this.getAllWorks();
+    await this.addElementsToWorkArray(query);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      this.worksArray.forEach((e) => {
-        e.created = new Timestamp(e.created.seconds, e.created.nanoseconds);
-        e.modified = new Timestamp(e.modified.seconds, e.modified.nanoseconds);
-        this.chosenWorksArray.push(e as work);
-      });
-    } else {
-      this.worksArray = (await firstValueFrom(
-        this.sharedDataService.actualUsersWorkArray.pipe(take(1))
-      )) as Array<work>;
-      this.chosenWorksArray = [...this.worksArray];
-      sessionStorage.setItem(
-        'actualWorks',
-        JSON.stringify(this.chosenWorksArray)
-      );
-    }
+    this.loaded = true;
   }
 
-  ngOnDestroy(): void {
-    sessionStorage.removeItem('actualWorks');
+  getAllWorks() {
+    return firstValueFrom(
+      this.collectionService.getAllDocByCollectionName('Works').pipe(take(1))
+    );
+  }
+
+  addElementsToWorkArray(data: unknown) {
+    const array = Array.from((data as any)['docs']);
+    const userId = localStorage.getItem('userId');
+    array.forEach((e: any) => {
+      this.collectionService
+        .getCollectionByCollectionAndDoc('Works', e['id'])
+        .pipe(
+          take(1),
+          filter(
+            (fil) =>
+              (fil as work).userId === userId ||
+              (fil as work).author.id === userId
+          )
+        )
+        .subscribe((element) => {
+          this.worksArray.push(element as work);
+          this.chosenWorksArray.push(element as work);
+        });
+    });
   }
 }

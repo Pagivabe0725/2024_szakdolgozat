@@ -14,6 +14,7 @@ import { CollectionService } from '../../../../shared/services/collection.servic
 import { work } from '../../../../shared/interfaces/work';
 import { Timestamp } from '@angular/fire/firestore';
 import { SharedDataService } from '../../../services/shared-data.service';
+import { NavigateAndurlinfoService } from '../../../../shared/services/navigate-andurlinfo.service';
 
 @Component({
   selector: 'app-work-creator',
@@ -35,7 +36,8 @@ export class WorkCreatorComponent implements OnInit {
   constructor(
     private userService: UserService,
     private collectionService: CollectionService,
-    private sharedDataService: SharedDataService
+    private sharedDataService: SharedDataService,
+    private navigateAndURLInfoService: NavigateAndurlinfoService
   ) {
     this.addMember();
   }
@@ -154,7 +156,9 @@ export class WorkCreatorComponent implements OnInit {
       };
       this.collectionService
         .createCollectionDoc('Works', id, actualWork)
-        .then()
+        .then((_) =>
+          this.navigateAndURLInfoService.basicNavigate('private/workshop')
+        )
         .catch((err) => console.error(err));
     } else {
     }

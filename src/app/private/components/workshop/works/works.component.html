@@ -1,4 +1,9 @@
 
+@if (!loaded) {
+
+    <app-spinner></app-spinner>
+}
+
 @if (chosenWorksArray) {
 @for (work of chosenWorksArray; track $index) {
 
