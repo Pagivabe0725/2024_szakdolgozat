@@ -19,6 +19,7 @@ export class WorksComponent implements OnInit {
   protected worksArray: Array<work> = [];
   protected chosenWorksArray: Array<work> = [];
   protected loaded = false;
+
   constructor(
     private navigateAndURLInfoService: NavigateAndurlinfoService,
     private sharedDataService: SharedDataService,
@@ -26,9 +27,17 @@ export class WorksComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
+    const endpoint = this.navigateAndURLInfoService.endpoint();
     const query = await this.getAllWorks();
+    const userId = localStorage.getItem('userId');
     await this.addElementsToWorkArray(query);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    this.setChoosenArray();
+    if (endpoint === 'my') {
+      const userId = localStorage.getItem('userId');
+      this.chosenWorksArray = this.chosenWorksArray.filter(
+        (fil) => fil.author.id === userId
+      );
+    }
 
     this.loaded = true;
   }
@@ -39,24 +48,33 @@ export class WorksComponent implements OnInit {
     );
   }
 
-  addElementsToWorkArray(data: unknown) {
+  async addElementsToWorkArray(data: unknown): Promise<void> {
     const array = Array.from((data as any)['docs']);
     const userId = localStorage.getItem('userId');
-    array.forEach((e: any) => {
-      this.collectionService
-        .getCollectionByCollectionAndDoc('Works', e['id'])
-        .pipe(
-          take(1),
-          filter(
-            (fil) =>
-              (fil as work).userId === userId ||
-              (fil as work).author.id === userId
+
+    for (const e of array) {
+      const result = await firstValueFrom(
+        this.collectionService
+          .getCollectionByCollectionAndDoc('Works', (e as any)['id'])
+          .pipe(
+            take(1),
+            filter(
+              (fil) =>
+                (fil as work).userId === userId ||
+                (fil as work).members.includes(userId!)
+            )
           )
-        )
-        .subscribe((element) => {
-          this.worksArray.push(element as work);
-          this.chosenWorksArray.push(element as work);
-        });
+      ).catch(() => null);
+
+      if (result) {
+        this.worksArray.push(result as work);
+      }
+    }
+  }
+
+  setChoosenArray() {
+    this.worksArray.forEach((e) => {
+      this.chosenWorksArray.push(e);
     });
   }
 }
