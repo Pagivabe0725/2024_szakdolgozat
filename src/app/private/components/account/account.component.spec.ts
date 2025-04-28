@@ -9,7 +9,11 @@ import { PopupService } from '../../../shared/services/popup.service';
 import { FormGroup } from '@angular/forms';
 import { user } from '../../../shared/interfaces/user';
 import { Timestamp } from '@angular/fire/firestore';
-import { userTemplate } from '../../../shared/template/testTemplates';
+import {
+  userTemplate,
+  workTemplate,
+} from '../../../shared/template/testTemplates';
+import { firstValueFrom, of } from 'rxjs';
 function randomNumber(max: number): number {
   return Math.floor(Math.random() * max);
 }
@@ -261,6 +265,23 @@ fdescribe('AccountComponent', () => {
       expect(component.isTimestamp(timestamp)).toBeTrue();
       anyOherValueType.forEach((type) => {
         expect(component.isTimestamp(type)).toBeFalse();
+      });
+    });
+
+    describe('should handle more complex functions correctly', () => {
+      beforeEach(() => {
+        collectionServiceMock.getAllDocByCollectionName.and.returnValue(
+          of({
+            doc: {
+              id: { ...workTemplate },
+            },
+          })
+        );
+      });
+
+      it('getDocsObj should work', async () => {
+        const expectedObj: any = await component.getDocsObj();
+        expect(expectedObj['doc']['id']).toEqual({ ...workTemplate });
       });
     });
   });

@@ -3,6 +3,7 @@ import { forum } from '../interfaces/forum';
 import { user } from '../interfaces/user';
 import { forumComment } from '../interfaces/forumComment';
 import { Dialog } from '../interfaces/dialog';
+import { work } from '../interfaces/work';
 
 export const forumTemplate: forum = {
   title: 'first',
@@ -45,4 +46,15 @@ export const dialogTemplate: Dialog = {
   content: '',
   action: false,
   hasInput: false,
+};
+
+export const workTemplate: work = {
+  id: 'workId',
+  userId: '1',
+  name: 'first work',
+  author: userTemplate,
+  created: Timestamp.now(),
+  modified: Timestamp.now(),
+  finished: false,
+  members: ['2','3'],
 };
