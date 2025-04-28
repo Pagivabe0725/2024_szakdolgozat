@@ -292,6 +292,10 @@ fdescribe('AccountComponent', () => {
             }
           }
         );
+
+        userServiceMock.getUserInfoByUserId.and.returnValue(
+          of({ ...userTemplate })
+        );
       });
 
       describe('Functions related to fetching works', () => {
@@ -322,6 +326,27 @@ fdescribe('AccountComponent', () => {
           }
         });
       });
+
+      describe('getActualUser', () => {
+        beforeAll(() => {
+          spyOn(localStorage, 'getItem').and.returnValue('userId');
+        });
+
+        it('getActualUser should work', async () => {
+          await component.getActualUser();
+          expect(component['_actualUser']).toEqual({ ...userTemplate });
+          expect(component['keyArray']).toEqual([
+            'lastName',
+            'firstName',
+            'email',
+            'gender',
+            'telNumber',
+            'city',
+            'lastLogin',
+            'dateOfRegistration',
+          ]);
+        });
+      });
     });
     describe('lastProject and lastModifiedProject functions', () => {
       const timestamp1999 = Timestamp.fromDate(
@@ -334,20 +359,19 @@ fdescribe('AccountComponent', () => {
         new Date('2019-01-01T00:00:00Z')
       );
 
-      beforeEach(()=>{
+      beforeEach(() => {
         component['myWorksArray'] = [
           { ...workTemplate },
           { ...workTemplate },
           { ...workTemplate },
         ];
-      })
+      });
       it('lastProject when workArray is empty', () => {
         component['myWorksArray'] = [];
         expect(component.lastProject()).not.toBeDefined();
       });
 
       it('lastProject when myWorksArray is not empty', () => {
-        
         component['myWorksArray'][2].created = timestamp1999;
         component['myWorksArray'][0].created = timestamp2009;
         component['myWorksArray'][1].created = timestamp2019;
@@ -361,7 +385,6 @@ fdescribe('AccountComponent', () => {
       });
 
       it('lastModifiedProject when myWorksArray is not empty', () => {
-
         component['myWorksArray'][2].modified = timestamp1999;
         component['myWorksArray'][0].modified = timestamp2009;
         component['myWorksArray'][1].modified = timestamp2019;
