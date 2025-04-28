@@ -6,6 +6,7 @@ import { UserService } from '../../../shared/services/user.service';
 import { CollectionService } from '../../../shared/services/collection.service';
 import { ArrayService } from '../../services/array.service';
 import { PopupService } from '../../../shared/services/popup.service';
+import { FormGroup } from '@angular/forms';
 
 fdescribe('AccountComponent', () => {
   let component: AccountComponent;
@@ -68,6 +69,49 @@ fdescribe('AccountComponent', () => {
 
       it('popupService is defined', () => {
         expect(component['popupService']).toBeDefined();
+      });
+    });
+
+    describe('Global varibles', () => {
+      it('_actualUser is undefined', () => {
+        expect(component['_actualUser']).not.toBeDefined();
+      });
+
+      it('loaded is undefined (false)', () => {
+        expect(component['loaded']).toBeDefined();
+        expect(component['loaded']).toBeFalse();
+      });
+
+      it('keyTransleater is defined', () => {
+        expect(component['keyTransleater']).toBeDefined();
+      });
+      it('keyArray is defined', () => {
+        expect(component['keyArray']).toBeDefined();
+        expect(component['keyArray']).toEqual([]);
+      });
+
+      it('myWorksArray is defined', () => {
+        expect(component['myWorksArray']).toBeDefined();
+        expect(component['myWorksArray']).toEqual([]);
+      });
+      it('userInWorks is defined', () => {
+        expect(component['userInWorks']).toBeDefined();
+        expect(component['userInWorks']).toEqual([]);
+      });
+      it('displayDatas is defined (false)', () => {
+        expect(component['displayDatas']).toBeDefined();
+        expect(component['displayDatas']).toBeFalse();
+      });
+      it('modifyKeyValueObj is defined', () => {
+        expect(component['modifyKeyValueObj']).toBeDefined();
+      });
+      it('displayForm is defined (false)', () => {
+        expect(component['displayForm']).toBeDefined();
+        expect(component['displayForm']).toBeFalse();
+      });
+      it('modifyForm is defined', () => {
+        expect(component['modifyForm']).toBeDefined();
+        expect(component['modifyForm']).toBeInstanceOf(FormGroup)
       });
     });
   });
