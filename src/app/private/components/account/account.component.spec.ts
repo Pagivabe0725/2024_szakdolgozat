@@ -8,6 +8,11 @@ import { ArrayService } from '../../services/array.service';
 import { PopupService } from '../../../shared/services/popup.service';
 import { FormGroup } from '@angular/forms';
 import { user } from '../../../shared/interfaces/user';
+import { Timestamp } from '@angular/fire/firestore';
+
+function randomNumber(max: number): number {
+  return Math.floor(Math.random() * max);
+}
 
 fdescribe('AccountComponent', () => {
   let component: AccountComponent;
@@ -154,6 +159,21 @@ fdescribe('AccountComponent', () => {
       ];
       component.orderKeyArray(randomArray, order);
       expect(component.keyArray).toEqual([...order] as Array<keyof user>);
+    });
+
+    it('createWorkMatCardObject', () => {
+
+      const getWorksNumber = randomNumber(100)
+      const date: Timestamp = Timestamp.now()
+      spyOn(component, 'getWorksNumber').and.returnValue(getWorksNumber);
+      spyOn(component, 'lastProjeck').and.returnValue(date);
+      spyOn(component, 'lastModifiedProjeck').and.returnValue(date);
+      const array:Array<Array<any>> = component.createWorkMatCardObject()
+      console.log(array)
+      expect(array[0]).toEqual(['Saját munkáim:', getWorksNumber])
+      expect(array[1]).toEqual(['Munkák amiben részt veszek:', getWorksNumber])
+      expect(array[2]).toEqual(['Utojára létrehozott munkám:', date])
+      expect(array[3]).toEqual(['Utojára módosított munkám:', date])
     });
   });
 });
