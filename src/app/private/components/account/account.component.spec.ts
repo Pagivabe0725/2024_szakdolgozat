@@ -14,6 +14,7 @@ import {
   workTemplate,
 } from '../../../shared/template/testTemplates';
 import { firstValueFrom, of } from 'rxjs';
+import { work } from '../../../shared/interfaces/work';
 function randomNumber(max: number): number {
   return Math.floor(Math.random() * max);
 }
@@ -269,19 +270,52 @@ fdescribe('AccountComponent', () => {
     });
 
     describe('should handle more complex functions correctly', () => {
+      let workTemplate2 = structuredClone(workTemplate);
+      workTemplate2.userId = 'userId2';
+      workTemplate2.author.id = 'userId2';
+      workTemplate2.id = '2';
       beforeEach(() => {
         collectionServiceMock.getAllDocByCollectionName.and.returnValue(
           of({
             doc: {
-              id: { ...workTemplate },
+              id: ['workId', 'workId2'],
             },
           })
         );
+
+        collectionServiceMock.getCollectionByCollectionAndDoc.and.callFake(
+          (collection, path) => {
+            console.log('path: ' + path);
+            if (path == 'workId') {
+              return of({ ...workTemplate });
+            } else {
+              return of({ ...workTemplate2 });
+            }
+          }
+        );
       });
 
-      it('getDocsObj should work', async () => {
-        const expectedObj: any = await component.getDocsObj();
-        expect(expectedObj['doc']['id']).toEqual({ ...workTemplate });
+      describe('Functions related to fetching works', () => {
+        let expectedDocsObject: { doc: { id: Array<string> } };
+        beforeEach(async () => {
+          expectedDocsObject = (await component.getDocsObj()) as {
+            doc: { id: Array<string> };
+          };
+
+          //console.log(expectedDocsObject);
+        });
+
+        it('getDocsObj should work', async () => {
+          expect(expectedDocsObject['doc']['id']).toEqual(['workId', 'workId2']);
+        });
+
+        it('getWorks should works', async () => {
+          for (const id of expectedDocsObject.doc.id) {
+         
+            const actualElement:work = await component.getWorks(id.trim()) as work;
+           expect(actualElement).toEqual(actualElement.id==='workId' ? {...workTemplate} : {...workTemplate2})
+          }
+        });
       });
     });
   });
