@@ -392,5 +392,41 @@ fdescribe('AccountComponent', () => {
         expect(component.lastModifiedProject()).toEqual(timestamp2019);
       });
     });
+
+    describe('Form functions', () => {
+      it('buttonAction should work', async () => {
+        const keyArray = [
+          'password',
+          'lastName',
+          'firstName',
+          'email',
+          'gender',
+          'telNumber',
+          'city',
+          'lastLogin',
+          'dateOfRegistration',
+          'back',
+        ];
+
+        for (const i of keyArray) {
+          await component.buttonAction(i);
+          await new Promise((resolve) => {
+            setTimeout(resolve, 20);
+          });
+          const formControlKeys: Array<string> = Object.keys(
+            component['modifyForm'].controls
+          ).sort();
+          if (i === 'password') {
+            expect(formControlKeys).toEqual(
+              ['password', 'newPassword', 'newPasswordAgain'].sort()
+            );
+          } else if (i === 'back') {
+            expect(formControlKeys).toEqual([]);
+          } else {
+            expect(formControlKeys).toEqual([i]);
+          }
+        }
+      });
+    });
   });
 });
