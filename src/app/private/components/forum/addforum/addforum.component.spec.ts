@@ -37,7 +37,7 @@ const userTemplate: user = {
 };
 
 const dialogRef = {
-  afterClosed: () => of(true), // vagy of(false), attól függ mit szeretnél
+  afterClosed: () => of(true),
 } as Partial<MatDialogRef<PopupComponent>> as MatDialogRef<PopupComponent>;
 
 describe('AddforumComponent', () => {

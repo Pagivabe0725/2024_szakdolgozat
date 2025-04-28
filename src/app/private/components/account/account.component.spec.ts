@@ -14,7 +14,13 @@ fdescribe('AccountComponent', () => {
   let collectionServiceMock: jasmine.SpyObj<CollectionService>;
   let arrayServiceMock: jasmine.SpyObj<ArrayService>;
   let popupServiceMock: jasmine.SpyObj<PopupService>;
+
   beforeEach(async () => {
+    userServiceMock = jasmine.createSpyObj('UserService', [
+      'getUserInfoByUserId',
+      'isOldPasswordCorrect',
+      'currentUser',
+    ]);
     await TestBed.configureTestingModule({
       imports: [AccountComponent, CommonModule],
       providers: [
@@ -27,10 +33,17 @@ fdescribe('AccountComponent', () => {
 
     fixture = TestBed.createComponent(AccountComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  describe('Before onInit', () => {
+    describe('Services', () => {
+      it('userService is defined', () => {
+        expect(component['userService']).toBeDefined();
+      });
+
+      it('',()=>{
+        
+      })
+    });
   });
 });
