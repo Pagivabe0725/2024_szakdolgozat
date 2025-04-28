@@ -123,7 +123,7 @@ fdescribe('AccountComponent', () => {
   });
 
   describe('Functions', () => {
-    it('getObjectInArray works', () => {
+    it('getObjectInArray works should work', () => {
       const testObject: object = { key1: 'value1', key2: 'value2' };
       expect(component.getObjectInArray(testObject)[0]).toEqual([
         'key1',
@@ -161,7 +161,7 @@ fdescribe('AccountComponent', () => {
       expect(component.keyArray).toEqual([...order] as Array<keyof user>);
     });
 
-    describe('createWorkMatCardObject', () => {
+    describe('createWorkMatCardObject should work', () => {
       const getWorksNumber = randomNumber(100);
       const date: Timestamp = Timestamp.now();
       let expectedArray: Array<Array<any>>;
@@ -209,7 +209,7 @@ fdescribe('AccountComponent', () => {
       });
     });
 
-    it('transformStringToKey', () => {
+    it('transformStringToKey should work', () => {
       const random = randomNumber(1000) + '';
       const keyArray: Array<string> = Object.keys(userTemplate);
       keyArray.forEach((i) => {
@@ -240,6 +240,28 @@ fdescribe('AccountComponent', () => {
       });
     });
 
-    it('',()=>{})
+    it('isTimestamp should work', () => {
+      const timestamp: Timestamp = Timestamp.now();
+      const anyOherValueType: any[] = [
+        1,
+        'something',
+        true,
+        {},
+        [],
+        null,
+        undefined,
+        Symbol('unique'),
+        1234567890123456789012345678901234567890n,
+        new Date(),
+        /regex/,
+        function () {
+          console.log('Function example');
+        },
+      ];
+      expect(component.isTimestamp(timestamp)).toBeTrue();
+      anyOherValueType.forEach((type) => {
+        expect(component.isTimestamp(type)).toBeFalse();
+      });
+    });
   });
 });
