@@ -21,8 +21,25 @@ fdescribe('AccountComponent', () => {
       'isOldPasswordCorrect',
       'currentUser',
     ]);
+
+    collectionServiceMock = jasmine.createSpyObj('CollectionService', [
+      'getCollectionByCollectionAndDoc',
+      'getAllDocByCollectionName',
+      'updateDatas',
+      '',
+    ]);
+
+    arrayServiceMock = jasmine.createSpyObj('ArrayService', [
+      'elementInArrayTimes',
+    ]);
+
+    popupServiceMock = jasmine.createSpyObj('PopupService', [
+      'getTemplateDialog',
+      'displayDialog',
+    ]);
+
     await TestBed.configureTestingModule({
-      imports: [AccountComponent, CommonModule],
+      imports: [AccountComponent],
       providers: [
         { provide: UserService, useValue: userServiceMock },
         { provide: CollectionService, useValue: collectionServiceMock },
@@ -41,9 +58,17 @@ fdescribe('AccountComponent', () => {
         expect(component['userService']).toBeDefined();
       });
 
-      it('',()=>{
-        
-      })
+      it('collectionService is defined', () => {
+        expect(component['collectionService']).toBeDefined();
+      });
+
+      it('arrayService is defined', () => {
+        expect(component['arrayService']).toBeDefined();
+      });
+
+      it('popupService is defined', () => {
+        expect(component['popupService']).toBeDefined();
+      });
     });
   });
 });
