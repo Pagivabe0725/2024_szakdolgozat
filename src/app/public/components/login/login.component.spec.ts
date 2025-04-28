@@ -23,6 +23,7 @@ describe('LoginComponent', () => {
     city: 'Tesztváros',
     telNumber: '0606060606',
     email: 'teszt@gmail.com',
+    gender:'Férfi',
     id: 'ilEc8ARQiVUiOWGS6fLDjoHGfrJ3',
     dateOfRegistration: Timestamp.fromDate(
       new Date('November 30, 2024 at 10:47:27 PM UTC+1')

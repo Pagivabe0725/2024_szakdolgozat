@@ -12,12 +12,13 @@ const userTemplate: user = {
   lastName: 'lastName',
   lastLogin: Timestamp.now(),
   email: 'test@gmail.com',
+  gender:'Férfi',
   city: undefined,
   telNumber: '06905777170',
   dateOfRegistration: Timestamp.now(),
 };
 
-fdescribe('UserService', () => {
+describe('UserService', () => {
   let service: UserService;
   let firestoreMock: any;
   let authMock: any;
