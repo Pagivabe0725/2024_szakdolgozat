@@ -161,19 +161,41 @@ fdescribe('AccountComponent', () => {
       expect(component.keyArray).toEqual([...order] as Array<keyof user>);
     });
 
-    it('createWorkMatCardObject', () => {
+    describe('createWorkMatCardObject', () => {
+      const getWorksNumber = randomNumber(100);
+      const date: Timestamp = Timestamp.now();
 
-      const getWorksNumber = randomNumber(100)
-      const date: Timestamp = Timestamp.now()
-      spyOn(component, 'getWorksNumber').and.returnValue(getWorksNumber);
-      spyOn(component, 'lastProjeck').and.returnValue(date);
-      spyOn(component, 'lastModifiedProjeck').and.returnValue(date);
-      const array:Array<Array<any>> = component.createWorkMatCardObject()
-      console.log(array)
-      expect(array[0]).toEqual(['Saját munkáim:', getWorksNumber])
-      expect(array[1]).toEqual(['Munkák amiben részt veszek:', getWorksNumber])
-      expect(array[2]).toEqual(['Utojára létrehozott munkám:', date])
-      expect(array[3]).toEqual(['Utojára módosított munkám:', date])
+      beforeEach(() => {
+        spyOn(component, 'getWorksNumber').and.returnValue(getWorksNumber);
+      });
+
+      it('createWorkMatCardObject when its subfunctions work correctly', () => {
+        spyOn(component, 'lastProjeck').and.returnValue(date);
+        spyOn(component, 'lastModifiedProjeck').and.returnValue(date);
+        const array: Array<Array<any>> = component.createWorkMatCardObject();
+        expect(array[0]).toEqual(['Saját munkáim:', getWorksNumber]);
+        expect(array[1]).toEqual([
+          'Munkák amiben részt veszek:',
+          getWorksNumber,
+        ]);
+        expect(array[2]).toEqual(['Utojára létrehozott munkám:', date]);
+        expect(array[3]).toEqual(['Utojára módosított munkám:', date]);
+      });
+
+      it('createWorkMatCardObject when its subfunctions work incorrectly', () => {
+        spyOn(component, 'lastProjeck').and.returnValue(undefined);
+        spyOn(component, 'lastModifiedProjeck').and.returnValue(undefined);
+        const array: Array<Array<any>> = component.createWorkMatCardObject();
+        expect(array[0]).toEqual(['Saját munkáim:', getWorksNumber]);
+        expect(array[1]).toEqual([
+          'Munkák amiben részt veszek:',
+          getWorksNumber,
+        ]);
+        expect(array[2]).toEqual(['Utojára létrehozott munkám:', 'Nincs']);
+        expect(array[3]).toEqual(['Utojára módosított munkám:', 'Nincs']);
+      });
     });
+
+    it('transformStringToKey', () => {});
   });
 });
