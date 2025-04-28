@@ -226,7 +226,6 @@ export class AccountComponent implements OnInit {
     this.displayForm = false;
 
     setTimeout(() => {
-      // 3. Új üres form létrehozása
       this.modifyForm = new FormGroup({});
 
       if (key === 'password') {
