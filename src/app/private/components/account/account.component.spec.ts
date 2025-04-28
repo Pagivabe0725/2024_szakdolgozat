@@ -7,6 +7,7 @@ import { CollectionService } from '../../../shared/services/collection.service';
 import { ArrayService } from '../../services/array.service';
 import { PopupService } from '../../../shared/services/popup.service';
 import { FormGroup } from '@angular/forms';
+import { user } from '../../../shared/interfaces/user';
 
 fdescribe('AccountComponent', () => {
   let component: AccountComponent;
@@ -111,8 +112,48 @@ fdescribe('AccountComponent', () => {
       });
       it('modifyForm is defined', () => {
         expect(component['modifyForm']).toBeDefined();
-        expect(component['modifyForm']).toBeInstanceOf(FormGroup)
+        expect(component['modifyForm']).toBeInstanceOf(FormGroup);
       });
+    });
+  });
+
+  describe('Functions', () => {
+    it('getObjectInArray works', () => {
+      const testObject: object = { key1: 'value1', key2: 'value2' };
+      expect(component.getObjectInArray(testObject)[0]).toEqual([
+        'key1',
+        'value1',
+      ]);
+      expect(component.getObjectInArray(testObject)[1]).toEqual([
+        'key2',
+        'value2',
+      ]);
+    });
+
+    it('orderKeyArray', () => {
+      const order: Array<string> = [
+        'lastName',
+        'firstName',
+        'email',
+        'gender',
+        'telNumber',
+        'city',
+        'lastLogin',
+        'dateOfRegistration',
+      ];
+
+      const randomArray: Array<string> = [
+        'dateOfRegistration',
+        'email',
+        'telNumber',
+        'lastLogin',
+        'lastName',
+        'city',
+        'firstName',
+        'gender',
+      ];
+      component.orderKeyArray(randomArray, order);
+      expect(component.keyArray).toEqual([...order] as Array<keyof user>);
     });
   });
 });
