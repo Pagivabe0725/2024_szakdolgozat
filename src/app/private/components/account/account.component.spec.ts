@@ -9,7 +9,7 @@ import { PopupService } from '../../../shared/services/popup.service';
 import { FormGroup } from '@angular/forms';
 import { user } from '../../../shared/interfaces/user';
 import { Timestamp } from '@angular/fire/firestore';
-
+import { userTemplate } from '../../../shared/template/testTemplates';
 function randomNumber(max: number): number {
   return Math.floor(Math.random() * max);
 }
@@ -209,6 +209,37 @@ fdescribe('AccountComponent', () => {
       });
     });
 
-    it('transformStringToKey', () => {});
+    it('transformStringToKey', () => {
+      const random = randomNumber(1000) + '';
+      const keyArray: Array<string> = Object.keys(userTemplate);
+      keyArray.forEach((i) => {
+        expect(i).toEqual(component.transformStringToKey(i));
+      });
+
+      expect(keyArray.includes(random)).toBeFalse();
+    });
+
+    describe('isDarkmode', () => {
+      function setGetItem(dark: boolean) {
+        spyOn(localStorage, 'getItem').and.returnValue(dark ? 'dark' : 'light');
+      }
+
+      it('should be true', () => {
+        setGetItem(true);
+        expect(component.isDarkmode()).toBeTrue();
+      });
+
+      it('should be false', () => {
+        setGetItem(false);
+        expect(component.isDarkmode()).toBeFalse();
+      });
+
+      it('theme is undefined', () => {
+        spyOn(localStorage, 'getItem').and.returnValue(null);
+        expect(component.isDarkmode()).toBeFalse();
+      });
+    });
+
+    it('',()=>{})
   });
 });
