@@ -6,7 +6,7 @@ import { UserService } from '../../../shared/services/user.service';
 import { CollectionService } from '../../../shared/services/collection.service';
 import { ArrayService } from '../../services/array.service';
 import { PopupService } from '../../../shared/services/popup.service';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { user } from '../../../shared/interfaces/user';
 import { Timestamp } from '@angular/fire/firestore';
 import {
@@ -411,7 +411,7 @@ fdescribe('AccountComponent', () => {
         for (const i of keyArray) {
           await component.buttonAction(i);
           await new Promise((resolve) => {
-            setTimeout(resolve, 20);
+            setTimeout(resolve, 15);
           });
           const formControlKeys: Array<string> = Object.keys(
             component['modifyForm'].controls
@@ -420,13 +420,54 @@ fdescribe('AccountComponent', () => {
             expect(formControlKeys).toEqual(
               ['password', 'newPassword', 'newPasswordAgain'].sort()
             );
+            expect(component['displayForm']).toBeTrue();
           } else if (i === 'back') {
             expect(formControlKeys).toEqual([]);
+            expect(component['displayForm']).toBeFalse();
           } else {
             expect(formControlKeys).toEqual([i]);
+            expect(component['displayForm']).toBeTrue();
           }
         }
       });
+
+      it('stringInActualFormcontrolKeys should work', async () => {
+        const rightOptions: Array<string> = [
+          'password',
+          'newPassword',
+          'newPasswordAgain',
+        ];
+        const badOptions: Array<string> = ['1', '2', '3', '4'];
+
+        await component.buttonAction('password');
+        await new Promise((resolve) => {
+          setTimeout(resolve, 15);
+        });
+
+        rightOptions.forEach((i) => {
+          expect(component.stringInActualFormcontrolKeys(i)).toBeTrue();
+        });
+        badOptions.forEach((i) => {
+          expect(component.stringInActualFormcontrolKeys(i)).toBeFalse();
+        });
+      });
+
+      it('getElementsFromFormcontrol should work',async()=>{
+
+        await component.buttonAction('password');
+        await new Promise((resolve) => {
+          setTimeout(resolve, 15);
+        });
+        expect(component.getElementsFromFormcontrol()).toBeTruthy()
+        expect(component.getElementsFromFormcontrol()).toBeInstanceOf(Array<FormControl>)
+        await component.buttonAction('back');
+        await new Promise((resolve) => {
+          setTimeout(resolve, 15);
+        });
+        expect(component.getElementsFromFormcontrol()).toEqual([])
+
+      })
+
     });
   });
 });
