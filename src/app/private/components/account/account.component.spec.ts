@@ -180,10 +180,10 @@ fdescribe('AccountComponent', () => {
         ];
       });
       function generateArray(undef: boolean): Array<Array<any>> {
-        spyOn(component, 'lastProjeck').and.returnValue(
+        spyOn(component, 'lastProject').and.returnValue(
           undef ? undefined : date
         );
-        spyOn(component, 'lastModifiedProjeck').and.returnValue(
+        spyOn(component, 'lastModifiedProject').and.returnValue(
           undef ? undefined : date
         );
         return component.createWorkMatCardObject();
@@ -285,7 +285,6 @@ fdescribe('AccountComponent', () => {
 
         collectionServiceMock.getCollectionByCollectionAndDoc.and.callFake(
           (collection, path) => {
-            console.log('path: ' + path);
             if (path == 'workId') {
               return of({ ...workTemplate });
             } else {
@@ -301,20 +300,54 @@ fdescribe('AccountComponent', () => {
           expectedDocsObject = (await component.getDocsObj()) as {
             doc: { id: Array<string> };
           };
-
-          //console.log(expectedDocsObject);
         });
 
         it('getDocsObj should work', async () => {
-          expect(expectedDocsObject['doc']['id']).toEqual(['workId', 'workId2']);
+          expect(expectedDocsObject['doc']['id']).toEqual([
+            'workId',
+            'workId2',
+          ]);
         });
 
         it('getWorks should works', async () => {
           for (const id of expectedDocsObject.doc.id) {
-         
-            const actualElement:work = await component.getWorks(id.trim()) as work;
-           expect(actualElement).toEqual(actualElement.id==='workId' ? {...workTemplate} : {...workTemplate2})
+            const actualElement: work = (await component.getWorks(
+              id.trim()
+            )) as work;
+            expect(actualElement).toEqual(
+              actualElement.id === 'workId'
+                ? { ...workTemplate }
+                : { ...workTemplate2 }
+            );
           }
+        });
+      });
+
+      describe('lastProject and', () => {
+        it('lastProject when workArray is empty', () => {
+          expect(component.lastModifiedProject()).not.toBeDefined();
+        });
+
+        it('lastProject when workArray is empty', () => {
+          const timestamp1999 = Timestamp.fromDate(
+            new Date('1999-01-01T00:00:00Z')
+          );
+          const timestamp2009 = Timestamp.fromDate(
+            new Date('2009-01-01T00:00:00Z')
+          );
+          const timestamp2019 = Timestamp.fromDate(
+            new Date('2019-01-01T00:00:00Z')
+          );
+          component['myWorksArray'] = [
+            { ...workTemplate },
+            { ...workTemplate },
+            { ...workTemplate },
+          ];
+          component['myWorksArray'][2].created = timestamp1999;
+          component['myWorksArray'][0].created = timestamp2009;
+          component['myWorksArray'][1].created = timestamp2019;
+
+          expect(component.lastProject()).toEqual(timestamp2019)
         });
       });
     });

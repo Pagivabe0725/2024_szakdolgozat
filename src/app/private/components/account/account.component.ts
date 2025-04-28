@@ -121,7 +121,7 @@ export class AccountComponent implements OnInit {
     );
   }
 
-  lastProjeck(): Timestamp | undefined {
+  lastProject(): Timestamp | undefined {
     if (this.myWorksArray.length > 0) {
       let last: Timestamp = this.myWorksArray[0].created;
       this.myWorksArray.forEach((i) => {
@@ -135,7 +135,7 @@ export class AccountComponent implements OnInit {
     return undefined;
   }
 
-  lastModifiedProjeck(): Timestamp | undefined {
+  lastModifiedProject(): Timestamp | undefined {
     if (this.myWorksArray.length > 0) {
       let last: Timestamp = this.myWorksArray[0].modified;
       this.myWorksArray.forEach((i) => {
@@ -208,8 +208,8 @@ export class AccountComponent implements OnInit {
     const object = {
       'Saját munkáim:': this.getWorksNumber(true),
       'Munkák amiben részt veszek:': this.getWorksNumber(false),
-      'Utojára létrehozott munkám:': this.lastProjeck() || 'Nincs',
-      'Utojára módosított munkám:': this.lastModifiedProjeck() || 'Nincs',
+      'Utojára létrehozott munkám:': this.lastProject() || 'Nincs',
+      'Utojára módosított munkám:': this.lastModifiedProject() || 'Nincs',
     };
     return this.getObjectInArray(object);
   }
