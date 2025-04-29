@@ -13,9 +13,11 @@ import {
   userTemplate,
   workTemplate,
   accountButtonActionsTemplate,
+  dialogTemplate,
 } from '../../../shared/template/testTemplates';
 import { firstValueFrom, of } from 'rxjs';
 import { work } from '../../../shared/interfaces/work';
+import { Dialog } from '../../../shared/interfaces/dialog';
 function randomNumber(max: number): number {
   return Math.floor(Math.random() * max);
 }
@@ -129,44 +131,6 @@ fdescribe('AccountComponent', () => {
   });
 
   describe('Functions', () => {
-    it('getObjectInArray works should work', () => {
-      const testObject: object = { key1: 'value1', key2: 'value2' };
-      expect(component.getObjectInArray(testObject)[0]).toEqual([
-        'key1',
-        'value1',
-      ]);
-      expect(component.getObjectInArray(testObject)[1]).toEqual([
-        'key2',
-        'value2',
-      ]);
-    });
-
-    it('orderKeyArray', () => {
-      const order: Array<string> = [
-        'lastName',
-        'firstName',
-        'email',
-        'gender',
-        'telNumber',
-        'city',
-        'lastLogin',
-        'dateOfRegistration',
-      ];
-
-      const randomArray: Array<string> = [
-        'dateOfRegistration',
-        'email',
-        'telNumber',
-        'lastLogin',
-        'lastName',
-        'city',
-        'firstName',
-        'gender',
-      ];
-      component.orderKeyArray(randomArray, order);
-      expect(component.keyArray).toEqual([...order] as Array<keyof user>);
-    });
-
     describe('createWorkMatCardObject should work', () => {
       const getWorksNumber = randomNumber(100);
       const date: Timestamp = Timestamp.now();
@@ -215,16 +179,6 @@ fdescribe('AccountComponent', () => {
       });
     });
 
-    it('transformStringToKey should work', () => {
-      const random = randomNumber(1000) + '';
-      const keyArray: Array<string> = Object.keys(userTemplate);
-      keyArray.forEach((i) => {
-        expect(i).toEqual(component.transformStringToKey(i));
-      });
-
-      expect(keyArray.includes(random)).toBeFalse();
-    });
-
     describe('isDarkmode', () => {
       function setGetItem(dark: boolean) {
         spyOn(localStorage, 'getItem').and.returnValue(dark ? 'dark' : 'light');
@@ -243,30 +197,6 @@ fdescribe('AccountComponent', () => {
       it('theme is undefined', () => {
         spyOn(localStorage, 'getItem').and.returnValue(null);
         expect(component.isDarkmode()).toBeFalse();
-      });
-    });
-
-    it('isTimestamp should work', () => {
-      const timestamp: Timestamp = Timestamp.now();
-      const anyOherValueType: any[] = [
-        1,
-        'something',
-        true,
-        {},
-        [],
-        null,
-        undefined,
-        Symbol('unique'),
-        1234567890123456789012345678901234567890n,
-        new Date(),
-        /regex/,
-        function () {
-          console.log('Function example');
-        },
-      ];
-      expect(component.isTimestamp(timestamp)).toBeTrue();
-      anyOherValueType.forEach((type) => {
-        expect(component.isTimestamp(type)).toBeFalse();
       });
     });
 
@@ -484,12 +414,6 @@ fdescribe('AccountComponent', () => {
       });
 
       it('handlePageStates should work', async () => {
-        /*
-        this.modifyForm = new FormGroup({});
-        this.displayForm = false;
-        this.displayDatas = false;
-        this.loaded = true;
-        this.displayDatas = true;*/
         await handleAction('password');
         component['displayForm'] = true;
         component['displayDatas'] = true;
@@ -499,6 +423,98 @@ fdescribe('AccountComponent', () => {
         expect(component['displayDatas']).toBeTrue();
         expect(component['loaded']).toBeTrue();
         expect(component.getElementsFromFormcontrol()).toEqual([]);
+      });
+    });
+
+    describe('other functions', () => {
+      it('transformStringToKey should work', () => {
+        const random = randomNumber(1000) + '';
+        const keyArray: Array<string> = Object.keys(userTemplate);
+        keyArray.forEach((i) => {
+          expect(i).toEqual(component.transformStringToKey(i));
+        });
+
+        expect(keyArray.includes(random)).toBeFalse();
+      });
+
+      it('orderKeyArray', () => {
+        const order: Array<string> = [
+          'lastName',
+          'firstName',
+          'email',
+          'gender',
+          'telNumber',
+          'city',
+          'lastLogin',
+          'dateOfRegistration',
+        ];
+
+        const randomArray: Array<string> = [
+          'dateOfRegistration',
+          'email',
+          'telNumber',
+          'lastLogin',
+          'lastName',
+          'city',
+          'firstName',
+          'gender',
+        ];
+        component.orderKeyArray(randomArray, order);
+        expect(component.keyArray).toEqual([...order] as Array<keyof user>);
+      });
+
+      it('getObjectInArray works should work', () => {
+        const testObject: object = { key1: 'value1', key2: 'value2' };
+        expect(component.getObjectInArray(testObject)[0]).toEqual([
+          'key1',
+          'value1',
+        ]);
+        expect(component.getObjectInArray(testObject)[1]).toEqual([
+          'key2',
+          'value2',
+        ]);
+      });
+
+      it('isTimestamp should work', () => {
+        const timestamp: Timestamp = Timestamp.now();
+        const anyOherValueType: any[] = [
+          1,
+          'something',
+          true,
+          {},
+          [],
+          null,
+          undefined,
+          Symbol('unique'),
+          1234567890123456789012345678901234567890n,
+          new Date(),
+          /regex/,
+          function () {
+            console.log('Function example');
+          },
+        ];
+        expect(component.isTimestamp(timestamp)).toBeTrue();
+        anyOherValueType.forEach((type) => {
+          expect(component.isTimestamp(type)).toBeFalse();
+        });
+      });
+
+      it('createModifyErrorDialog should work', () => {
+        const expectedDialog: Dialog = {
+          width: '70%',
+          height: '70%',
+          hostComponent: 'AccountComponent',
+          title: 'hiba!',
+          content: 'test error',
+          action: false,
+          hasInput: false,
+        };
+        popupServiceMock.getTemplateDialog.and.returnValue({
+          ...dialogTemplate,
+        });
+        expect(
+          component.createModifyErrorDialog(expectedDialog.content)
+        ).toEqual({ ...expectedDialog });
       });
     });
   });
