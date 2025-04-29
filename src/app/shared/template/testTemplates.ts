@@ -56,5 +56,18 @@ export const workTemplate: work = {
   created: Timestamp.now(),
   modified: Timestamp.now(),
   finished: false,
-  members: ['2','3'],
+  members: ['2', '3'],
 };
+
+export const accountButtonActionsTemplate: Array<string> = [
+  'password',
+  'lastName',
+  'firstName',
+  'email',
+  'gender',
+  'telNumber',
+  'city',
+  'lastLogin',
+  'dateOfRegistration',
+  'back',
+];

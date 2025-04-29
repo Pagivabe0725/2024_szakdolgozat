@@ -261,8 +261,7 @@ export class AccountComponent implements OnInit {
   }
 
   labelForMatFormField(element: string): string {
-    const helperArray: Array<string> = this.getElementsFromFormcontrol();
-
+    
     switch (element) {
       case 'firstName':
         return 'Új keresztnév';

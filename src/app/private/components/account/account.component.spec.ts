@@ -6,12 +6,13 @@ import { UserService } from '../../../shared/services/user.service';
 import { CollectionService } from '../../../shared/services/collection.service';
 import { ArrayService } from '../../services/array.service';
 import { PopupService } from '../../../shared/services/popup.service';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { user } from '../../../shared/interfaces/user';
 import { Timestamp } from '@angular/fire/firestore';
 import {
   userTemplate,
   workTemplate,
+  accountButtonActionsTemplate,
 } from '../../../shared/template/testTemplates';
 import { firstValueFrom, of } from 'rxjs';
 import { work } from '../../../shared/interfaces/work';
@@ -394,25 +395,15 @@ fdescribe('AccountComponent', () => {
     });
 
     describe('Form functions', () => {
+      async function handleAction(text: string) {
+        await component.buttonAction(text);
+        await new Promise((resolve) => {
+          setTimeout(resolve, 15);
+        });
+      }
       it('buttonAction should work', async () => {
-        const keyArray = [
-          'password',
-          'lastName',
-          'firstName',
-          'email',
-          'gender',
-          'telNumber',
-          'city',
-          'lastLogin',
-          'dateOfRegistration',
-          'back',
-        ];
-
-        for (const i of keyArray) {
-          await component.buttonAction(i);
-          await new Promise((resolve) => {
-            setTimeout(resolve, 15);
-          });
+        for (const i of accountButtonActionsTemplate) {
+          await handleAction(i);
           const formControlKeys: Array<string> = Object.keys(
             component['modifyForm'].controls
           ).sort();
@@ -439,10 +430,7 @@ fdescribe('AccountComponent', () => {
         ];
         const badOptions: Array<string> = ['1', '2', '3', '4'];
 
-        await component.buttonAction('password');
-        await new Promise((resolve) => {
-          setTimeout(resolve, 15);
-        });
+        await handleAction('password');
 
         rightOptions.forEach((i) => {
           expect(component.stringInActualFormcontrolKeys(i)).toBeTrue();
@@ -452,22 +440,66 @@ fdescribe('AccountComponent', () => {
         });
       });
 
-      it('getElementsFromFormcontrol should work',async()=>{
+      it('getElementsFromFormcontrol should work', async () => {
+        await handleAction('password');
+        expect(component.getElementsFromFormcontrol()).toBeTruthy();
+        expect(component.getElementsFromFormcontrol()).toBeInstanceOf(
+          Array<FormControl>
+        );
+        await handleAction('back');
+        expect(component.getElementsFromFormcontrol()).toEqual([]);
+      });
 
-        await component.buttonAction('password');
-        await new Promise((resolve) => {
-          setTimeout(resolve, 15);
-        });
-        expect(component.getElementsFromFormcontrol()).toBeTruthy()
-        expect(component.getElementsFromFormcontrol()).toBeInstanceOf(Array<FormControl>)
-        await component.buttonAction('back');
-        await new Promise((resolve) => {
-          setTimeout(resolve, 15);
-        });
-        expect(component.getElementsFromFormcontrol()).toEqual([])
+      it('labelForMatFormField should work', async () => {
+        let testArray: Array<string> = [...accountButtonActionsTemplate].filter(
+          (i) => !['email', 'lastLogin', 'dateOfRegistration'].includes(i)
+        );
+        for (const element of testArray) {
+          if (element !== 'back') {
+            await handleAction(element);
+            const elementArray = component.getElementsFromFormcontrol();
 
-      })
+            elementArray.forEach((i) => {
+              expect(component.labelForMatFormField(i)).not.toEqual('');
+            });
+          }
+        }
+        expect(
+          component.labelForMatFormField('should_be_empty_string')
+        ).toEqual('');
+      });
 
+      it('checkForm should work', async () => {
+        component['modifyForm'].addControl(
+          'lastName',
+          new FormControl('', Validators.required)
+        );
+        expect(component.checkForm()).toBeFalse();
+        component['modifyForm'].removeControl('lastName');
+        component['modifyForm'].addControl(
+          'lastName',
+          new FormControl('Something', Validators.required)
+        );
+        expect(component.checkForm()).toBeTrue();
+      });
+
+      it('handlePageStates should work', async () => {
+        /*
+        this.modifyForm = new FormGroup({});
+        this.displayForm = false;
+        this.displayDatas = false;
+        this.loaded = true;
+        this.displayDatas = true;*/
+        await handleAction('password');
+        component['displayForm'] = true;
+        component['displayDatas'] = true;
+        component['loaded'] = false;
+        await component.handlePageStates();
+        expect(component['displayForm']).toBeFalse();
+        expect(component['displayDatas']).toBeTrue();
+        expect(component['loaded']).toBeTrue();
+        expect(component.getElementsFromFormcontrol()).toEqual([]);
+      });
     });
   });
 });
