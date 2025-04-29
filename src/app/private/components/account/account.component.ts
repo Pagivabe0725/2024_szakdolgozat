@@ -330,7 +330,7 @@ export class AccountComponent implements OnInit {
             if (keyArray.length === 1) {
               this.displayDatas = false;
               this.loaded = false;
-              console.log(this.actualUser[keyArray[0] as keyof user]);
+              //console.log(this.actualUser[keyArray[0] as keyof user]);
               this._actualUser[keyArray[0] as keyof user] = this.modifyForm.get(
                 keyArray[0]
               )?.value;
@@ -394,6 +394,10 @@ export class AccountComponent implements OnInit {
             }
           }
         });
+    } else {
+      this.popupService.displayPopUp(
+        this.createModifyErrorDialog('Hibás történt a kitöltés során')
+      );
     }
   }
 }

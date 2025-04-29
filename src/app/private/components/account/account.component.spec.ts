@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AccountComponent } from './account.component';
-import { CommonModule } from '@angular/common';
+
 import { UserService } from '../../../shared/services/user.service';
 import { CollectionService } from '../../../shared/services/collection.service';
 import { ArrayService } from '../../services/array.service';
@@ -15,9 +15,15 @@ import {
   accountButtonActionsTemplate,
   dialogTemplate,
 } from '../../../shared/template/testTemplates';
-import { firstValueFrom, of } from 'rxjs';
+import { of } from 'rxjs';
 import { work } from '../../../shared/interfaces/work';
 import { Dialog } from '../../../shared/interfaces/dialog';
+import { PopupComponent } from '../../../shared/components/popup/popup.component';
+import { MatDialogRef } from '@angular/material/dialog';
+import firebase from 'firebase/compat/app';
+
+type User = firebase.User;
+
 function randomNumber(max: number): number {
   return Math.floor(Math.random() * max);
 }
@@ -50,7 +56,7 @@ fdescribe('AccountComponent', () => {
 
     popupServiceMock = jasmine.createSpyObj('PopupService', [
       'getTemplateDialog',
-      'displayDialog',
+      'displayPopUp',
     ]);
 
     await TestBed.configureTestingModule({
@@ -372,11 +378,13 @@ fdescribe('AccountComponent', () => {
 
       it('getElementsFromFormcontrol should work', async () => {
         await handleAction('password');
+
         expect(component.getElementsFromFormcontrol()).toBeTruthy();
         expect(component.getElementsFromFormcontrol()).toBeInstanceOf(
           Array<FormControl>
         );
         await handleAction('back');
+
         expect(component.getElementsFromFormcontrol()).toEqual([]);
       });
 
@@ -515,6 +523,76 @@ fdescribe('AccountComponent', () => {
         expect(
           component.createModifyErrorDialog(expectedDialog.content)
         ).toEqual({ ...expectedDialog });
+      });
+    });
+
+    describe('modify function', () => {
+      beforeEach(() => {
+        spyOn(component, 'handlePageStates');
+      });
+      function setup(
+        dialogRef: boolean,
+        checkForm: boolean,
+        oneArray: boolean,
+        oneFormControl: boolean,
+        updateDatas: boolean,
+        isOldPasswordCorrect: boolean
+      ): void {
+        popupServiceMock.displayPopUp.and.returnValue({
+          afterClosed: () => of(dialogRef),
+        } as Partial<MatDialogRef<PopupComponent>> as MatDialogRef<PopupComponent>);
+        spyOn(component, 'checkForm').and.returnValue(checkForm);
+        spyOn(component, 'getElementsFromFormcontrol').and.returnValue(
+          oneArray
+            ? ['lastName']
+            : ['password', 'newPassword', 'newPasswordAgain']
+        );
+
+        if (oneFormControl) {
+          spyOn(component.modifyForm, 'get').and.returnValue(
+            new FormControl('Teszt', Validators.required)
+          );
+        } else {
+          spyOn(component.modifyForm, 'get').and.callFake((value: any) => {
+            switch (value) {
+              case 'password':
+                return new FormControl('123456', [
+                  Validators.required,
+                  Validators.minLength(6),
+                ]);
+              case 'newPassword':
+                return new FormControl('234567', [
+                  Validators.required,
+                  Validators.minLength(6),
+                ]);
+
+              default:
+                return new FormControl('345678', [
+                  Validators.required,
+                  Validators.minLength(6),
+                ]);
+            }
+          });
+        }
+
+        collectionServiceMock.updateDatas.and.returnValue(
+          updateDatas ? Promise.resolve() : Promise.reject()
+        );
+
+        userServiceMock.isOldPasswordCorrect.and.resolveTo(
+          isOldPasswordCorrect
+        );
+
+        userServiceMock.currentUser.and.callFake(()=>{return Promise.reject(null)})
+      }
+
+      it('When everything is correct and the user wants to change anything except the password.', () => {
+        component['_actualUser'] = { ...userTemplate };
+        setup(true, true, true, true, true, true);
+        component.modify();
+
+        expect(popupServiceMock.displayPopUp).toHaveBeenCalled();
+        //expect(component.handlePageStates).toHaveBeenCalled();
       });
     });
   });
