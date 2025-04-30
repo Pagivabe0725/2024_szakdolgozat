@@ -58,6 +58,7 @@ export class LoginComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
+    localStorage.removeItem('userId')
     console.log(this.popupSercice.getTemplateDialog())
     this.loaded = true;
   }

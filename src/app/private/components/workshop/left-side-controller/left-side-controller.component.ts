@@ -19,6 +19,7 @@ import { work } from '../../../../shared/interfaces/work';
 export class LeftSideControllerComponent implements OnInit, OnDestroy {
   protected endPoint!: string;
   protected workInfoArray: Array<Array<string>> = [];
+  private infoSub? : Subscription;
   constructor(
     private navigateService: NavigateAndurlinfoService,
     private router: Router,

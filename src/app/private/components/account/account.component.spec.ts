@@ -582,7 +582,7 @@ fdescribe('AccountComponent', () => {
         userServiceMock.isOldPasswordCorrect.and.resolveTo(
           isOldPasswordCorrect
         );
-
+ 
         userServiceMock.currentUser.and.callFake(()=>{return Promise.reject(null)})
       }
 

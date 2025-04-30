@@ -37,6 +37,7 @@ export class UserService {
   }
 
   logout() {
+    localStorage.removeItem('userId');
     return this.angularFireAuth.signOut();
   }
 

@@ -14,6 +14,7 @@ import { TimelineComponent } from './private/components/workshop/timeline/timeli
 import { WorkCreatorComponent } from './private/components/workshop/work-creator/work-creator.component';
 import { MessageCommentComponent } from './private/components/workshop/message-comment/message-comment.component';
 import { AccountComponent } from './private/components/account/account.component';
+import { authGuard } from './private/guards/auth-guard.guard';
 
 export const routes: Routes = [
   {
@@ -46,6 +47,7 @@ export const routes: Routes = [
   {
     path: 'private',
     component: PrivateComponent,
+    canActivate: [authGuard],
     children: [
       {
         path: '',
@@ -93,6 +95,8 @@ export const routes: Routes = [
         path: 'workshop',
         component: WorkshopComponent,
         title: 'workshop',
+        runGuardsAndResolvers: 'always',
+        canActivate: [authGuard],
         children: [
           {
             path: '',

@@ -44,7 +44,7 @@ export class WorkCreatorComponent implements OnInit {
 
   ngOnInit(): void {
     this.sharedDataService.currentData.subscribe((data) => {
-      console.log(data);
+      //console.log(data);
     });
     const emails: Subscription = this.userService
       .getUsers()

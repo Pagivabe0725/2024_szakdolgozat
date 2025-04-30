@@ -1,14 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MenuComponent } from './components/menu/menu.component';
 
 @Component({
   selector: 'app-private',
   standalone: true,
-  imports: [MenuComponent,RouterOutlet],
+  imports: [MenuComponent, RouterOutlet],
   templateUrl: './private.component.html',
-  styleUrl: './private.component.scss'
+  styleUrl: './private.component.scss',
 })
-export class PrivateComponent {
-
+export class PrivateComponent implements OnDestroy {
+  ngOnDestroy(): void {
+    console.log('VÉGE')
+    localStorage.removeItem('userId');
+  }
 }
