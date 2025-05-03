@@ -10,4 +10,5 @@ export interface work {
   modified: Timestamp;
   finished: boolean;
   members: Array<string>;
+  elements: Array<string>
 }

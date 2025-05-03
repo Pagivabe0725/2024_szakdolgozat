@@ -95,8 +95,7 @@ export const routes: Routes = [
         path: 'workshop',
         component: WorkshopComponent,
         title: 'workshop',
-        runGuardsAndResolvers: 'always',
-        canActivate: [authGuard],
+        /*
         children: [
           {
             path: '',
@@ -122,6 +121,13 @@ export const routes: Routes = [
             title: 'chosen work',
           },
         ],
+        */
+      },
+
+      {
+        path: 'workshop/:workId',
+        component: TimelineComponent,
+        title: 'workshop',
       },
       {
         path: 'own',

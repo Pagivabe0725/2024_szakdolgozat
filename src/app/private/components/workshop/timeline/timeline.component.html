@@ -1,3 +1,13 @@
+@if (!loaded) {
+<app-spinner></app-spinner>
+
+} @else{
+
+<app-controlpanel
+  [darkmode]="isDarkmode()"
+  [actualWork]="actualWork"
+></app-controlpanel>
+@if (actualWork.elements.length>0) {
 <div class="own-timeline_component-line-container-div">
   <span
     [ngClass]="
@@ -9,5 +19,13 @@
   >
   <hr class="own-primary-highlight-text-color" />
 </div>
-<app-work-message [darkmode]="isDarkmode()"></app-work-message>
-<app-work-message-comment [darkmode]="isDarkmode()"></app-work-message-comment>
+<app-work-message
+  [darkmode]="isDarkmode()"
+  [actualWork]="actualWork"
+></app-work-message>
+<app-work-message-comment
+  [darkmode]="isDarkmode()"
+  [actualWork]="actualWork"
+></app-work-message-comment>
+
+} }

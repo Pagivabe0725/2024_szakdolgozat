@@ -13,12 +13,16 @@
     <button
       mat-flat-button
       class="own-accent-background"
-      (click)="createNavigation()"
+      (click)="butonNavigate('workcreator')"
     >
       Új munkamenet létrehozása
     </button>
     <button mat-flat-button>Munkamenet törlése</button>
-    <button mat-flat-button (click)="switchWorklist()">
+    <button
+      mat-flat-button
+      (click)="switchWorklist()"
+      (click)="butonNavigate(endPoint === 'my' ? 'all' : 'my')"
+    >
       @if (endPoint==='my') {Összes munka listázása} @else {Általam létrehozott
       munkák}
     </button>
@@ -35,9 +39,7 @@
   </div>
   <div class="own-left-side-controller_component-second-div">
     <button mat-flat-button>Résztvevő hozzáadása</button>
-    <button mat-flat-button (click)="createMessage()">
-      Bejegyzés hozzáadása
-    </button>
+    <button mat-flat-button>Bejegyzés hozzáadása</button>
     <button mat-flat-button>Komment törlése</button>
   </div>
   <div class="own-left-side-controller_component-thirth-div"></div>
@@ -60,17 +62,19 @@
       Eddigi csapattagok
     </h1>
     <div class="own-workcreator-operations-div">
-      @for (email of workInfoArray[0]; track $index) {
-      <button mat-flat-button>{{ email }}</button>
-      }
+      @if (workInfoArray) { @for (email of workInfoArray[0]; track $index) {
+      <button mat-flat-button (click)="copy(email)">{{ email }}</button>
+      }}
     </div>
   </div>
   <div class="own-workcreator-content-div">
-    <h1 [ngStyle]="isDarkmode() ? {} : { color: 'black' }">Eddig használt nevek</h1>
+    <h1 [ngStyle]="isDarkmode() ? {} : { color: 'black' }">
+      Eddig használt nevek
+    </h1>
     <div class="own-workcreator-operations-div">
-      @for (name of workInfoArray[1]; track $index) {
-      <button mat-flat-button>{{ name }}</button>
-      }
+      @if (workInfoArray) { @for (name of workInfoArray[1]; track $index) {
+      <button mat-flat-button (click)="copy(name)">{{ name }}</button>
+      }}
     </div>
   </div>
 </div>

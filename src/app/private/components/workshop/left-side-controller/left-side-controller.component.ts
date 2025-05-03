@@ -1,4 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { RouterPlusService } from '../../../../shared/services/router-plus.service';
 import { MatButtonModule } from '@angular/material/button';
@@ -7,7 +14,7 @@ import { NavigateAndurlinfoService } from '../../../../shared/services/navigate-
 import { Subscription, firstValueFrom, take } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { SharedDataService } from '../../../services/shared-data.service';
-import { work } from '../../../../shared/interfaces/work';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-left-side-controller',
@@ -17,17 +24,55 @@ import { work } from '../../../../shared/interfaces/work';
   styleUrl: './left-side-controller.component.scss',
 })
 export class LeftSideControllerComponent implements OnInit, OnDestroy {
-  protected endPoint!: string;
-  protected workInfoArray: Array<Array<string>> = [];
-  private infoSub? : Subscription;
+  @Input() public endPoint!: string;
+  @Output() public buttonAction: EventEmitter<string> = new EventEmitter();
+  @Input () public workInfoArray?: Array<Array<string>> ;
+  private infoSub?: Subscription;
   constructor(
     private navigateService: NavigateAndurlinfoService,
     private router: Router,
-    private sharedDataService: SharedDataService
+    private sharedDataService: SharedDataService,
+    private matSnackBar: MatSnackBar
   ) {}
   private routerSubscription!: Subscription;
 
+  ngOnInit(): void {
+    console.log('this.workInfoArray')
+    console.log(this.workInfoArray)
+  }
+
+  ngOnDestroy(): void {}
+
+  switchWorklist(): void {}
+
+  isDarkmode(): boolean {
+    const theme = localStorage.getItem('theme');
+    return theme ? theme.includes('dark') : false;
+  }
+
+  back(): void {
+   this.buttonAction.emit('all')
+  }
+
+  butonNavigate(page:string):void{
+
+    this.buttonAction.emit(page)
+    console.log(page)
+  }
+
+  copy(text: string) {
+    navigator.clipboard.writeText(text);
+    this.matSnackBar.open(`${text} kimásolva`, 'Bezár', {
+      duration: 3000,
+      announcementMessage: text,
+    });
+  }
+
+  /*
+
   async ngOnInit() {
+
+    
     const session = sessionStorage.getItem('actualWorks');
 
     if (!session) {
@@ -51,6 +96,8 @@ export class LeftSideControllerComponent implements OnInit, OnDestroy {
     });
 
     console.log(this.workInfoArray);
+
+    
   }
 
   ngOnDestroy(): void {
@@ -94,4 +141,14 @@ export class LeftSideControllerComponent implements OnInit, OnDestroy {
     const theme = localStorage.getItem('theme');
     return theme ? theme.includes('dark') : false;
   }
+
+  copy(text: string) {
+    navigator.clipboard.writeText(text);
+    this.matSnackBar.open(`${text} kimásolva`, 'Bezár', {
+      duration: 3000,
+      announcementMessage: text,
+    });
+  }
+
+  */
 }

@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { work } from '../../../../../shared/interfaces/work';
 
 @Component({
   selector: 'app-work-message',
@@ -10,4 +11,5 @@ import { Component, Input } from '@angular/core';
 })
 export class WorkMessageComponent {
   @Input() public darkmode!: boolean;
+  @Input() public actualWork!: work;
 }

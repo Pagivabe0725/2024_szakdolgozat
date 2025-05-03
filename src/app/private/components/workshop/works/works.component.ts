@@ -4,30 +4,28 @@ import { CollectionService } from '../../../../shared/services/collection.servic
 import { work } from '../../../../shared/interfaces/work';
 import { NavigateAndurlinfoService } from '../../../../shared/services/navigate-andurlinfo.service';
 import { SharedDataService } from '../../../services/shared-data.service';
-import { Subscription, firstValueFrom, take } from 'rxjs';
-
-import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
-import { user } from '../../../../shared/interfaces/user';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-works',
   standalone: true,
-  imports: [WorkcardComponent, SpinnerComponent],
+  imports: [WorkcardComponent],
   templateUrl: './works.component.html',
   styleUrl: './works.component.scss',
 })
 export class WorksComponent implements OnInit, OnDestroy {
-  protected worksArray: Array<work> = [];
+  @Input() public worksArray: Array<work> = [];
   protected chosenWorksArray: Array<work> = [];
-  protected loaded = false;
-  protected workSub?: Subscription;
 
-  constructor(
-    private navigateAndURLInfoService: NavigateAndurlinfoService,
-    private sharedDataService: SharedDataService,
-    private collectionService: CollectionService
-  ) {}
+  constructor() {}
 
+  ngOnInit(): void {
+    this.chosenWorksArray = [...this.worksArray];
+  }
+
+  ngOnDestroy(): void {}
+
+  /*
   ngOnInit(): void {
     const endpoint = this.navigateAndURLInfoService.endpoint();
     this.workSub = this.collectionService
@@ -107,6 +105,8 @@ export class WorksComponent implements OnInit, OnDestroy {
     nameArray = Array.from(new Set(nameArray));
     return [emailArray, nameArray];
   }
+
+  */
   /*
   async ngOnInit() {
     const endpoint = this.navigateAndURLInfoService.endpoint();

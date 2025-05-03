@@ -21,9 +21,7 @@ export class WorkcardComponent implements OnInit {
   ];
   private ownProjects: boolean = false;
 
-  constructor(private router: Router) {
-
-  }
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
     this.points = [
@@ -38,8 +36,8 @@ export class WorkcardComponent implements OnInit {
     ];
   }
 
-  switchOwnProject():void{
-    this.ownProjects=!this.ownProjects
+  switchOwnProject(): void {
+    this.ownProjects = !this.ownProjects;
   }
 
   workLoader(): void {

@@ -1,0 +1,22 @@
+<div id="own-controlpanel_component-div" class="own-primary-background">
+  <div [ngStyle]="darkmode ? { color: 'white' } : {}">
+    <div id="own-date-div" class="own-primary-highlight-background">
+      <span id="own-date-title-span">Utoljára módosítva: </span>
+      <span id="own-date-span">{{
+        actualWork.modified | ownDateFormater
+      }}</span>
+    </div>
+  </div>
+  <div id="own-controlpanel_component-button-div">
+    @if (userId===actualWork.userId) { @if (!actualWork.finished) {
+    <button mat-flat-button>Befejez</button>
+    }@else {
+    <button mat-flat-button>Újra elkezdés</button>
+    }
+
+    <button mat-flat-button>Résztvevő +</button>
+    <button mat-flat-button>Résztvevő -</button>
+    }
+    <button mat-flat-button>Új bejegyzés</button>
+  </div>
+</div>

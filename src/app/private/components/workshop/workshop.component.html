@@ -1,5 +1,21 @@
+<app-left-side-controller
+  (buttonAction)="changePage($event)"
+  [endPoint]="page"
+  [workInfoArray]="emailAndNameArray"
+></app-left-side-controller>
 
-<app-left-side-controller></app-left-side-controller>
+@if (!loaded) {
+
+<app-spinner></app-spinner>}@else {
+
 <div id="own-right-side-controller_component-div">
-  <router-outlet></router-outlet>
+  @if (page!=='workcreator') {
+  <app-works [worksArray]="chosenWorksArray"></app-works>
+  }@else {
+  <app-work-creator
+    [users]="userArray"
+    (changePage)="changePage($event)"
+  ></app-work-creator>
+  }
 </div>
+}

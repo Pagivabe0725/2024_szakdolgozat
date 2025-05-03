@@ -19,6 +19,10 @@ export class CollectionService {
     return this.angularFirestore.collection(collection).get();
   }
 
+  getAllDocByCollectionNameWithChanges(collection: string): Observable<unknown> {
+    return this.angularFirestore.collection(collection).valueChanges();
+  }
+
   createCollectionDoc(
     collection: string,
     id: string,

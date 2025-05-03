@@ -1,12 +1,6 @@
-
-@if (!loaded) {
-
-    <app-spinner></app-spinner>
-}
-
-@if (chosenWorksArray) {
-@for (work of chosenWorksArray; track $index) {
+@if (chosenWorksArray.length===0) {
+<h1>Jelenleg nincs olyan munka amiben szerepet vállalnál</h1>
+}@else { @for (work of chosenWorksArray; track $index) {
 
 <app-workcard [work]="work"></app-workcard>
-}
-}
+} }
