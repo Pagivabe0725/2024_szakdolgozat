@@ -9,14 +9,14 @@
   </div>
   <div id="own-controlpanel_component-button-div">
     @if (userId===actualWork.userId) { @if (!actualWork.finished) {
-    <button mat-flat-button>Befejez</button>
+    <button mat-flat-button (click)="finishOrStartWork()">Befejez</button>
     }@else {
-    <button mat-flat-button>Újra elkezdés</button>
+    <button mat-flat-button (click)="finishOrStartWork()">Újra elkezdés</button>
     }
 
     <button mat-flat-button>Résztvevő +</button>
     <button mat-flat-button>Résztvevő -</button>
     }
-    <button mat-flat-button>Új bejegyzés</button>
+    <button mat-flat-button (click)="message()">Új bejegyzés</button>
   </div>
 </div>

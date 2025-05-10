@@ -4,8 +4,8 @@
 } @else {
 
 <mat-tab-group>
-  <mat-tab label="Felhasználói adatok">
-    <div class="own-mat-tab-div">
+  <mat-tab label="Felhasználói adatok" id="own-user-tab-button">
+    <div class="own-mat-tab-div" id="own-user-data-div">
       <mat-card
         id="own-user-matcard"
         class="own-account-info-div"
@@ -49,6 +49,7 @@
                     }
                   : { color: 'black', 'padding-left': '1vw' }
               "
+              class="own-user-data-field-title"
             >
               {{ keyTransleater[key] }}
             </div>
@@ -56,6 +57,7 @@
             <div
               style="justify-content: flex-end; padding-right: 1vw"
               [ngStyle]="isDarkmode() ? { 'border-color': '#eeeeee' } : {}"
+              class="own-user-data-field-value"
             >
               {{ actualUser[key] | ownDateFormater }}
             </div>
@@ -63,6 +65,7 @@
             <div
               style="justify-content: flex-end; padding-right: 1vw"
               [ngStyle]="isDarkmode() ? { 'border-color': '#eeeeee' } : {}"
+              class="own-user-data-field-value"
             >
               {{ actualUser[key] }}
             </div>
@@ -75,8 +78,8 @@
       </mat-card>
     </div>
   </mat-tab>
-  <mat-tab label="Munkaadatok">
-    <div class="own-mat-tab-div">
+  <mat-tab label="Munkaadatok" id="own-work-tab-button">
+    <div class="own-mat-tab-div" id="own-work-data-div">
       <mat-card
         id="own-work-matcard"
         class="own-work-info-div"
@@ -129,8 +132,8 @@
       </mat-card>
     </div>
   </mat-tab>
-  <mat-tab label="Módosítások">
-    <div class="own-mat-tab-div">
+  <mat-tab label="Módosítások" id="own-modify-tab-button">
+    <div class="own-mat-tab-div" id="own-modify-data-div">
       <mat-card
         id="own-modify-matcard"
         class="own-work-info-div"
@@ -173,7 +176,7 @@
             </div>
             <div style="display: flex; justify-content: flex-end">
               @if (!stringInActualFormcontrolKeys(key[1])) {
-              <button mat-flat-button (click)="buttonAction(key[1])">
+              <button mat-flat-button (click)="buttonAction(key[1])" class="own-modify-button">
                 Módosítom
               </button>
               }@else {

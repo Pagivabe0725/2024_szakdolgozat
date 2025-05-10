@@ -57,6 +57,7 @@ export const workTemplate: work = {
   modified: Timestamp.now(),
   finished: false,
   members: ['2', '3'],
+  elements:[]
 };
 
 export const accountButtonActionsTemplate: Array<string> = [

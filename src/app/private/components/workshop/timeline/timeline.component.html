@@ -7,7 +7,8 @@
   [darkmode]="isDarkmode()"
   [actualWork]="actualWork"
 ></app-controlpanel>
-@if (actualWork.elements.length>0) {
+@if (messages.length>0) { @for (actualMessage of messages; track $index; let i =
+$index) {
 <div class="own-timeline_component-line-container-div">
   <span
     [ngClass]="
@@ -15,17 +16,23 @@
         ? 'own-primary-highlight-text-color'
         : 'own-accent-text-color'
     "
-    >időpont:</span
+    >{{ actualMessage.dateOfCreation | ownDateFormater }}</span
   >
   <hr class="own-primary-highlight-text-color" />
 </div>
 <app-work-message
   [darkmode]="isDarkmode()"
-  [actualWork]="actualWork"
+  [actualMessage]="actualMessage"
+  [actualUser]="membersOfWork.get(actualMessage.userId)"
+  (commentEvent)="createComment($event)"
+  [index]="i"
 ></app-work-message>
+
+@for (comment of actualMessage.commentArray; track $index) {
 <app-work-message-comment
   [darkmode]="isDarkmode()"
   [actualWork]="actualWork"
 ></app-work-message-comment>
+} } } }
 
-} }
+<div id="own-timeline_component-placeholder"></div>

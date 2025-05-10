@@ -1,1 +1,50 @@
-<p>message-comment works!</p>
+@if (!loaded) {
+<app-spinner></app-spinner>
+}@else {
+
+<div id="own-message_component-container">
+  <div id="own-message_component-title-div">
+    <div
+      id="own-message_component-file-div"
+      class="own-message_component-title-div-in-div"
+    >
+      @for (file of fileArray; track $index; let i = $index) {
+      <div class="own-accent-background own-file-div">
+        <div>
+          {{ file["name"] }}
+        </div>
+        <button mat-icon-button (click)="deleteFileWithIndex(i)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+      }
+    </div>
+    <div class="own-message_component-title-div-in-div">
+      <button
+        mat-flat-button
+        (click)="fileInput.click()"
+        id="own-message_component-title-div-button"
+      >
+        Fájl feltöltése
+      </button>
+      <input #fileInput type="file" (change)="onFileSelected($event)" hidden />
+    </div>
+  </div>
+  <div id="own-message_component-conent-div">
+    <mat-form-field>
+      <mat-label>Bejegyzés szövege</mat-label>
+      <textarea matInput rows="25" [formControl]="messageInput"></textarea>
+      @if (messageInput.hasError('required')) {
+      <mat-error>Kötelezően kitöltendő</mat-error>
+      }
+    </mat-form-field>
+  </div>
+  <div id="own-message_component-action-div" class="own-primary-background">
+    <button mat-flat-button (click)="clearInput()">Képernyő tisztítása</button>
+    <button mat-flat-button (click)="clearFileRow()">
+      Fájlmező tisztítása
+    </button>
+    <button mat-flat-button (click)="addMessage()">Bejegyzés hozzáadása</button>
+  </div>
+</div>
+}

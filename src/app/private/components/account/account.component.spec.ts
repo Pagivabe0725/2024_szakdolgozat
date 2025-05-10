@@ -21,6 +21,8 @@ import { Dialog } from '../../../shared/interfaces/dialog';
 import { PopupComponent } from '../../../shared/components/popup/popup.component';
 import { MatDialogRef } from '@angular/material/dialog';
 import firebase from 'firebase/compat/app';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { OwnDateFormaterPipe } from '../../../shared/pipes/own-date-formater.pipe';
 
 type User = firebase.User;
 
@@ -60,7 +62,7 @@ fdescribe('AccountComponent', () => {
     ]);
 
     await TestBed.configureTestingModule({
-      imports: [AccountComponent],
+      imports: [AccountComponent, BrowserAnimationsModule, OwnDateFormaterPipe],
       providers: [
         { provide: UserService, useValue: userServiceMock },
         { provide: CollectionService, useValue: collectionServiceMock },
@@ -582,8 +584,10 @@ fdescribe('AccountComponent', () => {
         userServiceMock.isOldPasswordCorrect.and.resolveTo(
           isOldPasswordCorrect
         );
- 
-        userServiceMock.currentUser.and.callFake(()=>{return Promise.reject(null)})
+
+        userServiceMock.currentUser.and.callFake(() => {
+          return Promise.reject(null);
+        });
       }
 
       it('When everything is correct and the user wants to change anything except the password.', () => {
@@ -593,6 +597,208 @@ fdescribe('AccountComponent', () => {
 
         expect(popupServiceMock.displayPopUp).toHaveBeenCalled();
         //expect(component.handlePageStates).toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('HTML structure', () => {
+    let HTML: HTMLElement;
+
+    beforeEach(async () => {
+      await fixture.detectChanges();
+      HTML = await fixture.nativeElement;
+    });
+
+    it('HTML loaded', () => {
+      expect(HTML).toBeDefined();
+    });
+
+    it('appSpinner is exist', async () => {
+      const spinner = await HTML.querySelector('app-spinner');
+      expect(spinner).toBeDefined();
+    });
+
+    async function loadFunction(gender: 'Férfi' | 'Nő') {
+      arrayServiceMock.elementInArrayTimes.and.returnValue(1);
+      spyOn(component, 'lastProject').and.returnValue(userTemplate.lastLogin);
+      spyOn(component, 'lastModifiedProject').and.returnValue(
+        userTemplate.lastLogin
+      );
+      userServiceMock.getUserInfoByUserId.and.returnValue(
+        of({ ...userTemplate })
+      );
+      collectionServiceMock.getCollectionByCollectionAndDoc.and.returnValue(
+        of({ doc: { id: { ...userTemplate } } })
+      );
+      spyOn(component, 'getActualUser').and.callFake(async () => {
+        component['_actualUser'] = { ...userTemplate, gender: gender };
+      });
+      spyOn(component, 'getDocsObj').and.resolveTo({ docs: [{ id: '1' }] });
+      spyOn(component, 'getWorks').and.resolveTo({ ...workTemplate });
+      spyOn(localStorage, 'getItem').and.returnValue('something');
+      component.loaded = true;
+      await component.ngOnInit();
+      await fixture.detectChanges();
+    }
+
+    it('appSpinner should disapper => conten of page loaded ', async () => {
+      await loadFunction('Férfi');
+      HTML = await fixture.nativeElement;
+      const spinner = HTML.querySelector('app-spinner');
+      expect(spinner).toBeFalsy();
+    });
+
+    it('mat-tab material element should appear', async () => {
+      await loadFunction('Férfi');
+      HTML = await fixture.nativeElement;
+      const tab = HTML.querySelector('mat-tab-group');
+      expect(tab).toBeTruthy();
+    });
+
+    it('mat-tab elements should be setup', async () => {
+      await loadFunction('Férfi');
+      HTML = await fixture.nativeElement;
+      const tabElement1 = HTML.querySelector('#own-user-data-div');
+      const tabElement2 = HTML.querySelector('#own-work-data-div');
+      const tabElement3 = HTML.querySelector('#own-modify-data-div');
+      expect(tabElement1).toBeTruthy();
+      expect(tabElement2).toBeFalsy();
+      expect(tabElement3).toBeFalsy();
+    });
+
+    it('work click', async () => {
+      await loadFunction('Férfi');
+      await fixture.detectChanges();
+      HTML = await fixture.nativeElement;
+      const group = HTML.querySelector('mat-tab-group');
+      const buttonArray = Array.from(group!.querySelectorAll('.mat-mdc-tab'));
+      buttonArray.push(buttonArray[0]);
+      const expectArray = [
+        '#own-user-data-div',
+        '#own-work-data-div',
+        '#own-modify-data-div',
+        '#own-user-data-div',
+      ];
+      for (let i = 0; i < Array.from(buttonArray).length; i++) {
+        buttonArray[i].dispatchEvent(new Event('click'));
+        await fixture.detectChanges();
+        HTML = await fixture.nativeElement;
+        const tab = HTML.querySelector(expectArray[i]);
+        const tabArray = HTML.querySelectorAll('.own-mat-tab-div');
+
+        expect(tab).toBeTruthy();
+        expect(tabArray.length).toEqual(i !== 3 && i !== 4 ? i + 1 : 3);
+      }
+    });
+
+    describe('img ', () => {
+      it('img should show man', async () => {
+        await loadFunction('Férfi');
+        HTML = await fixture.nativeElement;
+        const img = HTML.querySelector('img');
+        expect(img!.src).toContain('man');
+      });
+
+      it('img should show woman', async () => {
+        await loadFunction('Nő');
+        HTML = await fixture.nativeElement;
+        const img = HTML.querySelector('img');
+
+        expect(img!.src).toContain('woman');
+      });
+    });
+
+    describe('user data fields', () => {
+      let divTitleArray: Array<any>;
+      let divValueArray: Array<any>;
+
+      beforeEach(async () => {
+        component['keyArray'] = [
+          'lastName',
+          'firstName',
+          'email',
+          'gender',
+          'telNumber',
+          'city',
+          'lastLogin',
+          'dateOfRegistration',
+        ];
+
+        component['displayDatas'] = true;
+        await loadFunction('Férfi');
+        await fixture.detectChanges();
+        HTML = await fixture.nativeElement;
+        divTitleArray = Array.from(
+          HTML.querySelectorAll('.own-user-data-field-title')
+        );
+        divValueArray = Array.from(
+          HTML.querySelectorAll('.own-user-data-field-value')
+        );
+      });
+
+      it('lastName', async () => {
+        expect((divTitleArray[0] as HTMLElement).textContent!.trim()).toEqual(
+          'Vezetéknév:'
+        );
+        expect((divValueArray[0] as HTMLElement).textContent!.trim()).toEqual(
+          userTemplate.lastName
+        );
+      });
+      it('firstName', async () => {
+        expect((divTitleArray[1] as HTMLElement).textContent!.trim()).toEqual(
+          'Keresztnév:'
+        );
+        expect((divValueArray[1] as HTMLElement).textContent!.trim()).toEqual(
+          userTemplate.firstName
+        );
+      });
+      it('email', async () => {
+        expect((divTitleArray[2] as HTMLElement).textContent!.trim()).toEqual(
+          'Email-címem:'
+        );
+        expect((divValueArray[2] as HTMLElement).textContent!.trim()).toEqual(
+          userTemplate.email
+        );
+      });
+      it('Nem', async () => {
+        expect((divTitleArray[3] as HTMLElement).textContent!.trim()).toEqual(
+          'Nem'
+        );
+        expect((divValueArray[3] as HTMLElement).textContent!.trim()).toEqual(
+          userTemplate.gender
+        );
+      });
+      it('telNumber', async () => {
+        expect((divTitleArray[4] as HTMLElement).textContent!.trim()).toEqual(
+          'Telefonszámom:'
+        );
+        expect((divValueArray[4] as HTMLElement).textContent!.trim()).toEqual(
+          userTemplate.telNumber
+        );
+      });
+      it('city', async () => {
+        expect((divTitleArray[5] as HTMLElement).textContent!.trim()).toEqual(
+          'Városom:'
+        );
+        expect((divValueArray[5] as HTMLElement).textContent!.trim()).toEqual(
+          userTemplate.city || ''
+        );
+      });
+      it('lastLogin', async () => {
+        expect((divTitleArray[6] as HTMLElement).textContent!.trim()).toEqual(
+          'Utolsó bejelentkezésem:'
+        );
+        expect((divValueArray[6] as HTMLElement).textContent!.trim()).toEqual(
+          new OwnDateFormaterPipe().transform(userTemplate.lastLogin)
+        );
+      });
+      it('dateOfRegistration', async () => {
+        expect((divTitleArray[7] as HTMLElement).textContent!.trim()).toEqual(
+          'Regisztráltam:'
+        );
+        expect((divValueArray[7] as HTMLElement).textContent!.trim()).toEqual(
+          new OwnDateFormaterPipe().transform(userTemplate.dateOfRegistration)
+        );
       });
     });
   });

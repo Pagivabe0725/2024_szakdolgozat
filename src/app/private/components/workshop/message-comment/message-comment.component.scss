@@ -1,0 +1,80 @@
+#own-message_component-container {
+  width: 100%;
+  height: 92vh;
+  display: grid;
+  grid-template-rows: 10vh 1fr 10vh;
+}
+
+#own-message_component-title-div {
+  display: grid;
+  grid-template-columns: 1fr 15vw;
+}
+
+.own-message_component-title-div-in-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#own-message_component-title-div-button {
+  height: 70%;
+  width: 95%;
+  font-size: 1.2vw;
+}
+
+#own-message_component-conent-div {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+
+#own-message_component-action-div {
+  display: flex;
+  align-items: center;
+  gap: 1vw;
+  justify-content: flex-end;
+}
+
+#own-message_component-action-div button {
+  height: 60%;
+  font-size: 1vw;
+}
+
+#own-message_component-file-div {
+  overflow-x: auto;
+  display: flex;
+  justify-content: flex-start !important;
+  gap: 1vw;
+  align-items: flex-end;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+}
+
+.own-file-div {
+  display: flex;
+  height: 80%;
+  padding: 0 1vw;
+  border-radius: 1vw;
+  grid-template-columns: 80% 1fr;
+  font-size: 1.2vw;
+  position: relative;
+  align-items: center;
+  color: black !important;
+}
+
+mat-icon {
+  color: black !important;
+}
+
+mat-form-field {
+  width: 90%;
+  height: 90%;
+}
+
+mat-error {
+  font-size: 1vw;
+  padding-top: 1vh;
+  text-align: right;
+}

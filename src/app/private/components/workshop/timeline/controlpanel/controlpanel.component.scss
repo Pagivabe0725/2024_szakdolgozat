@@ -5,6 +5,7 @@
   position: fixed;
   bottom: 0;
   grid-template-columns: 60% 40%;
+  z-index: 99;
 }
 
 #own-controlpanel_component-div div {

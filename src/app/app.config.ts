@@ -16,13 +16,13 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     importProvidersFrom([
       AngularFireModule.initializeApp({
-        projectId: 'szakdolgozat-kovacs-patrik',
-          appId: '1:201169912540:web:1a8bba862b39c2b6aaea19',
-          storageBucket: 'szakdolgozat-kovacs-patrik.firebasestorage.app',
-          apiKey: 'AIzaSyAVr230S4iayQeQ1WXZF9BImMGKP2lxQeI',
-          authDomain: 'szakdolgozat-kovacs-patrik.firebaseapp.com',
-          messagingSenderId: '201169912540',
-          measurementId: 'G-WW405JM269',
+        apiKey: "AIzaSyARIZ0zi5Zyp3v4dQYUlbF_S9QGtlVp-50",
+        authDomain: "web-projekt-fa8c1.firebaseapp.com",
+        projectId: "web-projekt-fa8c1",
+        storageBucket: "web-projekt-fa8c1.appspot.com",
+        messagingSenderId: "641392570973",
+        appId: "1:641392570973:web:b87723ded283cd540693b4",
+        measurementId: "G-XRVT4K2P1R"
       }),
       AngularFireAuthModule,
       AngularFirestoreModule,

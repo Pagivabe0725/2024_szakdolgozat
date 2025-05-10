@@ -1,13 +1,37 @@
-.own-work-message_component-div {
-  width: 70vw;
-  min-height: 10vh;
-  margin: 1vh 0;
-  border-radius: 1em;
+.own-work-message_component-container {
+  width: 100%;
 }
 
-.own-work-message_component-message-container-div {
-  width: 79vw;
+.own-work-message_component-message-div {
+  min-height: 20vh;
+  border: 1px solid black;
+  width: 70%;
+  margin-left: 5%;
+  border-radius: 10px;
+  display: grid;
+
+  padding: 1vh;
+  text-align: justify;
+  font-size: 1.1vw;
+}
+
+.own-work-message_component-message-content-div {
+  margin: 0 auto;
+  width: 95%;
+  height: 100%;
   display: flex;
-  justify-content: flex-start;
-  padding-left: 1vw;
+  color: black;
+}
+
+.own-work-message_component-message-action-div {
+  width: 95%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  color: black;
+}
+
+mat-icon {
+  color: black !important;
 }
