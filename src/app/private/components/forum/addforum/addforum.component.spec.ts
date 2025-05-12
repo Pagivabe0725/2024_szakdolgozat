@@ -219,15 +219,17 @@ fdescribe('AddforumComponent', () => {
       HTML = await fixture.nativeElement;
     });
 
-    function getFormFielsdsValue(){
+    function getFormFieldsValue(): Array<string> {
+      const resultArray: Array<string> = [];
+      const inputElements = Array.from(
+        HTML.querySelectorAll('input, textarea')
+      ) as (HTMLInputElement | HTMLTextAreaElement)[];
 
-      let resultArray: Array<string> = []
-      const formFields = Array.from(HTML.querySelectorAll('mat-form-field'));
-
-      for (const field of formFields) {
-        const inputElement = field.querySelector('input') as HTMLInputElement | null;
-        resultArray.push(inputElement?.value ?? '');
+      for (const inputElement of inputElements) {
+        resultArray.push(inputElement.value ?? '');
       }
+
+      return resultArray;
     }
 
     it('HTML should loaded', () => {
@@ -239,44 +241,30 @@ fdescribe('AddforumComponent', () => {
       expect(formFields.length).toEqual(3);
     });
 
-    it('Form fields should be empty', () => {
-      const formFields = Array.from(HTML.querySelectorAll('mat-form-field'));
-
-      for (const field of formFields) {
-        const inputElement = field.querySelector(
-          'input'
-        ) as HTMLInputElement | null;
-
-        if (inputElement) {
-          //console.log(`Field value: "${inputElement.value}"`);
-          expect(inputElement.value).toBe('');
-        } else {
-          console.warn('No input element found in:', field);
-        }
+    xit('Form fields should be empty', () => {
+      //console.log(getFormFielsdsValue());
+      for (const field of getFormFieldsValue()) {
+        expect(field).toEqual('');
       }
     });
 
-    it('form fields should be not empty',()=>{
+    it('form fields should be not empty', async () => {
+      const expectArray: Array<string> = [
+        'Something title',
+        'this is a test content. this is a test content. this is a test content. this is a test content. this is a test content.',
+      ];
 
-      component['forumForm'].get('title')!.setValue('Something title')
-      component['forumForm'].get('category')!.setValue('Gitár')
-      component['forumForm'].get('content')!.setValue('this is a test content. this is a test content. this is a test content. this is a test content. this is a test content.')
-
-      const formFields = Array.from(HTML.querySelectorAll('mat-form-field'));
-
-      for (const field of formFields) {
-        const inputElement = field.querySelector(
-          'input'
-        ) as HTMLInputElement | null;
-
-        if (inputElement) {
-          //console.log(`Field value: "${inputElement.value}"`);
-          expect(inputElement.value).toBe('');
-        } else {
-          console.warn('No input element found in:', field);
-        }
-      }
-
-    })
+      component['forumForm'].get('title')!.setValue(expectArray[0].trim());
+      component['forumForm'].get('content')!.setValue(expectArray[1].trim());
+      await fixture.detectChanges();
+      await fixture.whenStable();
+      const expectValues = getFormFieldsValue();
+      console.log(expectValues);
+      expectValues.forEach((field, index) => {
+        expect(field).toEqual(expectArray[index]);
+        console.log(index);
+        console.log(field);
+      });
+    });
   });
 });

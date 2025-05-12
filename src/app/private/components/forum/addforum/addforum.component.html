@@ -6,7 +6,7 @@
     <div>
       <mat-form-field>
         <mat-label>Kategória</mat-label>
-        <mat-select formControlName="category">
+        <mat-select formControlName="category" id="own-category-select">
           @for (item of categoryTitleArray; track $index) {
           <mat-option [value]="item">{{ item }}</mat-option>
           }
