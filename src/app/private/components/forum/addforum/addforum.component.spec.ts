@@ -22,7 +22,7 @@ const dialogRef = {
   afterClosed: () => of(true),
 } as Partial<MatDialogRef<PopupComponent>> as MatDialogRef<PopupComponent>;
 
-fdescribe('AddforumComponent', () => {
+describe('AddforumComponent', () => {
   let component: AddforumComponent;
   let fixture: ComponentFixture<AddforumComponent>;
   let collectionServiceMock: jasmine.SpyObj<CollectionService>;
@@ -89,7 +89,6 @@ fdescribe('AddforumComponent', () => {
 
     it('forumForm should be exist', () => {
       expect(component['forumForm']).toBeDefined();
-      console.log(component['forumForm']);
     });
 
     it('categoryTitleArray should not be empty', () => {
@@ -108,7 +107,6 @@ fdescribe('AddforumComponent', () => {
 
     it('fullName should not be correct', () => {
       expect(component['fullName']).toEqual(author(userTemplate));
-      console.log(author(userTemplate));
     });
 
     it('should call textAreaRowCalculator on window resize', () => {
@@ -241,8 +239,7 @@ fdescribe('AddforumComponent', () => {
       expect(formFields.length).toEqual(3);
     });
 
-    xit('Form fields should be empty', () => {
-      //console.log(getFormFielsdsValue());
+    it('Form fields should be empty', () => {
       for (const field of getFormFieldsValue()) {
         expect(field).toEqual('');
       }
@@ -259,11 +256,34 @@ fdescribe('AddforumComponent', () => {
       await fixture.detectChanges();
       await fixture.whenStable();
       const expectValues = getFormFieldsValue();
-      console.log(expectValues);
+
       expectValues.forEach((field, index) => {
         expect(field).toEqual(expectArray[index]);
-        console.log(index);
-        console.log(field);
+      });
+    });
+
+    it('Clear button should work', async () => {
+      const expectArray: Array<string> = [
+        'Something title',
+        'this is a test content. this is a test content. this is a test content. this is a test content. this is a test content.',
+      ];
+
+      component['forumForm'].get('title')!.setValue(expectArray[0].trim());
+      component['forumForm'].get('content')!.setValue(expectArray[1].trim());
+      await fixture.detectChanges();
+      HTML = await fixture.nativeElement;
+      const firstArray = getFormFieldsValue();
+      const clearButton = HTML.querySelector(
+        '#own-addForum_component-clear-button'
+      );
+      clearButton?.dispatchEvent(new Event('click'));
+      await fixture.detectChanges();
+      HTML = await fixture.nativeElement;
+      const secondArray = getFormFieldsValue();
+
+      expectArray.forEach((element, index) => {
+        expect(firstArray[index]).toEqual(element);
+        expect(secondArray[index]).toEqual('');
       });
     });
   });

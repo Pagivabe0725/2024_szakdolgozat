@@ -5,20 +5,11 @@ import { forum } from '../../../../shared/interfaces/forum';
 import { Timestamp } from '@angular/fire/firestore';
 import { NavigateAndurlinfoService } from '../../../../shared/services/navigate-andurlinfo.service';
 
-const forumTemplate: forum = {
-  title: 'first',
-  id: '1',
-  userId: '1',
-  text: 'It is a test text',
-  author: 'Tester',
-  date: Timestamp.now(),
-  commentsIdArray: [],
-  dislikeArray: [],
-  likeArray: [],
-  category: 'Category',
-};
+import { forumTemplate } from '../../../../shared/template/testTemplates';
 
-describe('CardElementComponent', () => {
+
+
+fdescribe('CardElementComponent', () => {
   let component: CardElementComponent;
   let fixture: ComponentFixture<CardElementComponent>;
   let navigateAndurlinfoServiceMock: jasmine.SpyObj<NavigateAndurlinfoService>;
@@ -77,4 +68,22 @@ describe('CardElementComponent', () => {
     spyOn(localStorage, 'getItem').and.returnValue('darkblue');
     expect(component.isDarkmode()).toBeTrue();
   });
+
+  describe('HTML',()=>{
+
+
+   
+
+  it('HTML should be loaded',()=>{
+    expect(fixture.nativeElement).toBeTruthy()
+  })
+
+  it('Mat-card should be displayed',()=>{
+
+    const HTML:HTMLElement = fixture.nativeElement
+    const card = HTML.querySelector('mat-card')
+    expect(card).toBeTruthy()
+  })
+
+  })
 });
