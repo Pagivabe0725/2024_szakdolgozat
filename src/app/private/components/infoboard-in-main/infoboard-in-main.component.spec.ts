@@ -70,17 +70,17 @@ describe('InfoboardInMainComponent', () => {
     expect(component['collectionDisplay']).toBeFalse();
     const compiled = fixture.nativeElement as HTMLElement;
     compiled.dispatchEvent(new Event('mouseover'));
-    await new Promise((resolve) => setTimeout(resolve, 200));
+    await fixture.whenStable()
     expect(component['collectionDisplay']).toBeTrue();
   });
 
   it('should set collectionDisplay property false by onMouseLeave event', async () => {
     const compiled = fixture.nativeElement as HTMLElement;
     compiled.dispatchEvent(new Event('mouseover'));
-    await new Promise((resolve) => setTimeout(resolve, 200));
+    await fixture.whenStable()
     expect(component['collectionDisplay']).toBeTrue();
     compiled.dispatchEvent(new Event('mouseleave'));
-    await new Promise((resolve) => setTimeout(resolve, 200));
+    await fixture.whenStable()
     expect(component['collectionDisplay']).toBeFalse();
   });
 
@@ -102,7 +102,6 @@ describe('InfoboardInMainComponent', () => {
 
     const html: HTMLElement = fixture.nativeElement;
     console.log(html);
-    //let page = html.querySelector('.page-component') as HTMLElement;
     let mat_card: HTMLElement = html.querySelector('mat-card')!;
 
     const colors = [

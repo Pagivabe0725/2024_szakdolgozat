@@ -30,7 +30,7 @@ function randomNumber(max: number): number {
   return Math.floor(Math.random() * max);
 }
 
-fdescribe('AccountComponent', () => {
+describe('AccountComponent', () => {
   let component: AccountComponent;
   let fixture: ComponentFixture<AccountComponent>;
   let userServiceMock: jasmine.SpyObj<UserService>;

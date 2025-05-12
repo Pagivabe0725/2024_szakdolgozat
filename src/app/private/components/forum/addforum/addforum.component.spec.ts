@@ -12,35 +12,17 @@ import { Timestamp } from '@angular/fire/firestore';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogRef } from '@angular/material/dialog';
 import { PopupComponent } from '../../../../shared/components/popup/popup.component';
-
-
-const dialogTemplate: Dialog = {
-  width: '70%',
-  height: '70%',
-  hostComponent: 'AddforumComponent',
-  title: '',
-  content: '',
-  action: false,
-  hasInput: false,
-};
-
-const userTemplate: user = {
-  id: 'UserId',
-  firstName: 'firstName',
-  lastName: 'lastName',
-  lastLogin: Timestamp.now(),
-  email: 'test@gmail.com',
-  city: undefined,
-  telNumber: '06905777170',
-  dateOfRegistration: Timestamp.now(),
-  gender:'Férfi'
-};
+import {
+  dialogTemplate,
+  userTemplate,
+} from '../../../../shared/template/testTemplates';
+import { FormGroup } from '@angular/forms';
 
 const dialogRef = {
   afterClosed: () => of(true),
 } as Partial<MatDialogRef<PopupComponent>> as MatDialogRef<PopupComponent>;
 
-describe('AddforumComponent', () => {
+fdescribe('AddforumComponent', () => {
   let component: AddforumComponent;
   let fixture: ComponentFixture<AddforumComponent>;
   let collectionServiceMock: jasmine.SpyObj<CollectionService>;
@@ -78,7 +60,10 @@ describe('AddforumComponent', () => {
       ],
     }).compileComponents();
 
-    popupServiceMock.getTemplateDialog.and.returnValue({ ...dialogTemplate });
+    popupServiceMock.getTemplateDialog.and.returnValue({
+      ...dialogTemplate,
+      hostComponent: 'AddforumComponent',
+    });
 
     collectionServiceMock.getCollectionByCollectionAndDoc.and.returnValue(
       of({ 0: ['category1', 'category2'] })
@@ -115,7 +100,10 @@ describe('AddforumComponent', () => {
     });
 
     it('popupDialogTemplate should not be empty', () => {
-      expect(component['popupDialogTemplate']).toEqual({ ...dialogTemplate });
+      expect(component['popupDialogTemplate']).toEqual({
+        ...dialogTemplate,
+        hostComponent: 'AddforumComponent',
+      });
     });
 
     it('fullName should not be correct', () => {
@@ -223,5 +211,72 @@ describe('AddforumComponent', () => {
       );
       expect(component['popupDialogTemplate'].action).toBeFalse();
     });
+  });
+
+  describe('HTML', () => {
+    let HTML: HTMLElement;
+    beforeEach(async () => {
+      HTML = await fixture.nativeElement;
+    });
+
+    function getFormFielsdsValue(){
+
+      let resultArray: Array<string> = []
+      const formFields = Array.from(HTML.querySelectorAll('mat-form-field'));
+
+      for (const field of formFields) {
+        const inputElement = field.querySelector('input') as HTMLInputElement | null;
+        resultArray.push(inputElement?.value ?? '');
+      }
+    }
+
+    it('HTML should loaded', () => {
+      expect(HTML).toBeTruthy();
+    });
+
+    it('Number of form fields should be 3', () => {
+      const formFields = Array.from(HTML.querySelectorAll('mat-form-field'));
+      expect(formFields.length).toEqual(3);
+    });
+
+    it('Form fields should be empty', () => {
+      const formFields = Array.from(HTML.querySelectorAll('mat-form-field'));
+
+      for (const field of formFields) {
+        const inputElement = field.querySelector(
+          'input'
+        ) as HTMLInputElement | null;
+
+        if (inputElement) {
+          //console.log(`Field value: "${inputElement.value}"`);
+          expect(inputElement.value).toBe('');
+        } else {
+          console.warn('No input element found in:', field);
+        }
+      }
+    });
+
+    it('form fields should be not empty',()=>{
+
+      component['forumForm'].get('title')!.setValue('Something title')
+      component['forumForm'].get('category')!.setValue('Gitár')
+      component['forumForm'].get('content')!.setValue('this is a test content. this is a test content. this is a test content. this is a test content. this is a test content.')
+
+      const formFields = Array.from(HTML.querySelectorAll('mat-form-field'));
+
+      for (const field of formFields) {
+        const inputElement = field.querySelector(
+          'input'
+        ) as HTMLInputElement | null;
+
+        if (inputElement) {
+          //console.log(`Field value: "${inputElement.value}"`);
+          expect(inputElement.value).toBe('');
+        } else {
+          console.warn('No input element found in:', field);
+        }
+      }
+
+    })
   });
 });

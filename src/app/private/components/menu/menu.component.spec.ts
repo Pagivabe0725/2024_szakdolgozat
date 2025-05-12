@@ -2,19 +2,25 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MenuComponent } from './menu.component';
 import { NavigateAndurlinfoService } from '../../../shared/services/navigate-andurlinfo.service';
+import { UserService } from '../../../shared/services/user.service';
 
 describe('MenuComponent', () => {
   let component: MenuComponent;
   let fixture: ComponentFixture<MenuComponent>;
   let navigateMock: jasmine.SpyObj<NavigateAndurlinfoService>;
+  let userServiceMock: jasmine.SpyObj<UserService>;
   beforeEach(async () => {
     navigateMock = jasmine.createSpyObj(NavigateAndurlinfoService, [
       'navigate',
     ]);
+
+    userServiceMock = jasmine.createSpyObj(UserService, ['logout']);
+
     await TestBed.configureTestingModule({
       imports: [MenuComponent],
       providers: [
         { provide: NavigateAndurlinfoService, useValue: navigateMock },
+        { provide: UserService, useValue: userServiceMock },
       ],
     }).compileComponents();
 
@@ -131,7 +137,6 @@ describe('MenuComponent', () => {
       const element = fixture.nativeElement.querySelector('mat-toolbar')!;
       const bg = getComputedStyle(element).backgroundColor;
       expect(bg).toEqual(Object.values(colorCodeArray[randomNumber])[0]);
-
     });
   });
 
@@ -210,7 +215,6 @@ describe('MenuComponent', () => {
       }
     });
 
-    
     it('removeAllCollor should work', async () => {
       component.actualColor = 'test-theme';
       document.body.classList.add('test-theme');
