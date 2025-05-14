@@ -7,9 +7,7 @@ import { NavigateAndurlinfoService } from '../../../../shared/services/navigate-
 
 import { forumTemplate } from '../../../../shared/template/testTemplates';
 
-
-
-fdescribe('CardElementComponent', () => {
+describe('CardElementComponent', () => {
   let component: CardElementComponent;
   let fixture: ComponentFixture<CardElementComponent>;
   let navigateAndurlinfoServiceMock: jasmine.SpyObj<NavigateAndurlinfoService>;
@@ -35,6 +33,9 @@ fdescribe('CardElementComponent', () => {
     fixture.detectChanges();
   });
 
+describe('Basic functions',()=>{
+
+  
   it('should create', () => {
     expect(component).toBeTruthy();
   });
@@ -68,22 +69,50 @@ fdescribe('CardElementComponent', () => {
     spyOn(localStorage, 'getItem').and.returnValue('darkblue');
     expect(component.isDarkmode()).toBeTrue();
   });
+})
 
-  describe('HTML',()=>{
 
+  describe('HTML', () => {
+    function getMatCard(): HTMLElement | null {
+      const HTML: HTMLElement = fixture.nativeElement;
+      const card: HTMLElement | null = HTML.querySelector('mat-card');
+      return card;
+    }
 
-   
+    function getMatCardElement(elementName:string):HTMLElement | null{
+      const card = getMatCard()
+      let element:HTMLElement | null
+      if(card){
+       element = card.querySelector(`mat-card-${elementName}`)
+      }else{
+        element = null
+      }
+      return element
+    }
 
-  it('HTML should be loaded',()=>{
-    expect(fixture.nativeElement).toBeTruthy()
-  })
+    it('HTML should be loaded', () => {
+      expect(fixture.nativeElement).toBeTruthy();
+    });
 
-  it('Mat-card should be displayed',()=>{
+    it('Mat-card should be displayed', () => {
+      
+      expect(getMatCard()).toBeTruthy();
+    });
 
-    const HTML:HTMLElement = fixture.nativeElement
-    const card = HTML.querySelector('mat-card')
-    expect(card).toBeTruthy()
-  })
-
-  })
+    it('Mat-card-header should be correct',()=>{
+      const header =getMatCardElement('header')
+      expect(header).toBeDefined()
+      expect(header?.textContent).toEqual(forumTemplate.title)
+    })
+    it('Mat-card-content should be correct',()=>{
+      const content =getMatCardElement('content')
+      expect(content).toBeDefined()
+      expect(content?.textContent).toEqual(forumTemplate.text)
+    })
+    it('Mat-card-content should be footer',()=>{
+      const footer =getMatCardElement('footer')
+      expect(footer).toBeDefined()
+      expect(footer?.textContent).toEqual(`készítette: ${forumTemplate.author}`)
+    })
+  });
 });

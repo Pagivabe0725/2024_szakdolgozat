@@ -49,12 +49,21 @@
   </mat-card-footer>
 </mat-card>
 
-@for (comment of commentsOfActualForumElementArray; track $index; let i = $index) {
+@for (comment of commentsOfActualForumElementArray; track $index; let i =
+$index) {
 <mat-card [ngClass]="isDarkmode() ? 'own-dark-comment' : 'own-light-comment'">
   <mat-card-content>{{ comment.content }}</mat-card-content>
   <mat-card-footer>
-    <div> @if (isMyForumElement() || isMyComment(comment.userid)) {<button mat-icon-button  (click)="deleteComment(i)"><mat-icon>delete</mat-icon></button>}</div>
-    <div>{{ "Készítette:" + comment.author }}</div></mat-card-footer>
+    <div>
+      @if (isMyForumElement() || isMyComment(comment.userid)) {<button
+        mat-icon-button
+        (click)="deleteComment(i)"
+      >
+        <mat-icon>delete</mat-icon></button
+      >}
+    </div>
+    <div>{{ "Készítette:" + comment.author }}</div></mat-card-footer
+  >
 </mat-card>
 } }@else {
 <h1>Ilyen bejegyzés nincs</h1>

@@ -5,7 +5,7 @@ import { CollectionService } from '../../../shared/services/collection.service';
 import { firstValueFrom, of } from 'rxjs';
 import { Timestamp } from '@angular/fire/firestore';
 import { forum } from '../../../shared/interfaces/forum';
-
+import { forumTemplate } from '../../../shared/template/testTemplates';
 // Mock adatok definiálása
 const mockCategoryResponse = {
   0: [`category${randoNumber()}`, `category${randoNumber()}`],
@@ -13,7 +13,7 @@ const mockCategoryResponse = {
 const mockForumResponse = {
   someKey: { docs: [{ id: 'forum1' }, { id: 'forum2' }] },
 };
-
+/*
 const forumTemplate: forum = {
   title: 'first',
   id: '1',
@@ -26,7 +26,7 @@ const forumTemplate: forum = {
   likeArray: [],
   category: mockCategoryResponse[0][0],
 };
-
+*/
 const forumTemplate2: forum = {
   title: 'first',
   id: '2',
@@ -126,17 +126,14 @@ describe('ForumComponent', () => {
 
     it('forumObjectArray should not be empty', () => {
       expect(component.forumObjectArray).not.toEqual([]);
-      console.log(component.forumObjectArray);
     });
 
     it('categoryArray should not be empty', () => {
       expect(component.categoryArray).not.toEqual([]);
-      console.log(component.categoryArray);
     });
 
     it('keyArray should not be empty', () => {
       expect(component['keyArray']).not.toEqual([]);
-      console.log(component['keyArray']);
     });
 
     it('HTML structure should be contains app-leftside-console', () => {
@@ -228,9 +225,29 @@ describe('ForumComponent', () => {
         )
       );
       expect(result).toEqual(forumTemplate2);
-
-      console.log('//////');
-      console.log(component.forumObjectArray);
     });
+  });
+
+  describe('HTML', () => {
+    let HTML: HTMLElement;
+
+    beforeEach(async () => {
+      HTML = await fixture.nativeElement;
+    });
+
+    it('HTML should be loaded', () => {
+      expect(HTML).toBeTruthy();
+    });
+
+    it('HTML should containe left-side component', () => {
+      const app_component = HTML.querySelector('app-leftside-console') ?? null;
+      expect(app_component).toBeTruthy();
+    });
+
+    it('app-card-elements should not be loaded', () => {
+      const app_cards = HTML.querySelectorAll('app-card-element');
+      expect(app_cards.length).toEqual(component['forumObjectArray'].length);
+    });
+
   });
 });

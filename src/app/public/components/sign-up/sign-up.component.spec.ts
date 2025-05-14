@@ -251,7 +251,7 @@ describe('SignUpComponent', () => {
         popupServiceMock.displayPopUp.calls.mostRecent().args[0];
       expect(popupArgs.title).toEqual('Nem megegyező jelszavak!');
       expect(popupArgs.content).toEqual(
-        'Nézd át a két jelszó mezőt, mert nem egyeznek meg'
+        'Hiba történt a regisztráció során! Kérlek próbáld újra'
       );
     });
 

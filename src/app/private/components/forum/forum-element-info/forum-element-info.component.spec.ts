@@ -17,48 +17,12 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { PopupComponent } from '../../../../shared/components/popup/popup.component';
 import { forumComment } from '../../../../shared/interfaces/forumComment';
 
-const dialogTemplate: Dialog = {
-  width: '70%',
-  height: '70%',
-  hostComponent: 'ForumElementInfoComponent',
-  title: '',
-  content: '',
-  action: false,
-  hasInput: false,
-};
-
-const forumTemplate: forum = {
-  title: 'first',
-  id: '1',
-  userId: '1',
-  text: 'It is a test text',
-  author: 'Tester',
-  date: Timestamp.now(),
-  commentsIdArray: [],
-  dislikeArray: [],
-  likeArray: [],
-  category: 'category1',
-};
-
-const userTemplate: user = {
-  id: 'UserId',
-  firstName: 'firstName',
-  lastName: 'lastName',
-  lastLogin: Timestamp.now(),
-  email: 'test@gmail.com',
-  city: undefined,
-  telNumber: '06905777170',
-  dateOfRegistration: Timestamp.now(),
-  gender:'Férfi'
-};
-
-const commentTemplate: forumComment = {
-  content: 'something',
-  id: '1',
-  userid: '1',
-  author: 'Tester',
-  date: Timestamp.now(),
-};
+import {
+  forumTemplate,
+  dialogTemplate,
+  userTemplate,
+  commentTemplate,
+} from '../../../../shared/template/testTemplates';
 
 describe('ForumElementInfoComponent', () => {
   let component: ForumElementInfoComponent;
@@ -68,15 +32,6 @@ describe('ForumElementInfoComponent', () => {
   let navigationServiceMock: jasmine.SpyObj<NavigateAndurlinfoService>;
   let userServiceMock: jasmine.SpyObj<UserService>;
   let arrayServiceMock: jasmine.SpyObj<ArrayService>;
-  //let ActivatedRouteMock: jasmine.SpyObj<ActivatedRoute>;
-
-  /*
-  private collectionService: CollectionService,
-  private popupService: PopupService,
-  private navigationService: NavigateAndurlinfoService,
-  private arrayService: ArrayService,
-  private userService: UserService
-*/
 
   beforeEach(async () => {
     collectionServiceMock = jasmine.createSpyObj('collectionService', [
@@ -375,19 +330,6 @@ describe('ForumElementInfoComponent', () => {
         arrayServiceMock.getIndex.and.returnValue(0);
         arrayServiceMock.deleteElementFromArray.and.stub();
         arrayServiceMock.addElementToArray.and.stub();
-        /*
-        arrayServiceMock.deleteElementFromArray.and.callFake(
-          (element, array) => {
-            array.splice(array.indexOf(element), 1);
-            return array;
-          }
-        );
-
-        arrayServiceMock.addElementToArray.and.callFake((element, array) => {
-          array.push(element);
-          return array;
-        });
-        */
       });
 
       it('should delete id from likeArray if already interacted', () => {
@@ -484,7 +426,6 @@ describe('ForumElementInfoComponent', () => {
         expect(component.arrayAction).toHaveBeenCalledWith('dislikeArray');
         expect(component.arrayAction).toHaveBeenCalledWith('likeArray');
       });
-
 
       it('shouldexecute catch par', () => {
         component['actualForumElement'] = { ...forumTemplate2 };
@@ -814,46 +755,46 @@ describe('ForumElementInfoComponent', () => {
           ...forumTemplate,
           commentsIdArray: [commentTemplate.id],
         };
-  
+
         component['actualForumElement'] = forumTemplate2;
-  
+
         const dialogRef = {
           afterClosed: () => of(true),
         } as unknown as MatDialogRef<PopupComponent>;
-  
+
         popupServiceMock.displayPopUp.and.returnValue(dialogRef);
         collectionServiceMock.deleteDatas.and.returnValue(Promise.resolve());
         collectionServiceMock.updateDatas.and.returnValue(
           Promise.reject('update failed')
         );
-  
+
         await component.deleteComment(0);
         await fixture.whenStable();
-  
+
         expect(collectionServiceMock.updateDatas).toHaveBeenCalled();
       });
-  
+
       it('should execute deleteDatas function catch part', async () => {
         const forumTemplate2 = {
           ...forumTemplate,
           commentsIdArray: [commentTemplate.id],
         };
-  
+
         component['actualForumElement'] = forumTemplate2;
-  
+
         const dialogRef = {
           afterClosed: () => of(true),
         } as unknown as MatDialogRef<PopupComponent>;
-  
+
         popupServiceMock.displayPopUp.and.returnValue(dialogRef);
         collectionServiceMock.deleteDatas.and.returnValue(
           Promise.reject('delete failed')
         );
         collectionServiceMock.updateDatas.and.returnValue(Promise.resolve());
-  
+
         await component.deleteComment(0);
         await fixture.whenStable();
-  
+
         expect(collectionServiceMock.deleteDatas).toHaveBeenCalledWith(
           'ForumComments',
           commentTemplate.id
@@ -866,17 +807,97 @@ describe('ForumElementInfoComponent', () => {
         spyOn(localStorage, 'getItem').and.returnValue('123');
         expect(component.isMyComment('123')).toBeTrue();
       });
-    
+
       it('should return false if userId does not match the comment author', () => {
         spyOn(localStorage, 'getItem').and.returnValue('123');
         expect(component.isMyComment('456')).toBeFalse();
       });
-    
+
       it('should return false if localStorage returns null', () => {
         spyOn(localStorage, 'getItem').and.returnValue(null);
         expect(component.isMyComment('456')).toBeFalse();
       });
     });
-    
+  });
+
+  describe('HTML', () => {
+    let HTML: HTMLElement;
+    beforeEach(async () => {
+      component['loaded'] = true;
+      component['actualForumElement'] = { ...forumTemplate };
+      await fixture.detectChanges();
+      HTML = fixture.nativeElement;
+    });
+
+    function getMatcardElement(elementName: string): HTMLElement | null {
+      const matElement: HTMLElement | null = HTML.querySelector(
+        `mat-card-${elementName}`
+      );
+
+      return matElement;
+    }
+
+    it('HTML should be loaded', () => {
+      expect(HTML).toBeDefined();
+    });
+    it('Mat-card should be loaded', () => {
+      const card: HTMLElement | null = HTML.querySelector('mat-card');
+      expect(card).toBeTruthy();
+    });
+
+    it('Mat-card-header should be correct', () => {
+      const header = getMatcardElement('header');
+      expect(header).toBeTruthy();
+      expect(header?.textContent).toEqual('first');
+    });
+    it('Mat-card-header should be correct', () => {
+      const content = getMatcardElement('content');
+      expect(content).toBeTruthy();
+      expect(content?.textContent?.trim()).toEqual('It is a test text'.trim());
+    });
+    it('Mat-card-footer should be correct', () => {
+      const footer = getMatcardElement('footer')?.querySelector('span');
+      expect(footer).toBeTruthy();
+      expect(footer?.textContent?.trim()).toEqual(
+        `Készítette: ${forumTemplate.author}`.trim()
+      );
+    });
+
+    it('Mat-card should contain 3 or 4 icon', () => {
+      const footer = getMatcardElement('footer')?.querySelector('div');
+      expect(footer).toBeTruthy();
+      const icons = Array.from(footer!.querySelectorAll('mat-icon'));
+      expect(icons).toBeTruthy();
+      expect(icons.length).toBeGreaterThanOrEqual(3);
+      expect(icons.length).toBeLessThanOrEqual(4);
+    });
+
+    it('Comment mat-card should dissappear', async () => {
+      component['actualForumElement'] = {
+        ...forumTemplate,
+        commentsIdArray: [],
+      };
+      await fixture.detectChanges();
+      const cards: Array<Element | null> = Array.from(
+        HTML.querySelectorAll('mat-card')
+      );
+      expect(cards.length).toBe(1);
+    });
+    it('Comment mat-card should appear', async () => {
+      const randomNumber = Math.floor(Math.random() * 30);
+      const forumTemplateCopy = { ...forumTemplate };
+      for (let i = 0; i < randomNumber; i++) {
+        forumTemplateCopy.commentsIdArray.push('1');
+        component['commentsOfActualForumElementArray']?.push({
+          ...commentTemplate,
+        });
+      }
+      component['actualForumElement'] = forumTemplateCopy;
+      await fixture.detectChanges();
+      const cards: Array<Element | null> = Array.from(
+        HTML.querySelectorAll('mat-card')
+      );
+      expect(cards.length).toBe(randomNumber + 1);
+    });
   });
 });

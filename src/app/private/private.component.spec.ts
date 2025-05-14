@@ -4,11 +4,13 @@ import { PrivateComponent } from './private.component';
 import { Routes } from '@angular/router';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { fakeAsync, tick } from '@angular/core/testing';
-import { MainComponent } from './components/main/main.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ForumComponent } from './components/forum/forum.component';
 import { Component } from '@angular/core';
+import { CollectionService } from '../shared/services/collection.service';
+import { PopupService } from '../shared/services/popup.service';
+import { NavigateAndurlinfoService } from '../shared/services/navigate-andurlinfo.service';
+import { UserService } from '../shared/services/user.service';
+import { ArrayService } from './services/array.service';
 
 @Component({
   template: '<p>Forum component</p>',
@@ -55,6 +57,35 @@ describe('PrivateComponent', () => {
   let component: PrivateComponent;
   let fixture: ComponentFixture<PrivateComponent>;
   let compiled: HTMLElement;
+  let collectionServiceMock: jasmine.SpyObj<CollectionService>;
+  let popupServiceMock: jasmine.SpyObj<PopupService>;
+  let navigationServiceMock: jasmine.SpyObj<NavigateAndurlinfoService>;
+  let userServiceMock: jasmine.SpyObj<UserService>;
+  let arrayServiceMock: jasmine.SpyObj<ArrayService>;
+
+  collectionServiceMock = jasmine.createSpyObj('collectionService', [
+    'getCollectionByCollectionAndDoc',
+    'updateDatas',
+    'deleteDatas',
+    'createCollectionDoc',
+  ]);
+  popupServiceMock = jasmine.createSpyObj('PopupService', [
+    'getTemplateDialog',
+    'displayPopUp',
+  ]);
+  navigationServiceMock = jasmine.createSpyObj('NavigateAndurlinfoService', [
+    'navigate',
+  ]);
+  userServiceMock = jasmine.createSpyObj('UserService', [
+    'getUserInfoByUserId',
+  ]);
+
+  arrayServiceMock = jasmine.createSpyObj('arrayService', [
+    'elementInArray',
+    'deleteElementFromArray',
+    'addElementToArray',
+    'getIndex',
+  ]);
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
@@ -62,6 +93,13 @@ describe('PrivateComponent', () => {
         RouterTestingModule.withRoutes(routes),
         BrowserAnimationsModule,
       ],
+      providers:[
+        { provide: CollectionService, useValue: collectionServiceMock },
+        { provide: PopupService, useValue: popupServiceMock },
+        { provide: NavigateAndurlinfoService, useValue: navigationServiceMock },
+        { provide: UserService, useValue: userServiceMock },
+        { provide: ArrayService, useValue: arrayServiceMock },
+      ]
     }).compileComponents();
 
     router = TestBed.inject(Router);

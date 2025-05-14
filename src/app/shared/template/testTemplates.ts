@@ -72,3 +72,4 @@ export const accountButtonActionsTemplate: Array<string> = [
   'dateOfRegistration',
   'back',
 ];
+

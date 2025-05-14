@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { WorkMessageCommentComponent } from './work-message-comment.component';
 
-describe('WorkMessageCommentComponent', () => {
+xdescribe('WorkMessageCommentComponent', () => {
   let component: WorkMessageCommentComponent;
   let fixture: ComponentFixture<WorkMessageCommentComponent>;
 

@@ -43,7 +43,7 @@ import { Dialog } from '../../../shared/interfaces/dialog';
 export class AccountComponent implements OnInit {
   private _actualUser!: user;
   public loaded = false;
-  public keyTransleater: { [key: string]: string } = {
+  public keyTransleater: Record<string, string> = {
     firstName: 'Keresztnév:',
     lastName: 'Vezetéknév:',
     email: 'Email-címem:',
@@ -53,9 +53,9 @@ export class AccountComponent implements OnInit {
     city: 'Városom:',
     dateOfRegistration: 'Regisztráltam:',
   };
-  public keyArray: Array<keyof user> = [];
-  private myWorksArray: Array<work> = [];
-  private userInWorks: Array<string> = [];
+  public keyArray: (keyof user)[] = [];
+  private myWorksArray: work[] = [];
+  private userInWorks: string[] = [];
   public displayDatas = false;
   public modifyKeyValueObj = {
     Vezetéknév: 'lastName',
@@ -110,7 +110,7 @@ export class AccountComponent implements OnInit {
     );
 
     this._actualUser = user as user;
-    this.keyArray = Object.keys(this.actualUser) as Array<keyof user>;
+    this.keyArray = Object.keys(this.actualUser) as (keyof user)[];
     this.keyArray.splice(this.keyArray.indexOf('id'), 1);
     this.checkKeyArray();
   }
@@ -127,7 +127,7 @@ export class AccountComponent implements OnInit {
       this.myWorksArray.forEach((i) => {
         last.toMillis() < i.created.toMillis()
           ? (last = i.created)
-          : (last = last);
+          : '';
       });
       return last;
     }
@@ -141,7 +141,7 @@ export class AccountComponent implements OnInit {
       this.myWorksArray.forEach((i) => {
         last.toMillis() < i.modified.toMillis()
           ? (last = i.modified)
-          : (last = last);
+          : '';
       });
       return last;
     }
@@ -170,8 +170,8 @@ export class AccountComponent implements OnInit {
   }
 
   checkKeyArray(): void {
-    const copiedArray: Array<string> = [...this.keyArray];
-    const order: Array<string> = [
+    const copiedArray: string[] = [...this.keyArray];
+    const order: string[] = [
       'lastName',
       'firstName',
       'email',
@@ -256,7 +256,7 @@ export class AccountComponent implements OnInit {
     return Object.keys(this.modifyForm.controls).includes(value);
   }
 
-  getElementsFromFormcontrol(): Array<string> {
+  getElementsFromFormcontrol(): string[] {
     return Object.keys(this.modifyForm.controls);
   }
 
@@ -299,7 +299,7 @@ export class AccountComponent implements OnInit {
     this.displayDatas = true;
   }
   createModifyErrorDialog(content: string): Dialog {
-    let errorDialog: Dialog = this.popupService.getTemplateDialog();
+    const errorDialog: Dialog = this.popupService.getTemplateDialog();
     errorDialog.title = 'hiba!';
     errorDialog.content = content;
     errorDialog.hostComponent = 'AccountComponent';
@@ -340,11 +340,11 @@ export class AccountComponent implements OnInit {
                   localStorage.getItem('userId')!,
                   this.actualUser
                 )
-                .then((_) => {
+                .then(() => {
                   this.handlePageStates();
                 })
-                .catch((_) => {
-                  let errorDialog = this.createModifyErrorDialog(
+                .catch(() => {
+                  const errorDialog = this.createModifyErrorDialog(
                     'Hiba történt a művelet során'
                   );
                   this.popupService.displayPopUp(errorDialog);
@@ -354,7 +354,7 @@ export class AccountComponent implements OnInit {
                 .isOldPasswordCorrect(this.modifyForm.get('password')!.value)
                 .then((result) => {
                   this.loaded = false;
-                  let errorDialog = this.createModifyErrorDialog(
+                  const errorDialog = this.createModifyErrorDialog(
                     'A jelenlegi jelszó nem helyes'
                   );
                   if (!result) {
@@ -377,10 +377,10 @@ export class AccountComponent implements OnInit {
                             ?.updatePassword(
                               this.modifyForm.get('newPassword')?.value!
                             )
-                            .then((_) => {
+                            .then(() => {
                               this.handlePageStates();
                             })
-                            .catch((_) => {
+                            .catch(() => {
                               this.handlePageStates();
                             });
                         })
@@ -390,7 +390,7 @@ export class AccountComponent implements OnInit {
                     }
                   }
                 })
-                .catch((_) => (this.loaded = true));
+                .catch(() => (this.loaded = true));
             }
           }
         });

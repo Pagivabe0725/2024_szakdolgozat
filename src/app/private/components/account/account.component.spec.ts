@@ -142,7 +142,7 @@ describe('AccountComponent', () => {
     describe('createWorkMatCardObject should work', () => {
       const getWorksNumber = randomNumber(100);
       const date: Timestamp = Timestamp.now();
-      let expectedArray: Array<Array<any>>;
+      let expectedArray: any[][];
       beforeEach(() => {
         spyOn(component, 'getWorksNumber').and.returnValue(getWorksNumber);
         expectedArray = [
@@ -152,7 +152,7 @@ describe('AccountComponent', () => {
           ['Utojára módosított munkám:'],
         ];
       });
-      function generateArray(undef: boolean): Array<Array<any>> {
+      function generateArray(undef: boolean): any[][] {
         spyOn(component, 'lastProject').and.returnValue(
           undef ? undefined : date
         );
@@ -171,7 +171,7 @@ describe('AccountComponent', () => {
         }
       }
       it('createWorkMatCardObject when its subfunctions work correctly', () => {
-        const array: Array<Array<any>> = generateArray(false);
+        const array: any[][] = generateArray(false);
         setExpectedArray(false);
         array.forEach((i, index) => {
           expect(i).toEqual(expectedArray[index]);
@@ -179,7 +179,7 @@ describe('AccountComponent', () => {
       });
 
       it('createWorkMatCardObject when its subfunctions work incorrectly', () => {
-        const array: Array<Array<any>> = generateArray(true);
+        const array: any[][] = generateArray(true);
         setExpectedArray(true);
         array.forEach((i, index) => {
           expect(i[0]).toEqual(expectedArray[index][0]);
@@ -209,7 +209,7 @@ describe('AccountComponent', () => {
     });
 
     describe('should handle async functions correctly', () => {
-      let workTemplate2 = structuredClone(workTemplate);
+      const workTemplate2 = structuredClone(workTemplate);
       workTemplate2.userId = 'userId2';
       workTemplate2.author.id = 'userId2';
       workTemplate2.id = '2';
@@ -238,10 +238,10 @@ describe('AccountComponent', () => {
       });
 
       describe('Functions related to fetching works', () => {
-        let expectedDocsObject: { doc: { id: Array<string> } };
+        let expectedDocsObject: { doc: { id: string[] } };
         beforeEach(async () => {
           expectedDocsObject = (await component.getDocsObj()) as {
-            doc: { id: Array<string> };
+            doc: { id: string[] };
           };
         });
 
@@ -342,7 +342,7 @@ describe('AccountComponent', () => {
       it('buttonAction should work', async () => {
         for (const i of accountButtonActionsTemplate) {
           await handleAction(i);
-          const formControlKeys: Array<string> = Object.keys(
+          const formControlKeys: string[] = Object.keys(
             component['modifyForm'].controls
           ).sort();
           if (i === 'password') {
@@ -361,12 +361,12 @@ describe('AccountComponent', () => {
       });
 
       it('stringInActualFormcontrolKeys should work', async () => {
-        const rightOptions: Array<string> = [
+        const rightOptions: string[] = [
           'password',
           'newPassword',
           'newPasswordAgain',
         ];
-        const badOptions: Array<string> = ['1', '2', '3', '4'];
+        const badOptions: string[] = ['1', '2', '3', '4'];
 
         await handleAction('password');
 
@@ -391,7 +391,7 @@ describe('AccountComponent', () => {
       });
 
       it('labelForMatFormField should work', async () => {
-        let testArray: Array<string> = [...accountButtonActionsTemplate].filter(
+        const testArray: string[] = [...accountButtonActionsTemplate].filter(
           (i) => !['email', 'lastLogin', 'dateOfRegistration'].includes(i)
         );
         for (const element of testArray) {
@@ -439,7 +439,7 @@ describe('AccountComponent', () => {
     describe('other functions', () => {
       it('transformStringToKey should work', () => {
         const random = randomNumber(1000) + '';
-        const keyArray: Array<string> = Object.keys(userTemplate);
+        const keyArray: string[] = Object.keys(userTemplate);
         keyArray.forEach((i) => {
           expect(i).toEqual(component.transformStringToKey(i));
         });
@@ -448,7 +448,7 @@ describe('AccountComponent', () => {
       });
 
       it('orderKeyArray', () => {
-        const order: Array<string> = [
+        const order: string[] = [
           'lastName',
           'firstName',
           'email',
@@ -459,7 +459,7 @@ describe('AccountComponent', () => {
           'dateOfRegistration',
         ];
 
-        const randomArray: Array<string> = [
+        const randomArray: string[] = [
           'dateOfRegistration',
           'email',
           'telNumber',
@@ -470,7 +470,7 @@ describe('AccountComponent', () => {
           'gender',
         ];
         component.orderKeyArray(randomArray, order);
-        expect(component.keyArray).toEqual([...order] as Array<keyof user>);
+        expect(component.keyArray).toEqual([...order] as (keyof user)[]);
       });
 
       it('getObjectInArray works should work', () => {
@@ -709,8 +709,8 @@ describe('AccountComponent', () => {
     });
 
     describe('user data fields', () => {
-      let divTitleArray: Array<any>;
-      let divValueArray: Array<any>;
+      let divTitleArray: any[];
+      let divValueArray: any[];
 
       beforeEach(async () => {
         component['keyArray'] = [
