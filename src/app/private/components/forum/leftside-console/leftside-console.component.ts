@@ -6,7 +6,7 @@ import {
   trigger,
   useAnimation,
 } from '@angular/animations';
-import { Component, Input, WritableSignal, signal } from '@angular/core';
+import { Component, EventEmitter, Input, Output, WritableSignal, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { turnUpAnimation } from '../../../../shared/animations/usefullAnimations';
 import { MatButtonModule } from '@angular/material/button';
@@ -57,6 +57,7 @@ export class LeftsideConsoleComponent {
   protected state: WritableSignal<'open' | 'close'> = signal('close');
   protected listVisible = false;
   @Input() public categoryTitleArray!: string[];
+@Output() public filterEvent : EventEmitter<string> = new EventEmitter()
 
   constructor(private navigateService: NavigateAndurlinfoService) {}
 

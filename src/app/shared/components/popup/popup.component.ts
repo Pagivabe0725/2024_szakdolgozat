@@ -36,6 +36,9 @@ export class PopupComponent implements OnInit {
 
   ngOnInit(): void {
     this.actualDialog = this.data as Dialog;
+    if (this.actualDialog.inputContent) {
+      this.commentControl.setValue(this.actualDialog.inputContent);
+    }
   }
 
   close(value: boolean) {
@@ -43,9 +46,9 @@ export class PopupComponent implements OnInit {
   }
 
   closeReturnWithComment(value: boolean) {
-    if (value ) {
-      if(this.commentControl.valid){
-      this.dialogRef.close(this.commentControl.value);
+    if (value) {
+      if (this.commentControl.valid) {
+        this.dialogRef.close(this.commentControl.value);
       }
     } else {
       this.dialogRef.close('');

@@ -6,4 +6,5 @@ export interface Dialog {
   content: string;
   action: boolean;
   hasInput: boolean;
+  inputContent:string | undefined,
 }

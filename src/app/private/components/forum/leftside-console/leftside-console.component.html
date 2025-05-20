@@ -15,6 +15,7 @@
     @if (listVisible) { @for (title of categoryTitleArray; track $index) {
     <div
       class="own-primary-highlight-background own-leftside-console_component-list-element"
+      (click)="filterEvent.emit(title)"
     >
       {{ title }}
     </div>

@@ -2,8 +2,23 @@
   <div
     class="own-work-message-comment_component-div"
     [ngStyle]="
-      !darkmode ? { border: '1px solid black' } : { border: '1px solid white' }
+      !darkmode
+        ? { border: '1px solid black', color: 'black' }
+        : { border: '1px solid white', color: '' }
     "
-  ></div>
-  <button mat-icon-button><mat-icon>delete</mat-icon></button>
+    [ngClass]="darkmode ? 'own-primary-highlight-text-color' : ''"
+  >
+    <div class="own-work-message-comment_component-content-div">
+      {{ comment.content }}
+    </div>
+    <div class="own-work-message-comment_component-author-div">
+      {{ comment.author.lastName + " " + comment.author.firstName }}
+    </div>
+  </div>
+  @if (displayCommentDeleteButton()) {
+  <button mat-icon-button (click)="deleteCommentEvent.emit(comment.id)"><mat-icon>delete</mat-icon></button>}
+  
+  @if (isModifiable()) {
+  <button mat-icon-button  (click)="commentModification(comment)"> <mat-icon>edit</mat-icon></button>
+  }
 </div>

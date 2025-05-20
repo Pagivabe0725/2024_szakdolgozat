@@ -18,6 +18,7 @@ export class PopupService {
       content: '',
       action: false,
       hasInput: false,
+      inputContent:undefined
     } as Dialog;
   }
 

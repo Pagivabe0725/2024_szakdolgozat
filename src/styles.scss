@@ -411,6 +411,12 @@ $accent-dark-const: 60;
   @include mat.all-component-themes($basic_light-theme);
 }
 
+.own-custom-snackbar {
+  
+  margin-bottom: 8vh !important;
+  z-index: 99;
+}
+
 html,
 body {
   height: 100%;

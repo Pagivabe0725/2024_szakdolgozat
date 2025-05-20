@@ -8,7 +8,7 @@
     </div>
     <div class="own-work-message_component-message-action-div">
       <span>{{ actualUser?.lastName + " " + actualUser?.firstName }}</span>
-      <button mat-icon-button (click)="openCommentInput()"><mat-icon>comment</mat-icon></button>
+      @if (commentable) {<button mat-icon-button (click)="openCommentInput()"><mat-icon>comment</mat-icon></button>}
     </div>
   </div>
 </div>

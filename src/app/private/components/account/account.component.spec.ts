@@ -518,6 +518,7 @@ describe('AccountComponent', () => {
           content: 'test error',
           action: false,
           hasInput: false,
+          inputContent:undefined,
         };
         popupServiceMock.getTemplateDialog.and.returnValue({
           ...dialogTemplate,

@@ -6,6 +6,6 @@ export interface workMessage {
     id:string,
     userId:string,
     content: string,
-    commentArray:workComment[],
+    commentArray:string[],
     dateOfCreation: Timestamp
 }

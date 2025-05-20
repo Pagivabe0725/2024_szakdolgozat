@@ -4,15 +4,34 @@
   margin: 0vh 0;
   border-radius: 1em;
   border: 1px white solid;
- 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.own-work-message-comment_component-div div {
+  width: 95%;
+  margin: 0 auto;
+}
+
+.own-work-message-comment_component-content-div {
+  text-align: justify;
+}
+
+.own-work-message-comment_component-author-div {
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 0;
 }
 
 .own-work-message_component-message-comment-container-div {
-  width: 99vw;
+  width: 98vw;
   display: flex;
   justify-content: flex-end;
   padding-right: 1vw;
+  padding-top: 1vh;
+  padding-bottom: 1vh;
   display: flex;
   align-items: center;
-
 }

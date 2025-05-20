@@ -26,12 +26,16 @@ $index) {
   [actualUser]="membersOfWork.get(actualMessage.userId)"
   (commentEvent)="createComment($event)"
   [index]="i"
+  [commentable]="i === messages.length - 1"
 ></app-work-message>
 
-@for (comment of actualMessage.commentArray; track $index) {
+@for (comment of actualMessage.commentArray; track $index ) {
 <app-work-message-comment
   [darkmode]="isDarkmode()"
   [actualWork]="actualWork"
+  [comment]="workCommentMap.get(comment)!"
+  (deleteCommentEvent)="deleteComment($event)"
+  (modifyCommentEvent)="modifyComment($event)"
 ></app-work-message-comment>
 } } } }
 

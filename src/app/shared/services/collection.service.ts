@@ -23,6 +23,7 @@ export class CollectionService {
     return this.angularFirestore.collection(collection).valueChanges();
   }
 
+  
   createCollectionDoc(
     collection: string,
     id: string,

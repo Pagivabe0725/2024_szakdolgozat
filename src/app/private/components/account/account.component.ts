@@ -318,6 +318,7 @@ export class AccountComponent implements OnInit {
         content: 'Biztosan módosítani szeretnéd?',
         action: true,
         hasInput: false,
+        inputContent:undefined
       };
 
       this.popupService

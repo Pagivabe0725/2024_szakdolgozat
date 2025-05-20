@@ -19,8 +19,9 @@ export class WorkMessageComponent implements OnInit {
   @Input() public darkmode!: boolean;
   @Input() public actualMessage!: workMessage;
   @Output() public commentEvent: EventEmitter<number> = new EventEmitter();
-@Input() public index!:number
+  @Input() public index!: number;
   @Input() public actualUser!: user | undefined;
+  @Input() public commentable:boolean = false
 
   constructor(private collectionService: CollectionService) {}
 
