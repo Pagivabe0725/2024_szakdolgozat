@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -14,6 +14,9 @@ import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.
 import { workMessage } from '../../../../shared/interfaces/workMessage';
 import { Timestamp } from '@angular/fire/firestore';
 import { StorageService } from '../../../services/storage.service';
+import { SharedDataService } from '../../../services/shared-data.service';
+import { NavigateAndurlinfoService } from '../../../../shared/services/navigate-andurlinfo.service';
+import { Dialog } from '../../../../shared/interfaces/dialog';
 
 @Component({
   selector: 'app-message-comment',
@@ -29,26 +32,57 @@ import { StorageService } from '../../../services/storage.service';
   templateUrl: './message-comment.component.html',
   styleUrl: './message-comment.component.scss',
 })
-export class MessageCommentComponent implements OnInit {
+export class MessageCommentComponent implements OnInit, OnDestroy {
   protected fileArray: Array<File> = [];
   public loaded = false;
   private actualWork!: work;
   protected messageInput: FormControl = new FormControl('', [
     Validators.required,
   ]);
+  protected modify = false;
 
   constructor(
     private popupService: PopupService,
     private actRoute: ActivatedRoute,
     private collectionService: CollectionService,
+    private sharedDataService: SharedDataService,
+    private navigateAndURLInfoService: NavigateAndurlinfoService,
     private storageService: StorageService
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    let actualMessage: workMessage | undefined = undefined;
+
+    if (sessionStorage.getItem('actualMessage')) {
+      actualMessage =
+        sessionStorage.getItem('actualMessage') !== '{}'
+          ? JSON.parse(sessionStorage.getItem('actualMessage')!)
+          : undefined;
+      this.messageInput.setValue(actualMessage ? actualMessage.content : '');
+      this.modify = actualMessage ? true : false;
+    } else {
+      await firstValueFrom(
+        this.sharedDataService.workElementContentSource.pipe(take(1))
+      ).then((r) => {
+        if (JSON.stringify(r) !== '{}') {
+          actualMessage = r;
+          sessionStorage.setItem('actualMessage', JSON.stringify(r));
+          this.messageInput.setValue(
+            actualMessage ? actualMessage.content : ''
+          );
+          this.modify = actualMessage ? true : false;
+        }
+      });
+    }
+
     this.actRoute.params.pipe(take(1)).subscribe(async (params) => {
       this.actualWork = await this.getActualWork(params['workId']);
       this.loaded = true;
     });
+  }
+
+  ngOnDestroy(): void {
+    sessionStorage.removeItem('actualMessage');
   }
 
   onFileSelected(event: Event): void {
@@ -144,9 +178,9 @@ export class MessageCommentComponent implements OnInit {
     return this.messageInput.valid;
   }
 
-  async updateWork(message:workMessage): Promise<void> {
+  async updateWork(message: workMessage): Promise<void> {
     this.actualWork.modified = Timestamp.now();
-    this.actualWork.elements.push(message.id)
+    this.actualWork.elements.push(message.id);
     await this.collectionService.updateDatas(
       'Works',
       this.actualWork.id,
@@ -154,12 +188,69 @@ export class MessageCommentComponent implements OnInit {
     );
   }
 
+  addAndEditDialog() {
+    if(this.checkInput()){
+    const dialog = {
+      ...this.popupService.getTemplateDialog(),
+      title: this.modify ? 'Biztosan módosítod' : 'Biztosan hozzáadod?',
+      content: `Biztosan szeretnid ${
+        this.modify ? 'módosítani' : 'hozzáadni'
+      } ezt a bejegyzést?`,
+      action: true,
+      hostComponent: 'MessageCommentComponent',
+    } as Dialog;
+
+    this.popupService
+      .displayPopUp(dialog)
+      .afterClosed()
+      .pipe(take(1))
+      .subscribe((r) => {
+        if (r) {
+          this.modify ? this.editMessage() : this.addMessage();
+        }
+      });
+    }
+  }
+
   async addMessage(): Promise<void> {
     if (this.checkInput()) {
       const messageId = this.createId();
-      const message : workMessage = this.createMessage(messageId)
-      await this.collectionService.updateDatas('Messages',messageId,message)
-      this.updateWork(message)
+      const message: workMessage = this.createMessage(messageId);
+      await this.collectionService.updateDatas('Messages', messageId, message);
+      this.updateWork(message);
+
+      if (this.fileArray.length > 0) {
+        this.storageService
+          .uploadFiles(messageId, this.fileArray)
+          .then(async (r) => {
+            this.loaded = false;
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+
+            this.navigateAndURLInfoService.basicNavigate(
+              `private/workshop/${this.actualWork.id}`
+            );
+          });
+      } else {
+        this.navigateAndURLInfoService.basicNavigate(
+          `private/workshop/${this.actualWork.id}`
+        );
+      }
+    }
+  }
+
+  async editMessage(): Promise<void> {
+    if (this.checkInput()) {
+      const message: workMessage = JSON.parse(
+        sessionStorage.getItem('actualMessage')!
+      ) as workMessage;
+      await this.collectionService.updateDatas('Messages', message.id, {
+        ...message,
+        dateOfCreation: Timestamp.now(),
+        content: this.messageInput.value,
+      } as workMessage);
+      this.navigateAndURLInfoService.basicNavigate(
+        `private/workshop/${this.actualWork.id}`
+      );
     }
   }
 }

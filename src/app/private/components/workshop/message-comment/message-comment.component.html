@@ -4,6 +4,7 @@
 
 <div id="own-message_component-container">
   <div id="own-message_component-title-div">
+    @if (!modify) {
     <div
       id="own-message_component-file-div"
       class="own-message_component-title-div-in-div"
@@ -29,6 +30,7 @@
       </button>
       <input #fileInput type="file" (change)="onFileSelected($event)" hidden />
     </div>
+    }
   </div>
   <div id="own-message_component-conent-div">
     <mat-form-field>
@@ -44,7 +46,9 @@
     <button mat-flat-button (click)="clearFileRow()">
       Fájlmező tisztítása
     </button>
-    <button mat-flat-button (click)="addMessage()">Bejegyzés hozzáadása</button>
+    <button mat-flat-button (click)="addAndEditDialog()">
+      @if(modify){Bejegyzés módosítása}@else {Bejegyzés hozzáadása}
+    </button>
   </div>
 </div>
 }

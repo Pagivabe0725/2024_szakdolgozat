@@ -720,6 +720,7 @@ describe('ForumElementInfoComponent', () => {
           width: '70%',
           height: '70%',
           hostComponent: 'ForumElementInfoComponent',
+          inputContent:undefined
         });
 
         expect(collectionServiceMock.deleteDatas).toHaveBeenCalledWith(

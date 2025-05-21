@@ -1,14 +1,20 @@
 <div class="own-work-message_component-container">
-  <div
-    class="own-work-message_component-message-div own-accent-background"
-    
-  >
+  <div class="own-work-message_component-message-div own-accent-background">
     <div class="own-work-message_component-message-content-div">
       {{ actualMessage.content }}
     </div>
     <div class="own-work-message_component-message-action-div">
       <span>{{ actualUser?.lastName + " " + actualUser?.firstName }}</span>
-      @if (commentable) {<button mat-icon-button (click)="openCommentInput()"><mat-icon>comment</mat-icon></button>}
+      @if (downloadable) {
+      <button mat-icon-button (click)="download()"><mat-icon>sim_card_download</mat-icon></button>}
+      @if (commentable) {<button mat-icon-button (click)="openCommentInput()">
+        <mat-icon>comment</mat-icon></button
+      >} @if (isEditable()) {<button mat-icon-button (click)="editMessage()">
+        <mat-icon>edit</mat-icon></button
+      >}
+      @if (deleteButtonVisibility()) {
+      <button mat-icon-button (click)="deleteEvent.emit({id:actualMessage.id,index:index})"><mat-icon>delete</mat-icon></button>
+      }
     </div>
   </div>
 </div>

@@ -1,22 +1,25 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { work } from '../../shared/interfaces/work';
+import { workMessage } from '../../shared/interfaces/workMessage';
+import { forum } from '../../shared/interfaces/forum';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SharedDataService {
-  private dataSource = new BehaviorSubject<any>(null);
-  private workArraySource = new BehaviorSubject<any>([]);
-  public currentData = this.dataSource.asObservable();
-  public actualUsersWorkInfoArray = this.workArraySource.asObservable();
+  private workElementContent = new BehaviorSubject<workMessage>(
+    {} as workMessage
+  );
+  public workElementContentSource = this.workElementContent.asObservable();
+  private forum = new BehaviorSubject<forum>({} as forum);
+  public forumSource = this.forum.asObservable();
   constructor() {}
 
-  changeData(data: any) {
-    this.dataSource.next(data);
+  updateWork(forum: forum): void {
+    this.forum.next(forum);
   }
 
-  setActualUserWorkInfoArray(data: Array<Array<string>>) {
-    this.workArraySource.next(data);
+  updateWorkElementContent(workMessage: workMessage): void {
+    this.workElementContent.next(workMessage);
   }
 }

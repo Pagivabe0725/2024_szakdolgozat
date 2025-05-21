@@ -46,6 +46,7 @@ export const dialogTemplate: Dialog = {
   content: '',
   action: false,
   hasInput: false,
+  inputContent:undefined
 };
 
 export const workTemplate: work = {

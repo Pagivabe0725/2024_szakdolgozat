@@ -12,13 +12,14 @@ import {
 import { CollectionService } from '../../../../shared/services/collection.service';
 import { Dialog } from '../../../../shared/interfaces/dialog';
 import { PopupService } from '../../../../shared/services/popup.service';
-import { Subscription, take } from 'rxjs';
+import { Subscription, firstValueFrom, take } from 'rxjs';
 import { forum } from '../../../../shared/interfaces/forum';
 import { Timestamp } from '@angular/fire/firestore';
 import { UserService } from '../../../../shared/services/user.service';
 import { user } from '../../../../shared/interfaces/user';
 import { idGenerator } from '../../../../shared/Functions/idGenerator';
 import { author } from '../../../../shared/Functions/author';
+import { SharedDataService } from '../../../services/shared-data.service';
 
 @Component({
   selector: 'app-addforum',
@@ -50,18 +51,50 @@ export class AddforumComponent implements OnInit, OnDestroy {
   private fullName = '';
   private nameSub?: Subscription;
   private collectionSub?: Subscription;
+  protected modify: boolean = false;
 
   constructor(
     private navigationService: NavigateAndurlinfoService,
     private collectionService: CollectionService,
     private popupService: PopupService,
-    private userService: UserService
+    private userService: UserService,
+    private sharedDataService: SharedDataService
   ) {
     this.popupDialogTemplate = popupService.getTemplateDialog();
     this.popupDialogTemplate.hostComponent = 'AddforumComponent';
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    const stored = sessionStorage.getItem('actualForum');
+    let actualForum: forum | undefined;
+
+    if (stored) {
+      if (sessionStorage.getItem('actualForum') === '{}') {
+        actualForum = undefined;
+      } else {
+        actualForum = JSON.parse(
+          sessionStorage.getItem('actualForum')!
+        ) as forum;
+        this.forumForm.get('content')!.setValue(actualForum.text);
+        this.forumForm.get('title')!.setValue(actualForum.title);
+        this.forumForm.get('category')!.setValue(actualForum.category);
+        this.modify = true;
+      }
+    } else {
+      await firstValueFrom(
+        this.sharedDataService.forumSource.pipe(take(1))
+      ).then((r) => {
+        if (JSON.stringify(r) !== '{}') {
+          actualForum = r;
+          sessionStorage.setItem('actualForum', JSON.stringify(r));
+          this.forumForm.get('content')!.setValue(actualForum.text);
+          this.forumForm.get('title')!.setValue(actualForum.title);
+          this.forumForm.get('category')!.setValue(actualForum.category);
+          this.modify = true;
+        }
+      });
+    }
+
     this.getUserName();
     this.textAreaRowCalculator();
     this.collectionSub = this.collectionService
@@ -75,6 +108,7 @@ export class AddforumComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    sessionStorage.removeItem('actualForum');
     this.nameSub?.unsubscribe();
     this.collectionSub?.unsubscribe();
   }
@@ -96,9 +130,12 @@ export class AddforumComponent implements OnInit, OnDestroy {
 
   check(): void {
     if (this.forumForm.valid) {
-      this.popupDialogTemplate.title = 'Hozzáadod?';
-      this.popupDialogTemplate.content =
-        'Biztosan szeretnéd hozzáadni a bejegyzésedet?';
+      this.popupDialogTemplate.title = !this.modify
+        ? 'Hozzáadod?'
+        : 'Módosítod?';
+      this.popupDialogTemplate.content = !this.modify
+        ? 'Biztosan szeretnéd hozzáadni a bejegyzésedet?'
+        : 'Biztosan szeretnéd módosítani a bejegyzést?';
       this.popupDialogTemplate.action = true;
       this.popupService
         .displayPopUp(this.popupDialogTemplate)
@@ -106,7 +143,11 @@ export class AddforumComponent implements OnInit, OnDestroy {
         .pipe(take(1))
         .subscribe((result) => {
           if (result) {
-            this.addForum();
+            if (this.modify) {
+              this.editForum();
+            } else {
+              this.addForum();
+            }
           }
         });
     }
@@ -128,11 +169,32 @@ export class AddforumComponent implements OnInit, OnDestroy {
       });
   }
 
+  editForum(): void {
+    let editedForum = JSON.parse(
+      sessionStorage.getItem('actualForum')!
+    ) as forum;
+    this.collectionService
+      .updateDatas('Forums', editedForum.id, {
+        ...editedForum,
+        title: this.forumForm.get('title')!.value,
+        text: this.forumForm.get('content')!.value,
+        category: this.forumForm.get('category')!.value,
+        date: Timestamp.now(),
+      } as forum)
+      .then(() => this.back())
+      .catch((err) => {
+        this.popupDialogTemplate.title = 'hiba!';
+        this.popupDialogTemplate.content =
+          'Valamilyen hibába ütköztünk a rögzítés során. Kérlek próbáld újra!';
+        this.popupDialogTemplate.action = false;
+        this.popupService.displayPopUp(this.popupDialogTemplate);
+      });
+  }
+
   getUserName(): void {
     this.nameSub = this.userService
       .getUserInfoByUserId(localStorage.getItem('userId')!)
       .subscribe((data) => {
-
         const user: user = data as user;
         this.fullName = author(user);
       });

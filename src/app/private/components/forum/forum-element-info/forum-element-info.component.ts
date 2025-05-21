@@ -19,6 +19,8 @@ import { user } from '../../../../shared/interfaces/user';
 import { UserService } from '../../../../shared/services/user.service';
 import { author } from '../../../../shared/Functions/author';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
+import { SharedDataService } from '../../../services/shared-data.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-forum-element-info',
@@ -54,7 +56,9 @@ export class ForumElementInfoComponent implements OnInit, OnDestroy {
     private popupService: PopupService,
     private navigationService: NavigateAndurlinfoService,
     private arrayService: ArrayService,
-    private userService: UserService
+    private userService: UserService,
+    private sharedDataService: SharedDataService,
+    private snackBar: MatSnackBar
   ) {
     this.popupDialogTemplate = this.popupService.getTemplateDialog();
     this.popupDialogTemplate.hostComponent = 'ForumElementInfoComponent';
@@ -177,11 +181,13 @@ export class ForumElementInfoComponent implements OnInit, OnDestroy {
         .then(() => {
           //console.log('sikeres');
         })
-        .catch((err) => {console.log(err)});
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }
 
-  deleteForumElement() {
+  deleteForumElement(): void {
     this.popupDialogTemplate.title = 'Biztosan';
     this.popupDialogTemplate.content =
       'Biztosan törölni szeretné ezt a bejegyzést?';
@@ -237,7 +243,7 @@ export class ForumElementInfoComponent implements OnInit, OnDestroy {
                   //console.log('comment action');
                 })
                 .catch((err) => {
-                  console.error(err)
+                  console.error(err);
                 });
             })
             .catch((err) => {
@@ -257,18 +263,21 @@ export class ForumElementInfoComponent implements OnInit, OnDestroy {
     } as forumComment;
   }
 
-   loadComments(): void {
-    const commentObservables = this.actualForumElement!.commentsIdArray.map((commentId) =>
-      this.collectionService.getCollectionByCollectionAndDoc('ForumComments', commentId).pipe(take(1))
+  loadComments(): void {
+    const commentObservables = this.actualForumElement!.commentsIdArray.map(
+      (commentId) =>
+        this.collectionService
+          .getCollectionByCollectionAndDoc('ForumComments', commentId)
+          .pipe(take(1))
     );
-  
+
     forkJoin(commentObservables).subscribe((comments) => {
       this.commentsOfActualForumElementArray = comments as forumComment[];
       this.loaded = true;
     });
   }
 
-  deleteComment(index: number) {
+  deleteComment(index: number): void {
     const commentIdToDelete: string =
       this.actualForumElement!.commentsIdArray[index];
 
@@ -296,7 +305,8 @@ export class ForumElementInfoComponent implements OnInit, OnDestroy {
                 )
                 .then(() => {
                   //window.location.reload();
-                  //this.loaded=true
+                  this.commentsOfActualForumElementArray!.splice(index,1)
+                  this.loaded=true
                   this.loadComments();
                 })
                 .catch((err) => {
@@ -313,5 +323,48 @@ export class ForumElementInfoComponent implements OnInit, OnDestroy {
 
   isMyComment(uId: string): boolean {
     return localStorage.getItem('userId') === uId;
+  }
+
+  editForum(): void {
+    this.sharedDataService.updateWork(this.actualForumElement!);
+    this.navigationService.basicNavigate('private/addForum');
+  }
+
+  createSnackbar(text: string) {
+    navigator.clipboard.writeText(text);
+    this.snackBar.open(text, 'Bezár', {
+      duration: 3000,
+      announcementMessage: text,
+
+      verticalPosition: 'bottom', //
+    });
+  }
+
+  editComment(comment: forumComment, index: number): void {
+    this.popupService
+      .displayPopUp({
+        ...this.popupService.getTemplateDialog(),
+        title: 'Módosítás',
+        hasInput: true,
+        inputContent: comment.content,
+        action: true,
+      })
+      .afterClosed()
+      .pipe(take(1))
+      .subscribe((r) => {
+        if (r) {
+          if (r !== comment.content) {
+            let newComment = { ...comment, content: r } as forumComment;
+            this.collectionService
+              .updateDatas('ForumComments', comment.id, newComment)
+              .then(() => {
+                this.createSnackbar('Sikeres módosítás');
+                this.commentsOfActualForumElementArray![index] = newComment;
+              });
+          } else {
+            this.createSnackbar('A komment változtatás hiányában nem módosult');
+          }
+        }
+      });
   }
 }

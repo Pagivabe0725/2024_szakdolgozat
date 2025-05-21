@@ -36,10 +36,10 @@
       <mat-label>Üzenet</mat-label>
       <textarea matInput id="textarea" formControlName="content"></textarea>
       @if (forumForm.get('content')?.hasError('required')) {
-        <mat-error>Kötelezően kitöltendő</mat-error>
-        } @else if (forumForm.get('content')?.hasError('minlength')) {
-        <mat-error>Túl rövid(50)</mat-error>
-        }
+      <mat-error>Kötelezően kitöltendő</mat-error>
+      } @else if (forumForm.get('content')?.hasError('minlength')) {
+      <mat-error>Túl rövid(50)</mat-error>
+      }
     </mat-form-field>
   </div>
   <div
@@ -49,10 +49,14 @@
     <button mat-flat-button (click)="back()" id="own-back-button">
       Mégsem
     </button>
-    <button mat-flat-button>Piszkozat mentése</button>
-    <button mat-flat-button (click)="clearFormFields()" id="own-addForum_component-clear-button">
+
+    <button
+      mat-flat-button
+      (click)="clearFormFields()"
+      id="own-addForum_component-clear-button"
+    >
       Képernyő tisztítása
     </button>
-    <button mat-flat-button (click)="check()">Hozzáad</button>
+    <button mat-flat-button (click)="check()"> @if (!modify) {Hozzáad} @else {Módosít}</button>
   </div>
 </form>

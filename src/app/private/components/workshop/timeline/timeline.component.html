@@ -6,9 +6,12 @@
 <app-controlpanel
   [darkmode]="isDarkmode()"
   [actualWork]="actualWork"
+  (reverseEvent)="reverseMessages($event)"
+  [downloadable]="workContainFile()"
+  [downloadFileId]="lastFileId"
 ></app-controlpanel>
-@if (messages.length>0) { @for (actualMessage of messages; track $index; let i =
-$index) {
+@if (messages.length>0) { @for (actualMessage of copyedMessages; track $index;
+let i = $index) {
 <div class="own-timeline_component-line-container-div">
   <span
     [ngClass]="
@@ -26,7 +29,10 @@ $index) {
   [actualUser]="membersOfWork.get(actualMessage.userId)"
   (commentEvent)="createComment($event)"
   [index]="i"
-  [commentable]="i === messages.length - 1"
+  [commentable]="actualMessage.id === lastMessageId"
+  [actualWork]="actualWork"
+  [downloadable]="isFileMessage(actualMessage.id)"
+  (deleteEvent)="deleteDialog($event)"
 ></app-work-message>
 
 @for (comment of actualMessage.commentArray; track $index ) {

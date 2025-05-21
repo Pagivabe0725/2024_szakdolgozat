@@ -11,6 +11,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { turnUpAnimation } from '../../../../shared/animations/usefullAnimations';
 import { MatButtonModule } from '@angular/material/button';
 import { NavigateAndurlinfoService } from '../../../../shared/services/navigate-andurlinfo.service';
+import { SharedDataService } from '../../../services/shared-data.service';
+import { forum } from '../../../../shared/interfaces/forum';
 
 @Component({
   selector: 'app-leftside-console',
@@ -59,7 +61,7 @@ export class LeftsideConsoleComponent {
   @Input() public categoryTitleArray!: string[];
 @Output() public filterEvent : EventEmitter<string> = new EventEmitter()
 
-  constructor(private navigateService: NavigateAndurlinfoService) {}
+  constructor(private navigateService: NavigateAndurlinfoService, private sharedDataService:SharedDataService) {}
 
   changeMenu(): void {
     const helperArray = [...this.categoryTitleArray];
@@ -81,6 +83,7 @@ export class LeftsideConsoleComponent {
   }
 
   addButtonAction(): void {
+    this.sharedDataService.updateWork({} as forum)
     this.navigateService.navigate(true, 'addForum');
   }
 }

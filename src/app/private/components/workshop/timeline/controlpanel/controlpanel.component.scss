@@ -32,6 +32,16 @@
 
 #own-controlpanel_component-button-div {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
+  gap: 10px;
   padding-right: 1vw;
+}
+
+
+#own-controlpanel_component-left-action-div{
+  width: 60%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
 }

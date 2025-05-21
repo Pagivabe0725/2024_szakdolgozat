@@ -20,9 +20,11 @@ export class WorkMessageCommentComponent {
     new EventEmitter();
   public actualCommentContent: string = '';
 
-  @Output() public modifyCommentEvent: EventEmitter<{'id':string,content:string}> = new EventEmitter()
+  @Output() public modifyCommentEvent: EventEmitter<{
+    id: string;
+    content: string;
+  }> = new EventEmitter();
 
-  
   displayCommentDeleteButton(): boolean {
     const userId = localStorage.getItem('userId')!;
 
@@ -31,16 +33,11 @@ export class WorkMessageCommentComponent {
     );
   }
 
-
-  isModifiable():boolean{
-    return this.comment.author.id === localStorage.getItem('userId')
+  isModifiable(): boolean {
+    return this.comment.author.id === localStorage.getItem('userId');
   }
 
-  commentModification(comment:workComment):void{
-
-    this.modifyCommentEvent.emit({id:comment.id,content:comment.content})
-
+  commentModification(comment: workComment): void {
+    this.modifyCommentEvent.emit({ id: comment.id, content: comment.content });
   }
-
-
 }

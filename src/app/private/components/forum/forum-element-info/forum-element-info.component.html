@@ -14,6 +14,10 @@
     <span>Készítette: {{ actualForumElement?.author }}</span>
     <div>
       @if (isMyForumElement()) {
+      <button mat-icon-button (click)="editForum()">
+        <mat-icon>edit</mat-icon>
+      </button>
+      } @if (isMyForumElement()) {
       <button mat-icon-button (click)="deleteForumElement()">
         <mat-icon>delete</mat-icon>
       </button>
@@ -55,7 +59,9 @@ $index) {
   <mat-card-content>{{ comment.content }}</mat-card-content>
   <mat-card-footer>
     <div>
-      @if (isMyForumElement() || isMyComment(comment.userid)) {<button
+      @if (isMyComment(comment.userid)) {
+      <button mat-icon-button (click)="editComment(comment,i)"><mat-icon>edit</mat-icon></button>
+      } @if (isMyForumElement() || isMyComment(comment.userid)) {<button
         mat-icon-button
         (click)="deleteComment(i)"
       >

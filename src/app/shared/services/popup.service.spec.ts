@@ -14,6 +14,7 @@ describe('PopupService', () => {
     content: '',
     action: false,
     hasInput: false,
+    inputContent: undefined
   };
   beforeEach(() => {
     TestBed.configureTestingModule({
