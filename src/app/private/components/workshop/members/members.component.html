@@ -1,1 +1,31 @@
-<p>members works!</p>
+@if (!loaded) {
+
+<app-spinner></app-spinner>
+
+}@else {
+
+<div class="own-members_component-input-div">
+  <mat-form-field>
+    <mat-label>Email</mat-label>
+    <input matInput type="email" [formControl]="email" />
+    @if (email.hasError('email')) {
+    <mat-error>Helytelen formátum</mat-error>
+    } @else if (email.hasError('required')) {
+    <mat-error>Kötelező kitölteni</mat-error>
+    }
+  </mat-form-field>
+
+  <div class="own-members_component-button-div">
+    <button mat-flat-button (click)="check()">Résztvevő felvétele</button>
+    <button mat-flat-button (click)="back()">Vissza</button>
+  </div>
+</div>
+@for (member of actualWork.members; track $index; let i = $index) {
+
+<app-member-card
+  [darkmode]="isDarkmode()"
+  [actualUser]="allUser.get(member)!"
+  (deleteEvent)="deleteMember($event)"
+></app-member-card>
+
+} }

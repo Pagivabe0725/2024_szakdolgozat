@@ -18,7 +18,7 @@
         <mat-icon>swap_vert</mat-icon>
       </button>
       @if (downloadable) {
-      <button mat-flat-button (click)="download()">Letöltés</button>
+      <button mat-flat-button (click)="download()" id="download_button">Letöltés</button>
       }
     </div>
   </div>
@@ -29,9 +29,11 @@
     <button mat-flat-button (click)="finishOrStartWork()">Újra elkezdés</button>
     }
 
-    <button mat-flat-button>Résztvevők</button>
+    @if (!actualWork.finished) {
+    <button mat-flat-button (click)="editMembers()">Résztvevők</button>
 
-    }
     <button mat-flat-button (click)="message()">Új bejegyzés</button>
+    }
+  }
   </div>
 </div>

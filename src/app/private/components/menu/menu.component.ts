@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NavigateAndurlinfoService } from '../../../shared/services/navigate-andurlinfo.service';
 import { UserService } from '../../../shared/services/user.service';
+import { SidenavComponent } from './sidenav/sidenav.component';
 
 @Component({
   selector: 'app-menu',
@@ -16,14 +17,10 @@ import { UserService } from '../../../shared/services/user.service';
     MatIconModule,
     MatMenuModule,
     CommonModule,
+    SidenavComponent,
   ],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss',
-  /*
-  host: {
-    '[$valami]': '[blue]',
-  },
-  */
 })
 export class MenuComponent implements OnInit {
   public mode: 'dark' | 'light' = 'light';
@@ -38,10 +35,20 @@ export class MenuComponent implements OnInit {
     'cyan-dark',
   ];
   public actualColor: string = 'basic-light';
+  public width: number = window.innerWidth;
+  public height: number = window.innerHeight;
+  public sidenav = false;
   constructor(
     private navigateAndUrlinfo: NavigateAndurlinfoService,
     private userService: UserService
   ) {}
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: UIEvent): void {
+    this.width = window.innerWidth;
+    this.height = window.innerHeight;
+    console.log(this.width);
+  }
 
   ngOnInit(): void {
     const actualTheme: string | null = localStorage.getItem('theme');

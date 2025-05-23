@@ -15,6 +15,8 @@ import { WorkCreatorComponent } from './private/components/workshop/work-creator
 import { MessageCommentComponent } from './private/components/workshop/message-comment/message-comment.component';
 import { AccountComponent } from './private/components/account/account.component';
 import { authGuard } from './private/guards/auth-guard.guard';
+import { MembersComponent } from './private/components/workshop/members/members.component';
+import { DeleteWorkComponent } from './private/components/workshop/delete-work/delete-work.component';
 
 export const routes: Routes = [
   {
@@ -95,39 +97,25 @@ export const routes: Routes = [
         path: 'workshop',
         component: WorkshopComponent,
         title: 'workshop',
-        /*
-        children: [
-          {
-            path: '',
-            redirectTo: 'works',
-            pathMatch: 'full',
-          },
-          {
-            path: 'works',
-            children: [
-              { path: '', redirectTo: 'all', pathMatch: 'full' },
-              { path: 'all', title: 'all works', component: WorksComponent },
-              { path: 'my', title: 'my works', component: WorksComponent },
-            ],
-          },
-          {
-            path: 'workcreator',
-            component: WorkCreatorComponent,
-            title: 'Work creator',
-          },
-          {
-            path: ':workId',
-            component: TimelineComponent,
-            title: 'chosen work',
-          },
-        ],
-        */
       },
 
       {
         path: 'workshop/:workId',
         component: TimelineComponent,
         title: 'workshop',
+      },
+
+      {
+        path:'delete-work',
+        component:DeleteWorkComponent,
+        title:'delete project'
+
+      },
+
+      {
+        path: 'workshop/:workId/members',
+        component: MembersComponent,
+        title: 'Members',
       },
       {
         path: 'own',

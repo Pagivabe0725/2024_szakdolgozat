@@ -95,4 +95,8 @@ export class ControlpanelComponent implements OnInit {
     const top = direction === 'up' ? 0 : document.documentElement.scrollHeight;
     window.scrollTo({ top, behavior: 'smooth' });
   }
+
+  editMembers(){
+    this.navigateAndUrlInfoService.basicNavigate(`private/workshop/${this.actualWork.id}/members`)
+  }
 }

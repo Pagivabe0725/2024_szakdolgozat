@@ -26,7 +26,7 @@ export class PopupComponent implements OnInit {
   protected actualDialog?: Dialog;
   public commentControl: FormControl = new FormControl('', [
     Validators.required,
-    Validators.minLength(50),
+    Validators.minLength(20),
   ]);
 
   constructor(

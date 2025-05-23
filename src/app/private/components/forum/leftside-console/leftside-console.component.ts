@@ -63,7 +63,7 @@ export class LeftsideConsoleComponent {
 
   constructor(private navigateService: NavigateAndurlinfoService, private sharedDataService:SharedDataService) {}
 
-  changeMenu(): void {
+  changeMenuSize(): void {
     const helperArray = [...this.categoryTitleArray];
     if (this.state() === 'close') {
       this.state.set('open');

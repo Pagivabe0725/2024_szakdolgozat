@@ -2,11 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { work } from '../../../../shared/interfaces/work';
 import { Router } from '@angular/router';
+import { OwnDateFormaterPipe } from '../../../../shared/pipes/own-date-formater.pipe';
 
 @Component({
   selector: 'app-workcard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, OwnDateFormaterPipe],
   templateUrl: './workcard.component.html',
   styleUrl: './workcard.component.scss',
 })

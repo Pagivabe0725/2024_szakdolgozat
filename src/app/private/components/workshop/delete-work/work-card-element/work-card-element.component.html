@@ -1,0 +1,28 @@
+<div
+  class="own-work-card-element_component-card-div"
+  [ngStyle]="
+    darkmode
+      ? { 'border-bottom': '1px solid white' }
+      : { 'border-bottom': '1px solid black' }
+  "
+>
+  <div class="own-work-card-element_component-card-div-field">
+    <span [ngStyle]="darkmode? {'color':'white'}:{'color':'black'}">Név:</span>
+    <span class="own-accent-text-color">{{ actualWork.name }}</span>
+  </div>
+  <div class="own-work-card-element_component-card-div-field">
+    <span [ngStyle]="darkmode? {'color':'white'}:{'color':'black'}">Létrehozás:</span>
+    <span class="own-accent-text-color">{{ actualWork.created | ownDateFormater }}</span>
+  </div>
+  <div class="own-work-card-element_component-card-div-field">
+    <span [ngStyle]="darkmode? {'color':'white'}:{'color':'black'}">Módosítva:</span>
+    <span class="own-accent-text-color">{{ actualWork.modified | ownDateFormater }}</span>
+  </div>
+  <div class="own-work-card-element_component-card-div-field">
+    <span [ngStyle]="darkmode? {'color':'white'}:{'color':'black'}">Csapattagok:</span>
+    <span class="own-accent-text-color">{{ actualWork.members.length }}</span>
+  </div>
+  <div class="own-work-card-element_component-card-button-div">
+    <button mat-icon-button (click)="deleteEvent.emit(actualWork.id)"><mat-icon>delete</mat-icon></button>
+  </div>
+</div>

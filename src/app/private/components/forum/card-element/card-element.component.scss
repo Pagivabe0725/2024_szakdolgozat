@@ -36,3 +36,20 @@ mat-card-footer {
 .light {
   color: black;
 }
+
+
+@media (max-width: 1024px) {
+
+  mat-card-header{
+    font-size: 3vw;
+  }
+
+  mat-card-content{
+    font-size: 2vw;
+  }
+
+  mat-card-footer{
+    font-size: 1.5vw;
+  }
+
+  }

@@ -62,7 +62,7 @@ export class ForumComponent implements OnInit, OnDestroy {
       );
       this.forumObjectArray.push(actualForum as forum);
     }
-    this.chosenForumObjectArray = [...this.forumObjectArray];
+    this.chosenForumObjectArray = [...this.forumObjectArray.reverse()];
     this.loaded = true;
   }
 

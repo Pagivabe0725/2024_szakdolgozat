@@ -1,0 +1,40 @@
+<div
+  class="own-member-card_component-member-div own-accent-text-color"
+  [ngStyle]="
+    darkmode
+      ? { 'border-bottom': '1px white solid' }
+      : { 'border-bottom': '1px black solid' }
+  "
+>
+  <div
+    class="own-member-card_component-span-div"
+    [ngStyle]="darkmode ? { 'border-right-color': 'white' } : {}"
+  >
+    <span [ngStyle]="darkmode ? { color: 'white' } : { color: 'black' }"
+      >Név:</span
+    >
+    <span>{{ actualUser.lastName + " " + actualUser.firstName }}</span>
+  </div>
+  <div
+    class="own-member-card_component-span-div"
+    [ngStyle]="darkmode ? { 'border-right-color': 'white' } : {}"
+  >
+    <span [ngStyle]="darkmode ? { color: 'white' } : { color: 'black' }"
+      >Email:</span
+    >
+    <span>{{ actualUser.email }}</span>
+  </div>
+  <div
+    class="own-member-card_component-span-div"
+    [ngStyle]="darkmode ? { 'border-right-color': 'white' } : {}"
+  >
+    <span [ngStyle]="darkmode ? { color: 'white' } : { color: 'black' }"
+      >Telefonszám:</span
+    >
+    <span>{{ actualUser.telNumber }}</span>
+  </div>
+
+  <div class="own-member-card_component-action-div">
+    <button mat-flat-button (click)="deleteEvent.emit(actualUser.id)">Eltávolít</button>
+  </div>
+</div>

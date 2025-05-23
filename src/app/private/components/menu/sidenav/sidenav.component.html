@@ -1,0 +1,122 @@
+
+
+<div
+  id="own-sidenav_component-container-div"
+  [@slideInOut]="isOpen ? 'open' : 'closed'"
+  class="own-primary-highlight-background"
+>
+
+@if (isOpen) {
+  <div
+    class="own-sidenav_component-navigation-div"
+    [ngStyle]="isDarkmode() ? { color: 'white' } : { color: 'black' }"
+  >
+    <div class="own-sidenav_component-button-div">
+      <button mat-flat-button (click)="navigate('my-account')">Fiókom</button>
+    </div>
+    <div class="own-sidenav_component-icon-div">
+      <button mat-icon-button (click)="navigate('my-account')">
+        <mat-icon
+          [ngStyle]="isDarkmode() ? { color: 'black' } : { color: 'white' }"
+          >account_circle</mat-icon
+        >
+      </button>
+    </div>
+  </div>
+  <div
+    class="own-sidenav_component-navigation-div"
+    [ngStyle]="isDarkmode() ? { color: 'white' } : { color: 'black' }"
+  >
+    <div class="own-sidenav_component-button-div">
+      <button mat-flat-button (click)="navigate('main')">Főoldal</button>
+    </div>
+    <div class="own-sidenav_component-icon-div">
+      <button mat-icon-button (click)="navigate('main')">
+        <mat-icon
+          [ngStyle]="isDarkmode() ? { color: 'black' } : { color: 'white' }"
+          >home</mat-icon
+        >
+      </button>
+    </div>
+  </div>
+  <div
+    class="own-sidenav_component-navigation-div"
+    [ngStyle]="isDarkmode() ? { color: 'white' } : { color: 'black' }"
+  >
+    <div class="own-sidenav_component-button-div">
+      <button mat-flat-button (click)="navigate('forum')">Fórumok</button>
+    </div>
+    <div class="own-sidenav_component-icon-div">
+      <button mat-icon-button (click)="navigate('forum')">
+        <mat-icon
+          [ngStyle]="isDarkmode() ? { color: 'black' } : { color: 'white' }"
+          >chat</mat-icon
+        >
+      </button>
+    </div>
+  </div>
+  <div
+    class="own-sidenav_component-navigation-div"
+    [ngStyle]="isDarkmode() ? { color: 'white' } : { color: 'black' }"
+  >
+    <div
+      class="own-sidenav_component-button-div"
+      (click)="navigate('workshop')"
+    >
+      <button mat-flat-button>Műhelyek</button>
+    </div>
+    <div class="own-sidenav_component-icon-div">
+      <button mat-icon-button (click)="navigate('workshop')">
+        <mat-icon
+          [ngStyle]="isDarkmode() ? { color: 'black' } : { color: 'white' }"
+          >work</mat-icon
+        >
+      </button>
+    </div>
+  </div>
+
+  <div
+    class="own-sidenav_component-navigation-div"
+    [ngStyle]="isDarkmode() ? { color: 'white' } : { color: 'black' }"
+  >
+    <div class="own-sidenav_component-button-div">
+      <button mat-flat-button (click)="modeEvent.emit()">
+        {{ isDarkmode() ? "Világos mód" : "Sötét mód" }}
+      </button>
+    </div>
+    <div class="own-sidenav_component-icon-div">
+      <button mat-icon-button (click)="modeEvent.emit()">
+        <mat-icon
+          [ngStyle]="isDarkmode() ? { color: 'black' } : { color: 'white' }"
+          >{{ isDarkmode() ? "sunny" : "brightness_2" }}</mat-icon
+        >
+      </button>
+    </div>
+  </div>
+  <div
+    class="own-sidenav_component-navigation-div"
+    [ngStyle]="isDarkmode() ? { color: 'white' } : { color: 'black' }"
+  >
+    <div class="own-sidenav_component-button-div">
+      <button mat-flat-button (click)="logoutEvent.emit()">Kijelentkezés</button>
+    </div>
+    <div class="own-sidenav_component-icon-div">
+      <button mat-icon-button (click)="logoutEvent.emit()">
+        <mat-icon
+          [ngStyle]="isDarkmode() ? { color: 'black' } : { color: 'white' }"
+          >sensor_door</mat-icon
+        >
+      </button>
+    </div>
+  </div>
+
+  <div id="own-sidenav_component-theme-div">
+    <button mat-flat-button (click)="themeEvent.emit('basic')">Rose</button>
+    <button mat-flat-button (click)="themeEvent.emit('azure')">Azure</button>
+    <button mat-flat-button (click)="themeEvent.emit('magenta')">
+      Magenta
+    </button>
+    <button mat-flat-button (click)="themeEvent.emit('cyan')">Cyan</button>
+  </div>
+}
+</div>

@@ -1,26 +1,26 @@
 <div id="own-public_component-left-side-div" class="own-primary-background">
-  <h1>Üdvözöllek a weboldalon!</h1>
+  <h1  [ngStyle]="isDarkmode() ? {'color':'white'}:{'color':'black'}">Üdvözöllek a weboldalon!</h1>
   <div id="own-grid-center-row">
     @if (page==='login') {
-    <p>
+    <p  [ngStyle]="isDarkmode() ? {'color':'white'}:{'color':'black'}">
       Itt van lehetőséged bejelentkezni a regisztrációnál megadott email és
       jelszó segítségével. Amennyiben még nem regisztráltál, kérlek tedd meg a
       <b>"Regisztrálok"</b> gombra kattintva
     </p>
     }@else {
-    <p>
+    <p  [ngStyle]="isDarkmode() ? {'color':'white'}:{'color':'black'}">
       Itt van lehetőséged regisztrálni. A felsorolt mezők kitöltésével. A
       <b>"Város"</b> mező kivételével minden mező kitöltése kötelező. Amennyiben
       már regisztrált felhasználó vagy, kérlek kattints a <br />
       <b>"Már van profilom"</b> gombra és jelentkezz be
     </p>
 
-    <p>
+    <p  [ngStyle]="isDarkmode() ? {'color':'white'}:{'color':'black'}">
       A <b>*</b> -al jelölt mezők kötelezően kitöltendőek. Ezeket nem lehet
       üresen hagyni
     </p>
 
-    <p>
+    <p  [ngStyle]="isDarkmode() ? {'color':'white'}:{'color':'black'}">
       Ha egy mező értéke nem felel meg a kitöltési formátumnak, arról a rendszer
       egyértelmű visszajelzést fog küldeni önnek.
     </p>

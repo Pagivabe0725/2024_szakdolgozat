@@ -7,6 +7,9 @@
   <mat-form-field>
     <mat-label>Komment</mat-label>
     <textarea rows="5" matInput [formControl]="commentControl"></textarea>
+    @if (commentControl.hasError('minlength')) {
+    <mat-error>Túl rövid(20)</mat-error>
+    }
   </mat-form-field>
 
   }

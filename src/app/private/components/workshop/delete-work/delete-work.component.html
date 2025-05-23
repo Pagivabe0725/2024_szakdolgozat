@@ -1,0 +1,15 @@
+@if (!loaded) {
+
+<app-spinner></app-spinner>
+
+}@else { @if (workArray.length>0) { @for (work of workArray; track $index) {
+
+<app-work-card-element
+  [actualWork]="work"
+  [darkmode]="isDarkmode()"
+  (deleteEvent)="delete($event)"
+></app-work-card-element>
+
+}} @else {
+<h1 class="own-accent-text-color">Nincs törölhető munkamenet</h1>
+} }

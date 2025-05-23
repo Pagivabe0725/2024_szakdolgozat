@@ -1,18 +1,27 @@
-<div class="own-workcard_component-card-div own-accent-background" (click)="workLoader()">
-  @for (item of points; track $index; let i = $index) {
-  <div
-    class="own-workcard-element"
-    [ngStyle]="
-      i % 2 === 0
-        ? {}
-        : {
-            'border-right': '1px outset black',
-            'border-left': '1px outset black'
-          }
-    "
-  >
-    <span>{{ item }}</span>
-    <span></span>
+<div
+  class="own-workcard_component-card-div own-accent-background"
+  (click)="workLoader()"
+>
+  <div class="own-workcard-element">
+    <span>Név:</span>
+    <span>{{ work.name }}</span>
   </div>
-  }
+
+  <div class="own-workcard-element">
+    <span>Készítő:</span>
+    <span>{{ work.author.lastName + " " + work.author.firstName }}</span>
+  </div>
+
+  <div class="own-workcard-element">
+    <span>Létrehozva:</span>
+    <span>{{ work.created | ownDateFormater }}</span>
+  </div>
+  <div class="own-workcard-element">
+    <span>Módosítva:</span>
+    <span>{{ work.modified | ownDateFormater }}</span>
+  </div>
+  <div class="own-workcard-element">
+    <span>Állapot:</span>
+    <span>{{ work.finished ? "Befejezve" : "Munka alatt" }}</span>
+  </div>
 </div>

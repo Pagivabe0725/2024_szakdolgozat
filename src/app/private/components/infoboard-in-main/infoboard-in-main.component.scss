@@ -39,3 +39,20 @@ mat-icon {
     left: 0;
   }
 }
+
+@media (max-width: 1024px) {
+  .own-info_in_main_component-div {
+    width: 40%;
+  }
+
+  .own-infoboard-content-div {
+    
+    h1{
+      font-size: 4vw;
+    }
+
+    p {
+      font-size: 3vw;
+    }
+  }
+}

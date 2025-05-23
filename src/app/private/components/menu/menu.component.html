@@ -1,10 +1,16 @@
 <mat-toolbar>
   <div class="own-menu_component-content-div">
-    <button mat-icon-button><mat-icon>menu</mat-icon></button>
-    <button mat-icon-button (click)="menuNavigation('my-account')"><mat-icon>account_circle</mat-icon></button>
-    <button mat-icon-button><mat-icon>groups</mat-icon></button>
+    <button mat-icon-button (click)="sidenav = !sidenav">
+      <mat-icon>menu</mat-icon>
+    </button>
+    @if (width>1024 && height>400) {
+    <button mat-icon-button (click)="menuNavigation('my-account')">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    }
   </div>
   <div class="own-menu_component-content-div">
+    @if (width>1024 && height>560) {
     <button
       class="own-menu_component-menupoints"
       mat-raised-button
@@ -29,8 +35,10 @@
     >
       Műhelyek
     </button>
-    
+
+    }
   </div>
+  @if (width>1024 && height>400) {
   <div class="own-menu_component-content-div">
     <button
       mat-icon-button
@@ -72,6 +80,20 @@
     <button mat-icon-button (click)="changeDarkness()">
       <mat-icon>@if(mode==='light'){brightness_2} @else {sunny}</mat-icon>
     </button>
-    <button mat-icon-button (click)="logout()"><mat-icon>sensor_door</mat-icon></button>
+    <button mat-icon-button (click)="logout()">
+      <mat-icon>sensor_door</mat-icon>
+    </button>
   </div>
+  }
 </mat-toolbar>
+
+<app-sidenav
+  [isOpen]="sidenav"
+  [mode]="mode"
+  (themeEvent)="changeColor($event)"
+  (modeEvent)="changeDarkness()"
+  (closeEvent)="sidenav = !sidenav"
+  (logoutEvent)="logout()"
+  [height]="height"
+  [width]="width"
+></app-sidenav>

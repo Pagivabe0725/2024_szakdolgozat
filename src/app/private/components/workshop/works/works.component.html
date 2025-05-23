@@ -1,5 +1,5 @@
 @if (chosenWorksArray.length===0) {
-<h1>Jelenleg nincs olyan munka amiben szerepet vállalnál</h1>
+<h1 class="own-accent-text-color">Jelenleg nincs olyan munka amiben szerepet vállalnál</h1>
 }@else { @for (work of chosenWorksArray; track $index) {
 
 <app-workcard [work]="work"></app-workcard>

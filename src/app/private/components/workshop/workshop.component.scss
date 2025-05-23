@@ -8,4 +8,17 @@
   justify-content: start;
   align-items: center;
   overflow: auto;
+
 }
+
+@media (max-height: 560px) {
+  #own-right-side-controller_component-div {
+    margin-top: 25px;
+  }
+}
+@media (max-height: 300px) {
+  #own-right-side-controller_component-div {
+    margin-top: 50px;
+  }
+}
+

@@ -146,7 +146,7 @@ export class WorkCreatorComponent implements OnInit {
         modified: Timestamp.now(),
         finished: false,
         members: this.getMembersByValidEmails(),
-        elements: []
+        elements: [],
       };
       this.collectionService
         .createCollectionDoc('Works', id, actualWork)
@@ -155,6 +155,29 @@ export class WorkCreatorComponent implements OnInit {
         })
         .catch((err) => console.error(err));
     } else {
+    }
+  }
+
+  createOwnWork() {
+    if (this.creatorForm.get('name')!.valid) {
+      const id: string = Timestamp.now() + localStorage.getItem('userId')!;
+      const actualWork: work = {
+        id: id,
+        userId: localStorage.getItem('userId')!,
+        name: this.creatorForm.get('name')!.value,
+        author: this.getUserById(localStorage.getItem('userId')!)!,
+        created: Timestamp.now(),
+        modified: Timestamp.now(),
+        finished: false,
+        members: [],
+        elements: [],
+      };
+      this.collectionService
+        .createCollectionDoc('Works', id, actualWork)
+        .then((_) => {
+          this.changePage.emit('all');
+        })
+        .catch((err) => console.error(err));
     }
   }
 

@@ -42,18 +42,9 @@ export class WorkshopComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.userObs = this.getSubscription('Users');
-    console.log(this.userObs);
     this.userSub = this.userObs.subscribe(async (data: any) => {
-      console.log(data);
-
       this.userArray = [];
       this.userArray = data;
-      /*
-      for (const i of data['docs']) {
-        const user = await this.getUserById(i['id']);
-        this.userArray.push(user);
-      }
-      */
     });
 
     this.workObs = this.getSubscription('Works');
@@ -61,15 +52,9 @@ export class WorkshopComponent implements OnInit, OnDestroy {
       this.loaded = false;
       this.workArray = [];
       this.workArray = data;
-      /*
-      for (const i of data['docs']) {
-        const work = await this.getWorkById(i['id']);
-        this.workArray.push(work);
-      }*/
       this.basicWorkArrayFilter();
       this.chosenWorksArray = [...this.workArray];
       this.emailAndNameArray = await this.createEmailAndNameArray();
-      console.log(this.emailAndNameArray);
       this.loaded = true;
     });
   }
@@ -77,12 +62,10 @@ export class WorkshopComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.workSub) {
       this.workSub.unsubscribe();
-      console.log('workSub leiratkozva');
     }
 
     if (this.userSub) {
       this.userSub.unsubscribe();
-      console.log('userSub leiratkozva');
     }
   }
 
@@ -90,7 +73,6 @@ export class WorkshopComponent implements OnInit, OnDestroy {
     this.loaded = false;
     this.page = page;
     if (page === 'all' || page === 'my') {
-      console.log('bennevan');
       this.workArrayFilter(page);
     }
 
@@ -116,8 +98,6 @@ export class WorkshopComponent implements OnInit, OnDestroy {
     } else {
       this.chosenWorksArray = [...this.workArray];
     }
-
-    console.log(this.chosenWorksArray);
   }
 
   getSubscription(collection: string): Observable<unknown> {
@@ -125,19 +105,6 @@ export class WorkshopComponent implements OnInit, OnDestroy {
       collection
     );
   }
-
-  /*
-  async getWorkById(id: unknown): Promise<work> {
-    const work = await firstValueFrom(
-      this.collectionService
-        .getCollectionByCollectionAndDoc('Works', id as any)
-        .pipe(take(1))
-    );
-
-    return work as work;
-  }
-
-  */
 
   async createEmailAndNameArray(): Promise<Array<Array<string>>> {
     let nameSet = new Set<string>();

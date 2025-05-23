@@ -8,7 +8,8 @@ mat-toolbar {
   top: 0;
   padding: 0;
   height: 8vh;
-  z-index: 999;
+  min-height: 50px;
+  z-index: 99;
 }
 
 .own-menu_component-content-div {
