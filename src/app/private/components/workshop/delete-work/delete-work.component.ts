@@ -7,6 +7,7 @@ import { WorkCardElementComponent } from './work-card-element/work-card-element.
 import { Dialog } from '../../../../shared/interfaces/dialog';
 import { PopupService } from '../../../../shared/services/popup.service';
 import { workMessage } from '../../../../shared/interfaces/workMessage';
+import { StorageService } from '../../../services/storage.service';
 
 @Component({
   selector: 'app-delete-work',
@@ -20,7 +21,8 @@ export class DeleteWorkComponent implements OnInit {
   protected loaded = false;
   constructor(
     private collectionService: CollectionService,
-    private popupService: PopupService
+    private popupService: PopupService,
+    private storageService: StorageService
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -98,7 +100,7 @@ export class DeleteWorkComponent implements OnInit {
           this.loaded = false;
           await this.deleteMessages(this.getWorkFromArrayById(id));
           await this.collectionService.deleteDatas('Works', id);
-          this.deleteWorkFromArray(id)
+          this.deleteWorkFromArray(id);
           this.loaded = true;
         }
       });
@@ -107,8 +109,6 @@ export class DeleteWorkComponent implements OnInit {
   async deleteMessages(work: work): Promise<void> {
     if (work.elements.length > 0) {
       for (const message of work.elements) {
-        console.log('message');
-        console.log(message);
         const actualMessage = (await firstValueFrom(
           this.collectionService.getCollectionByCollectionAndDoc(
             'Messages',
@@ -116,9 +116,9 @@ export class DeleteWorkComponent implements OnInit {
           )
         )) as workMessage;
 
+        await this.deleteFiles(actualMessage.id);
         await this.collectionService.deleteDatas('Messages', message);
         await this.deleteComments(actualMessage.commentArray);
-        
       }
     }
   }
@@ -128,6 +128,14 @@ export class DeleteWorkComponent implements OnInit {
       for (const comment of commentArray) {
         await this.collectionService.deleteDatas('WorkComments', comment);
       }
+    }
+  }
+
+  async deleteFiles(filename: string): Promise<void> {
+    let fileMessages = await this.storageService.listFolderContents('Works');
+    if (fileMessages.includes(filename)) {
+      console.log('bejutott');
+      this.storageService.deleteFile(`Works/${filename}/munka.zip`);
     }
   }
 }

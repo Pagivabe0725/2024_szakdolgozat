@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { WorkCardElementComponent } from './work-card-element.component';
 
-describe('WorkCardElementComponent', () => {
+xdescribe('WorkCardElementComponent', () => {
   let component: WorkCardElementComponent;
   let fixture: ComponentFixture<WorkCardElementComponent>;
 

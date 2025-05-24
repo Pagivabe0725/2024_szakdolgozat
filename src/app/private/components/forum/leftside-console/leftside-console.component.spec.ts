@@ -43,15 +43,15 @@ describe('LeftsideConsoleComponent', () => {
   });
 
   it('changeMenu should open the div', async () => {
-    await component.changeMenu();
+    await component.changeMenuSize();
     expect(component['state']()).toEqual('open');
     await new Promise((resolve) => setTimeout(resolve, 500));
     expect(component['listVisible']).toBeTrue();
   });
 
   it('changeMenu should close the div', async () => {
-    component.changeMenu();
-    component.changeMenu();
+    component.changeMenuSize();
+    component.changeMenuSize();
     await new Promise((resolve) => setTimeout(resolve, 500));
     expect(component['state']()).toEqual('close');
     expect(component['listVisible']).toBeFalse();
