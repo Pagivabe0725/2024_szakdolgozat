@@ -34,7 +34,6 @@ export class DeleteWorkComponent implements OnInit {
         this.workArray.push(actualWork);
       }
     }
-    console.log(this.workArray);
     this.loaded = true;
   }
 
@@ -134,7 +133,6 @@ export class DeleteWorkComponent implements OnInit {
   async deleteFiles(filename: string): Promise<void> {
     let fileMessages = await this.storageService.listFolderContents('Works');
     if (fileMessages.includes(filename)) {
-      console.log('bejutott');
       this.storageService.deleteFile(`Works/${filename}/munka.zip`);
     }
   }

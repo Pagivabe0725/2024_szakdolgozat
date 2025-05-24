@@ -41,7 +41,7 @@ export class WorkMessageComponent implements OnInit {
     this.collectionService
       .getCollectionByCollectionAndDoc('Users', this.actualMessage.userId)
       .pipe(take(1))
-      .subscribe((user) => console.log(user));
+      .subscribe();
   }
 
   openCommentInput(): void {
@@ -50,7 +50,7 @@ export class WorkMessageComponent implements OnInit {
 
   isEditable(): boolean {
     return (
-      this.actualMessage.userId === localStorage.getItem('userId') &&
+      this.actualMessage.userId.trim() === localStorage.getItem('userId')?.trim() &&
       this.commentable
     );
   }

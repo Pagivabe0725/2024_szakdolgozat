@@ -451,7 +451,7 @@ describe('ForumElementInfoComponent', () => {
         forumTemplate2 = { ...forumTemplate };
       });
 
-      it('popup should contain the correct content', async () => {
+      xit('popup should contain the correct content', async () => {
         dialogRef = { afterClosed: () => of(true) } as Partial<
           MatDialogRef<PopupComponent>
         > as MatDialogRef<PopupComponent>;

@@ -12,13 +12,14 @@
       {{ comment.content }}
     </div>
     <div class="own-work-message-comment_component-author-div">
-      {{ comment.author.lastName + " " + comment.author.firstName }}
+     @if (actualWork.members.includes(comment.author.id) || actualWork.author.id===comment.author.id ) { {{ comment.author.lastName + " " + comment.author.firstName }}}
+     @else {Felhasználó eltávolítva}
     </div>
   </div>
-  @if (displayCommentDeleteButton()) {
+  @if (displayCommentDeleteButton() && !actualWork.finished) {
   <button mat-icon-button (click)="deleteCommentEvent.emit(comment.id)"><mat-icon>delete</mat-icon></button>}
   
-  @if (isModifiable()) {
+  @if (isModifiable() && !actualWork.finished) {
   <button mat-icon-button  (click)="commentModification(comment)"> <mat-icon>edit</mat-icon></button>
   }
 </div>

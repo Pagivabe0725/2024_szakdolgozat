@@ -55,7 +55,6 @@ export class MembersComponent implements OnInit {
         const id = (user as any)['id'];
         this.allUser.set(id, (await this.getUserById(id)) as user);
       }
-      console.log(this.allUser);
       this.loaded = true;
     });
   }

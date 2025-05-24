@@ -7,10 +7,13 @@
       }}</span>
     </div>
     <div id="own-controlpanel_component-left-action-div">
-
       @if (isPageScrollable()) {
-        <button mat-icon-button (click)="scrollPage('up')"><mat-icon>arrow_upward</mat-icon></button>
-        <button mat-icon-button (click)="scrollPage('down')"><mat-icon>arrow_downward</mat-icon></button>
+      <button mat-icon-button (click)="scrollPage('up')">
+        <mat-icon>arrow_upward</mat-icon>
+      </button>
+      <button mat-icon-button (click)="scrollPage('down')">
+        <mat-icon>arrow_downward</mat-icon>
+      </button>
 
       }
 
@@ -18,7 +21,9 @@
         <mat-icon>swap_vert</mat-icon>
       </button>
       @if (downloadable) {
-      <button mat-flat-button (click)="download()" id="download_button">Letöltés</button>
+      <button mat-flat-button (click)="download()" id="download_button">
+        Letöltés
+      </button>
       }
     </div>
   </div>
@@ -27,13 +32,11 @@
     <button mat-flat-button (click)="finishOrStartWork()">Befejez</button>
     }@else {
     <button mat-flat-button (click)="finishOrStartWork()">Újra elkezdés</button>
-    }
-
-    @if (!actualWork.finished) {
+    } @if (!actualWork.finished) {
     <button mat-flat-button (click)="editMembers()">Résztvevők</button>
 
+    } } @if (!actualWork.finished) {
     <button mat-flat-button (click)="message()">Új bejegyzés</button>
     }
-  }
   </div>
 </div>

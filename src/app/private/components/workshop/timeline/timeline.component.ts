@@ -175,7 +175,6 @@ export class TimelineComponent implements OnInit, OnDestroy {
       );
     }
 
-    console.log(this.messages);
   }
 
   isFileMessage(id: string): boolean {

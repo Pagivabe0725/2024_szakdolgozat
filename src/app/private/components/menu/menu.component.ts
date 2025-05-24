@@ -47,7 +47,6 @@ export class MenuComponent implements OnInit {
   onResize(event: UIEvent): void {
     this.width = window.innerWidth;
     this.height = window.innerHeight;
-    console.log(this.width);
   }
 
   ngOnInit(): void {

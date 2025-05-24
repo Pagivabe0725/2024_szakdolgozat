@@ -14,10 +14,10 @@
       <button mat-icon-button (click)="download()"><mat-icon>sim_card_download</mat-icon></button>}
       @if (commentable && actualUser && !actualWork.finished) {<button mat-icon-button (click)="openCommentInput()">
         <mat-icon>comment</mat-icon></button
-      >} @if (isEditable()  && !actualWork.finished) {<button mat-icon-button (click)="editMessage()">
+      >} @if (isEditable()  && actualWork.finished===false) {<button mat-icon-button (click)="editMessage()">
         <mat-icon>edit</mat-icon></button
       >}
-      @if (deleteButtonVisibility()  && !actualWork.finished) {
+      @if (deleteButtonVisibility()  && actualWork.finished===false) {
       <button mat-icon-button (click)="deleteEvent.emit({id:actualMessage.id,index:index})"><mat-icon>delete</mat-icon></button>
       }
     </div>
